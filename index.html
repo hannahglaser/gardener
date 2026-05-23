@@ -98,16 +98,20 @@
 
   nav.toptabs {
     margin: 22px 0 0;
-    display: flex; flex-wrap: wrap; gap: 4px;
+    display: flex; flex-wrap: nowrap; gap: 0;
     border-bottom: 1px solid var(--line);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  nav.toptabs::-webkit-scrollbar { display: none; }
   nav.toptabs button {
     appearance: none; background: transparent; border: 0;
     padding: 12px 16px 10px;
     font: inherit; color: var(--ink-soft); cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: color .15s, border-color .15s;
-    display: flex; align-items: baseline; gap: 10px;
+    display: flex; align-items: baseline; gap: 8px;
+    white-space: nowrap; flex-shrink: 0;
   }
   nav.toptabs button:hover { color: var(--ink); }
   nav.toptabs button.is-active { color: var(--ink); border-bottom-color: var(--terra); }
@@ -120,6 +124,16 @@
     font-size: 11px; color: var(--ink-mute);
     background: var(--bg-2); padding: 2px 7px; border-radius: 10px;
     font-family: ui-monospace, monospace;
+  }
+  @media (max-width: 600px) {
+    nav.toptabs button { padding: 10px 12px 8px; gap: 6px; }
+    nav.toptabs .tt-count { display: none; }
+    nav.toptabs .tt-name { font-size: 14px; }
+    nav.toptabs .tt-num { font-size: 12px; }
+    header.app { padding: 16px 16px 0; }
+    h1.title { font-size: 24px; }
+    .kicker { font-size: 10px; }
+    main { padding: 16px 16px 60px; }
   }
 
   /* ============================================================
