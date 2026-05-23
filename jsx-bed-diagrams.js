@@ -22,6 +22,7 @@ const JSX_CODE_TO_NAME = {
   zu:  'Zucchini (bush)',    ss:  'Summer squash (bush)',
   dl:  'Dill',               ec:  'Echinacea',
   cu:  'Cucumber',
+  cit: 'Citronella',
   bk:  'Bok choy',           sc:  'Swiss chard',
   kl:  'Kale',               gc:  'Green cabbage',
   rc:  'Red cabbage',        br:  'Broccoli',
@@ -105,97 +106,107 @@ function jnote(text) { return `<p class="jsx-note">${text}</p>`; }
 function jsxLeftSvg() {
   const W = 780, x0 = 40;
   let s = '';
-  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
-  s += `<rect x="30" y="20" width="800" height="468" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 412" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="20" width="800" height="380" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
   s += `<text x="430" y="13" text-anchor="middle" font-size="10" fill="#94886a">LEFT BED — north at top | hover any plant for details</text>`;
-  s += `<text x="18"  y="254" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,254)">WEST</text>`;
-  s += `<text x="842" y="254" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,254)">EAST</text>`;
-  s += `<text x="430" y="494" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
+  s += `<text x="18"  y="210" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,210)">WEST</text>`;
+  s += `<text x="842" y="210" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,210)">EAST</text>`;
+  s += `<text x="430" y="408" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
   s += `<text x="830" y="34"  font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
   s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
 
-  /* Row 1: SF */
-  s += jband(x0, W, 28, 30, '#d9b13a', 'Row 1 (north edge) — sunflowers x6');
-  [80, 236, 392, 548, 692, 800].forEach(cx => s += jp('sf', cx, 44, 12, '#c79628', 'SF'));
+  /* Row 1: SF x12 */
+  s += jband(x0, W, 28, 30, '#d9b13a', 'Row 1 (north edge) — sunflowers x12');
+  [58,116,174,232,300,368,436,504,572,640,708,780].forEach(cx => s += jp('sf', cx, 44, 12, '#c79628', 'SF'));
 
   /* Path 1 */
   s += jpath(x0, W, 58, 28, '24″ harvest path');
 
-  /* Row 2: Tomatoes */
-  s += jband(x0, W, 86, 38, '#a32d2d', `Row 2 — BW x4 (30″) | SM x3 (24″) | TL x2`);
-  [80, 168, 256, 344].forEach(cx => s += jp('bw', cx, 107, 13, '#a32d2d', 'BW'));
-  [430, 510, 590].forEach(cx => s += jp('sm', cx, 107, 13, '#d85a30', 'SM'));
-  s += jp('tl', 672, 100, 11, '#854f0b', 'TL');
-  s += jp('tl', 716, 100, 11, '#854f0b', 'TL');
-  s += jn(390, 92);
-  s += jn(636, 92);
-  s += `<text x="42" y="138" font-size="8" fill="#94886a" font-style="italic">48″ tomato row gap</text>`;
+  /* Row 2: Tomatoes as planted — BW x4 | SM SM | JU | SM | JU | SG | TL TL */
+  s += jband(x0, W, 86, 38, '#a32d2d', `Row 2 — BW x4 | SM x3 | JU x2 | SG x1 | TL x2 (as planted)`);
+  [68, 142, 216, 290].forEach(cx => s += jp('bw', cx, 107, 13, '#a32d2d', 'BW'));
+  s += jp('sm', 362, 107, 13, '#d85a30', 'SM');
+  s += jp('sm', 420, 107, 13, '#d85a30', 'SM');
+  s += jp('ju', 478, 107, 13, '#d4537e', 'JU');
+  s += jp('sm', 536, 107, 13, '#d85a30', 'SM');
+  s += jp('ju', 594, 107, 13, '#d4537e', 'JU');
+  s += jp('sg', 648, 107, 13, '#ef9f27', 'SG');
+  s += jn(326, 97);
+  s += jp('tl', 718, 100, 11, '#854f0b', 'TL');
+  s += jn(738, 90);
+  s += jp('tl', 758, 100, 11, '#854f0b', 'TL');
+  s += `<text x="42" y="138" font-size="8" fill="#94886a" font-style="italic">48″ gap</text>`;
 
-  /* Row 3: Sungolds */
-  s += jband(x0, W, 142, 36, '#ef9f27', `Row 3 — SG x5 (24″) | JU x2`);
-  [80, 174, 268, 362, 456].forEach(cx => s += jp('sg', cx, 162, 13, '#ef9f27', 'SG'));
-  [560, 650].forEach(cx => s += jp('ju', cx, 162, 13, '#d4537e', 'JU'));
-  s += jn(508, 152);
+  /* Row 3: main row + sub-row (SG x4 | TB x2 | JL | HB | BP B BP B SH) */
+  s += jband(x0, W, 142, 80, '#ef9f27', `Row 3 — SG x4 | TB x2 | JL | HB | peppers inline (sub-row below)`);
+  [68, 152, 236, 320].forEach(cx => s += jp('sg', cx, 163, 13, '#ef9f27', 'SG'));
+  s += jn(110, 153);
+  s += jsq('tb', 408, 163, '#0f6e56', 'TB');
+  s += jsq('tb', 448, 163, '#0f6e56', 'TB');
+  s += jp('jl', 492, 163, 13, '#993556', 'JL');
+  s += jp('hb', 548, 163, 13, '#993556', 'HB');
+  s += jp('bp', 604, 163, 13, '#3c3489', 'BP');
+  s += jsq('ba', 642, 163, '#1d9e75', 'B');
+  s += jp('bp', 676, 163, 13, '#3c3489', 'BP');
+  s += jsq('ba', 714, 163, '#1d9e75', 'B');
+  s += jp('sh', 750, 163, 13, '#534ab7', 'SH');
 
-  /* Path 2 */
-  s += jpath(x0, W, 178, 34, '30″ harvest path — tomatoes to peppers');
+  /* Sub-row below: aligns under pepper section — BP BP SH B */
+  s += `<line x1="588" y1="182" x2="820" y2="182" stroke="#534ab7" stroke-width="0.6" stroke-dasharray="4 2" opacity="0.3"/>`;
+  s += jp('bp', 604, 203, 13, '#3c3489', 'BP');
+  s += jp('bp', 676, 203, 13, '#3c3489', 'BP');
+  s += jp('sh', 750, 203, 13, '#534ab7', 'SH');
+  s += jsq('ba', 802, 203, '#1d9e75', 'B');
+  s += jn(428, 203);
+  s += jn(800, 163);
+  s += `<text x="592" y="218" font-size="7.5" fill="#534ab7" opacity="0.45" font-style="italic">↑ sub-row</text>`;
 
-  /* Pepper + squash zone */
-  s += jband(x0, W, 212, 76, '#534ab7', `Rows 4–5 — pepper block (W) | HB JL TB | ZU SS mounds (E) — full 400″ EW`);
-  /* Pepper block 2x3 */
-  s += jp('bp', 68,  232, 13, '#3c3489', 'BP');
-  s += jp('bp', 134, 232, 13, '#3c3489', 'BP');
-  s += jp('bp', 200, 232, 13, '#3c3489', 'BP');
-  s += jp('sh', 68,  272, 13, '#534ab7', 'SH');
-  s += jp('sh', 134, 272, 13, '#534ab7', 'SH');
-  s += jsq('ba', 200, 272, '#1d9e75', 'B');
-  s += jsq('ba', 101, 252, '#1d9e75', 'B');
-  s += jsq('ba', 167, 252, '#1d9e75', 'B');
-  s += `<rect x="52" y="216" width="166" height="80" rx="5" fill="none" stroke="#534ab7" stroke-width="0.8" stroke-dasharray="4 2" opacity="0.4"/>`;
-  s += `<text x="135" y="305" text-anchor="middle" font-size="7.5" fill="#534ab7" opacity="0.6" font-style="italic">shelter block</text>`;
-  /* HB JL TB */
-  s += jn(272, 242);
-  s += jp('hb', 340, 252, 13, '#993556', 'HB');
-  s += jp('jl', 410, 252, 13, '#993556', 'JL');
-  s += jsq('tb', 474, 245, '#0f6e56', 'TB');
-  s += jsq('tb', 530, 245, '#0f6e56', 'TB');
-  /* ZU + SS mounds east */
-  s += jmound('zu', 605, 252, 26, 18, '#639922', 'ZU');
-  s += jmound('ss', 680, 252, 26, 18, '#97c459', 'SS');
-  s += jmound('ss', 760, 252, 26, 18, '#97c459', 'SS');
-  s += `<text x="683" y="285" text-anchor="middle" font-size="7.5" fill="#639922" opacity="0.7" font-style="italic">squash mounds</text>`;
+  /* Path 2: peppers to squash row */
+  s += jpath(x0, W, 228, 22, 'harvest path');
 
-  /* Path 3 */
-  s += jpath(x0, W, 296, 28, '24″ harvest path — peppers to herbs');
+  /* Row 4: ZU + SS mounds + Swiss chard east + herb strip */
+  s += jband(x0, W, 250, 44, '#639922', 'Row 4 — squash mounds (ZU x1, SS x2) + swiss chard x4 + herb strip');
+  s += jmound('zu', 120, 273, 26, 18, '#639922', 'ZU');
+  s += jn(170, 262);
+  s += jmound('ss', 230, 273, 26, 18, '#97c459', 'SS');
+  s += jmound('ss', 330, 273, 26, 18, '#97c459', 'SS');
+  s += jn(382, 262);
+  /* Swiss chard x4 east of squash mounds, 12" apart */
+  s += jp('sc', 470, 273, 11, '#639922', 'SC');
+  s += jp('sc', 510, 273, 11, '#639922', 'SC');
+  s += jp('sc', 550, 273, 11, '#639922', 'SC');
+  s += jp('sc', 590, 273, 11, '#639922', 'SC');
+  /* Herb strip — east end: DL, EC, CI, CI */
+  s += jsq('dl', 650, 263, '#97c459', 'DL');
+  s += jp('ec', 690, 263, 11, '#d4537e', 'EC');
+  s += jp('cit', 730, 263, 11, '#7daf3a', 'CI');
+  s += jp('cit', 770, 263, 11, '#7daf3a', 'CI');
+  s += `<text x="710" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
-  /* Herb border */
-  s += jband(x0, 360, 324, 26, '#1d9e75', 'Herb border — DL, EC');
-  s += jsq('dl', 100, 337, '#97c459', 'DL');
-  s += jp('ec', 175, 337, 11, '#d4537e', 'EC');
-
-  /* Path 4 */
-  s += jpath(x0, W, 350, 28, '24″ harvest path — herbs to cukes');
+  /* Path: row 4 to cucumbers */
+  s += jpath(x0, W, 298, 26, 'harvest path');
 
   /* Cucumbers */
-  s += jband(x0, W, 378, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
-  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 397, 12, '#185fa5', 'CU'));
-  s += jn(335, 386);
-  s += jn(636, 386);
+  s += jband(x0, W, 324, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
+  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 343, 12, '#185fa5', 'CU'));
+  s += jn(335, 332);
+  s += jn(636, 332);
 
   /* Path 5 south */
-  s += jpath(x0, W, 412, 34, '30″ south access — cuke harvest');
-  s += `<text x="430" y="462" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">32″ spare — south end of bed</text>`;
+  s += jpath(x0, W, 358, 26, '30″ south access — cuke harvest');
+  s += `<text x="430" y="396" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">spare — south end of bed</text>`;
   s += `</svg>`;
 
   const legend = [
-    {c:'#c79628', l:'SF (6)'}, {c:'#a32d2d', l:'BW (4)'},
+    {c:'#c79628', l:'SF (12)'}, {c:'#a32d2d', l:'BW (4)'},
     {c:'#d85a30', l:'SM (3)'}, {c:'#854f0b', l:'TL (2)'},
     {c:'#ef9f27', l:'SG (5)'}, {c:'#d4537e', l:'JU (2)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#3c3489', l:'BP (3)'},
     {c:'#534ab7', l:'SH (2)'}, {c:'#993556', l:'HB / JL'},
     {c:'#1d9e75', l:'B · Basil', sq:true}, {c:'#0f6e56', l:'TB · Thai basil', sq:true},
     {c:'#97c459', l:'DL · Dill', sq:true}, {c:'#d4537e', l:'EC · Echinacea'},
-    {c:'#185fa5', l:'CU (8)'}, {c:'#639922', l:'ZU mound'},
+    {c:'#7daf3a', l:'CI · Citronella (2)'},
+    {c:'#185fa5', l:'CU (8)'}, {c:'#639922', l:'ZU mound · SC (4)'},
     {c:'#97c459', l:'SS mound x2'}, {c:'#b96b3e', l:'harvest paths'},
   ];
 
@@ -221,8 +232,7 @@ function jsxRightSvg() {
   s += `<rect x="694" y="26" width="30"  height="356" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
   s += `<text x="709" y="205" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,205)" font-style="italic">24″ strip (open)</text>`;
 
-  s += RB(ys.sf, 26, '#d9b13a', 'Row 1 (north edge) — sunflowers x6');
-  [172, 260, 350, 438, 526, 600].forEach(cx => s += jp('sfr', cx, ys.sf + 13, 11, '#c79628', 'SF'));
+  s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
   s += jpath(148, 470, ys.pSF, 22, '24″ path');
 
   s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″) + swiss chard x4 (12″)`);
@@ -264,7 +274,7 @@ function jsxRightSvg() {
   s += `</svg>`;
 
   const legend = [
-    {c:'#c79628', l:'SF (6)'}, {c:'#0f6e56', l:'BK (4)'},
+    {c:'#0f6e56', l:'BK (4)'},
     {c:'#639922', l:'SC (4)'}, {c:'#1d7a3c', l:'KL (4)'},
     {c:'#185fa5', l:'GC (4)'}, {c:'#993556', l:'RC (4)'},
     {c:'#7080c4', l:'B? (2)'}, {c:'#534ab7', l:'C? (2)'},
@@ -287,7 +297,7 @@ function jsxUnfencedSvg() {
   s += `<text x="466" y="205" text-anchor="middle" font-size="8" fill="#c9bd9f" transform="rotate(90,466,205)">EAST (compost)</text>`;
   s += `<text x="240" y="396" text-anchor="middle" font-size="8" fill="#c9bd9f">SOUTH</text>`;
   s += `<rect x="34" y="26" width="412" height="18" rx="3" fill="#ede4cf" fill-opacity="0.5"/>`;
-  s += `<text x="240" y="38" text-anchor="middle" font-size="8" fill="#94886a" font-style="italic">No sunflowers — all 12 on left + right bed north edges</text>`;
+  s += `<text x="240" y="38" text-anchor="middle" font-size="8" fill="#94886a" font-style="italic">No sunflowers — all 12 on left bed north edge</text>`;
   s += jpath(34, 412, 44, 26, '36″ north access buffer');
 
   s += `<rect x="34" y="72" width="412" height="52" rx="3" fill="#854f0b" fill-opacity="0.07" stroke="#854f0b" stroke-width="0.5" stroke-opacity="0.3"/>`;
