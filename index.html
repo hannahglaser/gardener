@@ -1623,11 +1623,10 @@ function plantAt(name, x, y, opts) {
 const BEDS = {};
 
 /* ====================================================================
- *  LEFT BED  ·  400" E-W × 350" N-S  (final layout — drops in v6 diagram)
+ *  LEFT BED  ·  400" E-W × 350" N-S
  *  Rows N→S: SF / tomato 1 (BW+SM+TL) / tomato 2 (SG+JU) /
  *  pepper block + HB JL TB + ZU SS mounds (full 400″ EW) /
  *  herb border (DL EC) / cucumber trellis.
- *  ZU+SS moved from the 24" strip into the pepper zone EW space.
  * ==================================================================== */
 {
   const plants = [];
@@ -1667,7 +1666,7 @@ const BEDS = {};
     jsx: 'left',
     rows: [
       { letter:'A', y:9,   label:'Row 1 · Sunflowers (north edge)', dim:'12 × 18″ · shadow casts north away from crops' },
-      { letter:'B', y:57,  label:'Row 2 · Tomato row 1 (as planted)', dim:'BW × 4 @ 30″ · SM × 3 · JU × 2 · SG × 1 · TL × 2 · 48″ row gap' },
+      { letter:'B', y:57,  label:'Row 2 · Tomato row 1', dim:'BW × 4 @ 30″ · SM × 3 · JU × 2 · SG × 1 · TL × 2 · 48″ row gap' },
       { letter:'C', y:132, label:'Row 3 · SG + TB JL HB + pepper inline (sub-row)', dim:'SG × 4 · TB × 2 · JL · HB · BP B BP B SH · sub-row BP BP SH B' },
       { letter:'D', y:192, label:'Row 4 · Squash mounds + Swiss chard + herb strip',
         dim:'ZU + SS × 2 mounds · SC × 4 (12″) · east herb strip DL · EC · CI × 2' },
@@ -1684,7 +1683,7 @@ const BEDS = {};
   const plants = [];
   const vegCenter = 148;
 
-  /* A · (no sunflowers — all 12 moved to left bed north edge) */
+  /* A · north edge — open buffer (sunflowers are on left bed) */
   /* B · Row A — Bok choy × 4 + Swiss chard × 4 (y=48) */
   plants.push(...line(48, [
     {n:'Bok choy'},
@@ -1796,7 +1795,7 @@ const BEDS = {};
       { kind:'gap',  y0:216, y1:300, xRange:[344,368], label:'' },
     ],
     rows: [
-      { letter:'A', y:9,   label:'North edge · open buffer', dim:'no sunflowers — all 12 on left bed north edge' },
+      { letter:'A', y:9,   label:'North edge · open buffer', dim:'24″ clear zone' },
       { letter:'B', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BC × 4 @ 10″ · SC × 4 @ 12″ · 66″ EW' },
       { letter:'C', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
       { letter:'D', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
