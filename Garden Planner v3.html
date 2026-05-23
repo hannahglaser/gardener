@@ -1,0 +1,2423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hannah + Dom's Garden</title>
+<style>
+  /* ============================================================
+   *   TOKENS
+   * ============================================================ */
+  :root {
+    --bg:        #f5efe1;
+    --bg-2:      #ede4cf;
+    --paper:     #fbf6ea;
+    --paper-2:   #f3ecd6;
+    --ink:       #2a2418;
+    --ink-soft:  #6a5f48;
+    --ink-mute:  #94886a;
+    --line:      #c9bd9f;
+    --line-soft: #ddd1b3;
+    --terra:     #b96b3e;
+    --terra-dk:  #8b4a26;
+    --moss:      #4d6a35;
+    --moss-dk:   #364a23;
+
+    /* plant families */
+    --c-tom:    #c44438;
+    --c-pep:    #7b3f86;
+    --c-cuke:   #3f6f95;
+    --c-bras:   #3a8a7d;
+    --c-root:   #d77a2c;
+    --c-alli:   #8d8a82;
+    --c-squash: #6a9438;
+    --c-herb:   #2f5a2d;
+    --c-flw:    #d9b13a;
+    --c-berry:  #4a5d9a;
+    --c-cane:   #a13e6e;
+    --c-legume: #8d9243;
+
+    --shadow: 0 1px 0 rgba(120,90,40,.10), 0 12px 30px -18px rgba(80,55,15,.35);
+    --shadow-sm: 0 1px 2px rgba(80,55,15,.10);
+
+    /* calendar activity colors */
+    --cal-indoor:    #ddc88a;
+    --cal-harden:    #c8d2a6;
+    --cal-transplant:#7fa55d;
+    --cal-direct:    #c97a3f;
+    --cal-harvest:   #4d6a35;
+    --cal-bloom:     #d9b13a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px; line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(185, 107, 62, .04), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(77, 106, 53, .05), transparent 45%);
+    background-attachment: fixed;
+  }
+  .serif {
+    font-family: "Cormorant Garamond", "Garamond", "Georgia", "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 500; letter-spacing: .01em;
+  }
+  .mono {
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
+    font-size: 12px; letter-spacing: .02em;
+  }
+
+  /* ============================================================
+   *   HEADER
+   * ============================================================ */
+  header.app {
+    max-width: 1240px; margin: 0 auto;
+    padding: 26px 24px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .seal {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    display: grid; place-items: center;
+    box-shadow: var(--shadow); position: relative;
+  }
+  .seal::after {
+    content:""; position: absolute; inset: 4px; border-radius: 50%;
+    border: 1px dashed var(--line);
+  }
+  .seal svg { width: 24px; height: 24px; position: relative; }
+  h1.title { font-size: 30px; margin: 0; letter-spacing: .005em; }
+  .kicker {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .22em;
+    color: var(--terra-dk); margin: 4px 0 0;
+  }
+  .meta { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+
+  nav.toptabs {
+    margin: 22px 0 0;
+    display: flex; flex-wrap: wrap; gap: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.toptabs button {
+    appearance: none; background: transparent; border: 0;
+    padding: 12px 16px 10px;
+    font: inherit; color: var(--ink-soft); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  nav.toptabs button:hover { color: var(--ink); }
+  nav.toptabs button.is-active { color: var(--ink); border-bottom-color: var(--terra); }
+  nav.toptabs .tt-num {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 13px; color: var(--terra-dk); font-style: italic;
+  }
+  nav.toptabs .tt-name { font-size: 15px; font-weight: 500; }
+  nav.toptabs .tt-count {
+    font-size: 11px; color: var(--ink-mute);
+    background: var(--bg-2); padding: 2px 7px; border-radius: 10px;
+    font-family: ui-monospace, monospace;
+  }
+
+  /* ============================================================
+   *   MAIN
+   * ============================================================ */
+  main {
+    max-width: 1240px; margin: 0 auto;
+    padding: 24px 24px 80px;
+  }
+  .view { /* no entrance animation */ }
+
+  /* ============================================================
+   *   MAP VIEW: sub-tabs + schematic
+   * ============================================================ */
+  .subtabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 14px;
+  }
+  .subtabs button {
+    appearance: none; background: var(--paper);
+    border: 1px solid var(--line); color: var(--ink-soft);
+    padding: 8px 14px; font: inherit; font-size: 13px;
+    border-radius: 999px; cursor: pointer;
+    transition: all .15s;
+  }
+  .subtabs button:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .subtabs button.is-active {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+  }
+  .subtabs button .sub-em {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; margin-right: 6px;
+    color: inherit; opacity: .7;
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .map-grid { grid-template-columns: 1fr; } }
+
+  .bed-head {
+    margin-bottom: 14px;
+    display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: baseline;
+  }
+  .bed-head h2 { font-size: 26px; margin: 0; }
+  .bed-head .dims {
+    font-family: ui-monospace, monospace; font-size: 12px;
+    color: var(--ink-soft); background: var(--bg-2);
+    padding: 4px 10px; border-radius: 4px; letter-spacing: .03em;
+  }
+  .bed-head p.lead {
+    flex-basis: 100%; margin: 0; color: var(--ink-soft); max-width: 64ch;
+  }
+
+  .totals {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    border: 1px solid var(--line); border-radius: 8px;
+    overflow: hidden; background: var(--paper);
+    margin-bottom: 16px;
+  }
+  .totals > div { padding: 10px 14px; border-right: 1px solid var(--line); }
+  .totals > div:last-child { border-right: 0; }
+  .totals .k {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .18em;
+    color: var(--ink-soft);
+  }
+  .totals .v {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 22px; line-height: 1.1; margin-top: 2px;
+  }
+
+  .diagram-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .diagram-frame {
+    background: var(--paper-2);
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    padding: 18px 18px 22px;
+    position: relative;
+  }
+  .diagram-frame::before {
+    content: "N";
+    position: absolute; top: 8px; left: 50%;
+    transform: translateX(-50%);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 13px; color: var(--terra-dk);
+  }
+  .compass-line {
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 8px; background: var(--terra-dk);
+  }
+  .diagram-frame::after {
+    content: "S"; position: absolute; bottom: 4px; left: 50%;
+    transform: translateX(-50%);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 11px; color: var(--ink-mute);
+  }
+  .ew-tick {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 11px; color: var(--ink-mute);
+  }
+  .ew-tick.w { left: 4px; }
+  .ew-tick.e { right: 4px; }
+
+  /* schematic rows */
+  .schem {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 16px;
+  }
+  .schem-row {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 16px; align-items: stretch;
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 12px 14px;
+    transition: border-color .15s;
+  }
+  .schem-row:hover { border-color: var(--line); }
+  .schem-row.empty {
+    background: transparent;
+    border: 1px dashed var(--line-soft);
+    color: var(--ink-mute);
+    padding: 8px 14px;
+  }
+  .schem-row.empty.path {
+    background: repeating-linear-gradient(45deg,
+      rgba(185,107,62,.04) 0 8px, transparent 8px 16px);
+    border: 1px dashed var(--terra);
+    color: var(--terra-dk);
+  }
+  .schem-row.empty.path .row-info p {
+    color: var(--terra-dk);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 12.5px;
+    letter-spacing: .04em;
+  }
+  .schem-row.empty .row-info p { color: var(--ink-mute); font-style: italic; }
+  .row-head {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .row-letter {
+    flex: none;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--paper-2); border: 1px solid var(--line);
+    display: grid; place-items: center;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600; font-size: 15px; color: var(--terra-dk);
+  }
+  .row-info { min-width: 0; }
+  .row-info h4 {
+    margin: 0; font-size: 13.5px; font-weight: 600; line-height: 1.25;
+  }
+  .row-info p {
+    margin: 2px 0 0;
+    font-family: ui-monospace, monospace; font-size: 11px;
+    color: var(--ink-mute); letter-spacing: .02em;
+  }
+  .row-body {
+    display: flex; flex-direction: column; gap: 8px;
+    justify-content: center;
+    min-width: 0;
+    overflow-x: auto;
+  }
+  .track {
+    display: flex; flex-wrap: nowrap; align-items: center;
+    gap: 8px 22px;
+  }
+  .track-label {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 11px; color: var(--ink-mute);
+    width: 64px; flex: none;
+  }
+  .cluster {
+    display: flex; flex-wrap: nowrap; gap: 5px; align-items: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .cluster.tight { padding: 0; }
+  .cluster-sep { display: none; }
+
+  /* alongside / divider marker — used for pepper block separation */
+  .cluster-spacer {
+    flex: none;
+    display: inline-flex; align-items: center;
+    padding: 0 8px;
+    margin: 0 2px;
+    height: 32px;
+    border-left: 1px dashed var(--line);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic; font-size: 10.5px;
+    color: var(--ink-mute);
+    letter-spacing: .08em;
+    text-transform: lowercase;
+    white-space: nowrap;
+  }
+
+  /* plant disc */
+  .plant {
+    position: relative; flex: none;
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer;
+    transition: transform .12s ease;
+    --fam-color: var(--c-tom);
+  }
+  .plant:hover { transform: translateY(-2px); }
+  .plant .disc {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: color-mix(in srgb, var(--fam-color) 14%, var(--paper));
+    color: var(--fam-color);
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 11.5px; letter-spacing: .02em;
+    box-shadow: var(--shadow-sm);
+    border: 1.8px solid var(--fam-color);
+    transition: box-shadow .15s, transform .12s;
+  }
+  .plant:hover .disc,
+  .plant.is-active .disc {
+    box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--ink);
+  }
+  .plant .disc.lg { width: 52px; height: 52px; font-size: 13px; }
+  .plant .disc.sm { width: 30px; height: 30px; font-size: 10px; border-width: 1.5px; }
+  .plant .cap {
+    font-size: 10px; color: var(--ink-soft);
+    margin-top: 3px; max-width: 70px; text-align: center;
+    line-height: 1.15;
+  }
+  .plant .cap.hidden { display: none; }
+
+  /* nasturtium — outlined green N */
+  .nast {
+    --fam-color: var(--moss-dk);
+  }
+  .nast .disc {
+    width: 26px; height: 26px;
+    background: color-mix(in srgb, #f0d56a 35%, var(--paper));
+    color: var(--moss-dk);
+    border: 1.5px solid var(--moss-dk);
+    font-size: 11px;
+  }
+
+  /* carrot band */
+  .carrot-band {
+    flex: 1 1 100%;
+    background:
+      repeating-linear-gradient(135deg,
+        rgba(215,122,44,.18) 0 6px, rgba(215,122,44,.05) 6px 12px);
+    border: 1.5px dashed var(--c-root);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    color: var(--c-root);
+    font-weight: 600; font-size: 12px;
+    letter-spacing: .12em;
+    cursor: pointer;
+  }
+  .carrot-band:hover { background-color: rgba(215,122,44,.10); }
+  .carrot-band small {
+    display: block; color: var(--ink-mute); font-size: 10px;
+    font-weight: 400; letter-spacing: .04em; margin-top: 2px;
+    text-transform: none;
+  }
+
+  /* Right bed: triple-column layout — veg | blueberry | squash strip */
+  .right-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 108px 92px;
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 760px) {
+    .right-layout { grid-template-columns: 1fr; }
+  }
+  .right-layout > .rows-col { min-width: 0; }
+  .strip-col {
+    border: 1px dashed var(--c-squash);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(106,148,56,.06), rgba(106,148,56,.12));
+    padding: 12px 8px 10px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+  .strip-col h4 {
+    margin: 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 15px; color: var(--moss-dk);
+    text-align: center;
+  }
+  .strip-col .strip-meta {
+    font-family: ui-monospace, monospace;
+    font-size: 10px; color: var(--ink-mute);
+    text-align: center; line-height: 1.4;
+  }
+  .strip-col .mound-row {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    position: relative;
+  }
+  .strip-col .mound-row .vine-arrow {
+    position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+    color: var(--c-squash); font-size: 13px;
+  }
+  .strip-col .mound-row .vine-arrow::after { content: "→"; }
+  .strip-col .strip-gap {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic; font-size: 10px;
+    color: var(--ink-mute);
+  }
+  .strip-col .strip-fence {
+    margin-top: auto; padding-top: 8px;
+    width: 100%; text-align: center;
+    border-top: 2px solid var(--terra-dk);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic; font-size: 10.5px; color: var(--terra-dk);
+  }
+  .strip-col .strip-fence::before {
+    content: "▲▲▲▲▲▲▲";
+    display: block; color: var(--terra-dk);
+    letter-spacing: 2px; font-size: 8px; line-height: 1;
+    margin-bottom: 3px;
+  }
+  @media (max-width: 700px) {
+    .right-layout { grid-template-columns: 1fr; }
+  }
+  .berry-col {
+    border: 1px dashed var(--c-berry);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(74,93,154,.05), rgba(74,93,154,.10));
+    padding: 12px 8px 10px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+  .berry-col h4 {
+    margin: 0 0 4px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 16px; color: var(--c-berry);
+    text-align: center;
+  }
+  .berry-col .berry-meta {
+    font-family: ui-monospace, monospace;
+    font-size: 10px; color: var(--ink-mute);
+    text-align: center; line-height: 1.4;
+  }
+  .berry-col .fence-note {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed var(--terra-dk);
+    width: 100%;
+    text-align: center;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic; font-size: 10.5px; color: var(--terra-dk);
+    line-height: 1.3;
+  }
+
+  /* Strip bed: vertical column of mounds */
+  .strip-layout {
+    max-width: 280px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .strip-row {
+    border: 1px solid var(--line-soft); border-radius: 8px;
+    background: var(--paper);
+    padding: 12px 14px;
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 12px; align-items: center;
+    position: relative;
+  }
+  .strip-row .info {
+    font-size: 11px; color: var(--ink-soft);
+    line-height: 1.25;
+  }
+  .strip-row .info strong { display: block; color: var(--ink); font-size: 12px; font-weight: 600; }
+  .strip-row .info em { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; color: var(--ink-mute); }
+  .strip-row.empty {
+    background: transparent;
+    border: 1px dashed var(--line-soft);
+    color: var(--ink-mute);
+    text-align: center;
+    grid-template-columns: 1fr;
+    font-size: 11px; padding: 8px;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic;
+  }
+  .strip-row .vine-east {
+    position: absolute; right: -34px; top: 50%; transform: translateY(-50%);
+    width: 30px; color: var(--c-squash); font-size: 14px;
+    display: flex; align-items: center; gap: 2px;
+  }
+  .strip-row .vine-east::after {
+    content: "→"; font-size: 16px;
+  }
+
+  /* Middle bed: 4 cane rows running N-S → render as vertical columns */
+  .middle-layout {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .middle-head {
+    text-align: center; font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic; font-size: 12px; color: var(--ink-mute);
+    letter-spacing: .12em; text-transform: uppercase;
+  }
+  .middle-cols {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 800px) {
+    .middle-cols { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .middle-cols { grid-template-columns: 1fr 1fr; }
+  }
+  .cane-col {
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 10px 6px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .cane-col-label {
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.3;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--line-soft);
+    width: 100%;
+  }
+  .cane-col-label .cane-letter {
+    display: inline-grid; place-items: center; vertical-align: middle;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--paper-2); border: 1px solid var(--line);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic; font-weight: 600; font-size: 12px;
+    color: var(--terra-dk); margin-right: 6px;
+  }
+  .cane-col-label .cane-spacing {
+    font-family: ui-monospace, monospace; font-size: 10px;
+    color: var(--ink-mute);
+  }
+  .cane-plants {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 6px;
+    padding-top: 4px;
+  }
+
+  /* Grow bags */
+  .bags-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .bag-card {
+    --fam-color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--fam-color);
+    border-radius: 8px;
+    padding: 12px 14px 12px 12px;
+    display: grid; grid-template-columns: 62px 1fr;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform .15s, border-color .15s, box-shadow .15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .bag-card:hover { transform: translateY(-1px); box-shadow: 0 4px 14px -8px rgba(80,55,15,.4); }
+  .bag-shape { display: grid; place-items: center; }
+  .bag-shape svg { width: 62px; height: auto; }
+  .bag-body { min-width: 0; }
+  .bag-id {
+    font-family: ui-monospace, monospace; font-size: 10px;
+    color: var(--ink-mute); letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .bag-plant {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px; line-height: 1.1; margin-top: 2px;
+    color: var(--ink);
+  }
+  .bag-meta {
+    font-family: ui-monospace, monospace; font-size: 10.5px;
+    color: var(--ink-soft); margin-top: 3px;
+  }
+  .bag-note {
+    font-size: 11px; line-height: 1.45;
+    color: var(--ink-soft); margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line-soft);
+  }
+
+  /* Unfenced bed: 2 squash rows — visually tall & narrow (264″ NS × 126″ EW) */
+  .unfenced-layout {
+    display: flex; flex-direction: column; gap: 0;
+    max-width: 380px; margin: 0 auto;
+    position: relative;
+  }
+  .unfenced-layout .ns-ruler {
+    position: absolute; top: 0; left: -18px; bottom: 0; width: 12px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between;
+    color: var(--ink-mute); font-size: 9px; letter-spacing: .15em;
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic;
+  }
+  .unfenced-layout .ns-ruler::before {
+    content: ""; position: absolute; left: 50%; top: 6px; bottom: 6px;
+    border-left: 1px dashed var(--line);
+  }
+  .squash-row {
+    display: grid; grid-template-columns: 130px 1fr;
+    gap: 12px; align-items: center;
+    background: var(--paper);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 4px 0;
+  }
+  .squash-row.empty {
+    background: transparent;
+    border: 1px dashed var(--line-soft);
+    grid-template-columns: 1fr;
+    text-align: center; color: var(--ink-mute);
+    font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic;
+    font-size: 12px; padding: 6px 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .squash-row.empty.path {
+    background: repeating-linear-gradient(45deg,
+      rgba(185,107,62,.04) 0 8px, transparent 8px 16px);
+    border: 1px dashed var(--terra);
+    color: var(--terra-dk);
+  }
+  .squash-row .mounds {
+    display: flex; gap: 30px; flex-wrap: wrap;
+  }
+  .vine-south-note {
+    text-align: center; font-style: italic;
+    color: var(--c-squash);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px; padding: 6px 0;
+  }
+  .vine-south-note::before { content: "↓ "; }
+  .vine-south-note::after  { content: " ↓"; }
+
+  /* ============================================================
+   *   SIDE PANEL
+   * ============================================================ */
+  aside.side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .panel {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .panel h3 {
+    margin: 0 0 10px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .2em;
+    color: var(--terra-dk);
+  }
+  .panel h3::after {
+    content: ""; display: block; width: 22px; height: 1px;
+    background: var(--terra); margin-top: 4px;
+  }
+
+  .details .name {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 24px; line-height: 1.1; margin: 0 0 2px;
+  }
+  .details .fam {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .details .fam .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.25);
+  }
+  .details dl {
+    margin: 0; display: grid; grid-template-columns: 96px 1fr;
+    gap: 5px 12px; font-size: 13px;
+  }
+  .details dt {
+    color: var(--ink-soft); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: .12em;
+    align-self: center;
+  }
+  .details dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .details .notes {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 13px; line-height: 1.5;
+  }
+  .details .notes strong {
+    display: block; font-size: 10px; text-transform: uppercase;
+    letter-spacing: .18em; color: var(--terra-dk); margin-bottom: 4px;
+  }
+  .details .empty {
+    color: var(--ink-soft); font-size: 13px; font-style: italic;
+  }
+
+  .legend-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px;
+    font-size: 12px;
+  }
+  .legend-grid .sw { display: flex; align-items: center; gap: 8px; }
+  .legend-grid .sw .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.25);
+  }
+  .legend-grid .sw .nast-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #f0d56a; border: 1px solid var(--moss-dk);
+    display: grid; place-items: center;
+    font-size: 7px; color: var(--moss-dk); font-weight: 700;
+  }
+
+  /* ============================================================
+   *   PLANTS VIEW
+   * ============================================================ */
+  .plants-toolbar {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    margin-bottom: 14px;
+  }
+  .plants-toolbar .chips {
+    display: flex; flex-wrap: wrap; gap: 5px;
+  }
+  .chip {
+    appearance: none; background: var(--paper);
+    border: 1px solid var(--line); color: var(--ink-soft);
+    padding: 5px 11px; font: inherit; font-size: 12px;
+    border-radius: 999px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all .15s;
+  }
+  .chip:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .chip.is-active {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+  .chip .chip-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.4);
+  }
+  .chip:not(.is-active) .chip-dot {
+    border-color: rgba(0,0,0,.2);
+  }
+  .plants-search {
+    flex: 1 1 200px;
+    appearance: none;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 14px; font: inherit; font-size: 13px;
+    background: var(--paper); color: var(--ink);
+    min-width: 0;
+  }
+  .plants-search:focus { outline: none; border-color: var(--ink-soft); }
+
+  .plants-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .plant-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .plant-card::before {
+    content: ""; position: absolute;
+    top: 0; left: 0; bottom: 0; width: 4px;
+    background: var(--card-color, var(--ink));
+  }
+  .plant-card .pc-head {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .plant-card .pc-disc {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--card-color); color: white;
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 12px;
+    border: 1.5px solid rgba(0,0,0,.18);
+    flex: none;
+  }
+  .plant-card.nast-card .pc-disc {
+    background: #f0d56a; color: var(--moss-dk);
+    border: 1.5px solid var(--moss-dk);
+  }
+  .plant-card h4.pc-name {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 20px; line-height: 1.1; margin: 0;
+  }
+  .plant-card .pc-var {
+    font-size: 11px; color: var(--ink-mute);
+    font-style: italic;
+    font-family: "Cormorant Garamond", Georgia, serif;
+  }
+  .plant-card .pc-fam {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .15em;
+    color: var(--ink-soft);
+  }
+  .plant-card .pc-row {
+    display: grid; grid-template-columns: 64px 1fr; gap: 4px 10px;
+    font-size: 12px; padding: 4px 0;
+    border-top: 1px dashed var(--line-soft);
+  }
+  .plant-card .pc-row .k {
+    color: var(--ink-mute); font-size: 10px;
+    text-transform: uppercase; letter-spacing: .1em;
+    padding-top: 2px;
+  }
+  .plant-card .pc-row .v { color: var(--ink); }
+  .plant-card .pc-notes {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed var(--line-soft);
+    font-size: 12px; color: var(--ink-soft); line-height: 1.5;
+  }
+  .plant-card .pc-qty {
+    margin-left: auto;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 22px; line-height: 1; color: var(--terra-dk);
+  }
+  .plant-card .pc-qty small {
+    font-family: ui-sans-serif, sans-serif;
+    font-size: 10px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: .1em;
+    display: block; line-height: 1;
+  }
+
+  /* ============================================================
+   *   CALENDAR VIEW
+   * ============================================================ */
+  .cal-header {
+    display: flex; flex-wrap: wrap; justify-content: space-between;
+    align-items: flex-end; gap: 16px;
+    margin-bottom: 16px;
+  }
+  .cal-header .location {
+    display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;
+  }
+  .cal-header h2 {
+    font-size: 24px; margin: 0;
+  }
+  .cal-header .zone {
+    font-family: ui-monospace, monospace; font-size: 12px;
+    color: var(--terra-dk);
+    background: var(--bg-2); padding: 4px 10px; border-radius: 4px;
+  }
+  .frost-line {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .frost-line .frost-tick {
+    width: 1px; height: 14px; background: var(--terra-dk);
+    margin-right: 2px;
+  }
+
+  .cal-legend {
+    display: flex; flex-wrap: wrap; gap: 12px 18px;
+    font-size: 11.5px; margin-bottom: 16px;
+  }
+  .cal-legend .item { display: flex; align-items: center; gap: 6px; }
+  .cal-legend .sw {
+    width: 22px; height: 10px; border-radius: 3px;
+    border: 1px solid rgba(0,0,0,.18);
+  }
+
+  .cal-table {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .cal-months {
+    display: grid;
+    grid-template-columns: 200px repeat(12, 1fr);
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-soft); text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+  .cal-months > div {
+    padding: 8px 10px; text-align: center;
+    border-right: 1px solid var(--line-soft);
+  }
+  .cal-months > div:first-child { text-align: left; }
+  .cal-months > div:last-child { border-right: 0; }
+
+  .cal-rows-wrap {
+    position: relative;
+  }
+  /* frost overlay lines spanning all rows */
+  .cal-frost {
+    position: absolute; top: 0; bottom: 0; width: 0;
+    border-left: 1.5px dashed var(--terra-dk);
+    pointer-events: none; z-index: 3;
+  }
+  .cal-frost .lbl {
+    position: absolute; top: 4px; left: 4px;
+    font-size: 9.5px; color: var(--terra-dk);
+    background: var(--paper); padding: 1px 5px;
+    border-radius: 3px; white-space: nowrap;
+    font-family: ui-monospace, monospace;
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+
+  .cal-section {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: var(--paper-2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line-soft);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 12px;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: var(--terra-dk);
+  }
+  .cal-section > div {
+    padding: 7px 12px;
+  }
+  .cal-section .sec-name {
+    font-style: italic;
+  }
+
+  .cal-row {
+    display: grid; grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--line-soft);
+    align-items: center;
+    background: var(--paper);
+  }
+  .cal-row:nth-child(even) { background: rgba(245, 235, 205, .35); }
+  .cal-row:hover { background: rgba(255, 240, 200, .55); }
+  .cal-row .cal-label {
+    padding: 6px 12px;
+    font-size: 12.5px;
+    display: flex; align-items: center; gap: 6px;
+    border-right: 1px solid var(--line-soft);
+  }
+  .cal-row .cal-label .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex: none;
+    border: 1px solid rgba(0,0,0,.2);
+  }
+  .cal-row .cal-label .lname {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .cal-track {
+    position: relative; height: 28px;
+    background-image: linear-gradient(90deg,
+      transparent calc(100%/12 - 1px),
+      rgba(0,0,0,.05) calc(100%/12 - 1px),
+      rgba(0,0,0,.05) calc(100%/12),
+      transparent calc(100%/12));
+    background-size: calc(100%/12) 100%;
+    background-repeat: repeat-x;
+  }
+  .cal-bar {
+    position: absolute; top: 5px; height: 18px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,.18);
+    font-size: 9px; color: rgba(0,0,0,.65);
+    display: flex; align-items: center; justify-content: center;
+    text-transform: uppercase; letter-spacing: .04em;
+    overflow: hidden;
+    cursor: default;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .cal-bar[data-kind="indoor"]    { background: var(--cal-indoor); }
+  .cal-bar[data-kind="direct"]    { background: var(--cal-direct); color: white; }
+  .cal-bar[data-kind="transplant"]{ background: var(--cal-transplant); color: white; }
+  .cal-bar[data-kind="harvest"]   { background: var(--cal-harvest); color: white; }
+  .cal-bar[data-kind="bloom"]     { background: var(--cal-bloom); }
+  .cal-bar[data-kind="harden"]    { background: var(--cal-harden); }
+  .cal-bar:hover { filter: brightness(.95); }
+
+  /* ============================================================
+   *   FOOTER
+   * ============================================================ */
+  footer.app {
+    max-width: 1240px; margin: 0 auto; padding: 12px 24px 32px;
+    color: var(--ink-soft); font-size: 12px;
+    border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  /* small screens */
+  @media (max-width: 720px) {
+    .cal-months { grid-template-columns: 110px repeat(12, 1fr); font-size: 9px; }
+    .cal-row { grid-template-columns: 110px 1fr; }
+    .cal-section { grid-template-columns: 110px 1fr; }
+    .schem-row { grid-template-columns: 1fr; }
+    .row-head { margin-bottom: 6px; }
+    .track   { flex-wrap: wrap; }
+    .cluster { flex-wrap: wrap; }
+    .row-body { overflow-x: visible; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app">
+  <div class="brand">
+    <div class="seal" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 21V11" stroke="#2a2418" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M12 11C12 8 9 6 6 7C6 10 9 12 12 11Z" fill="#4d6a35" stroke="#2a2418" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M12 11C12 7.5 14.5 5 18 6C18 9.5 15.5 12 12 11Z" fill="#b96b3e" stroke="#2a2418" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M5 21H19" stroke="#2a2418" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <p class="kicker">2026 Season · Greenfield, Mass · Zone 5b/6a</p>
+      <h1 class="title serif">Hannah <span style="color:var(--terra)">+</span> Dom's Garden</h1>
+      <p class="meta">Four growing spaces · confirmed plant spacing from ISU, Cornell, CSU extensions</p>
+    </div>
+  </div>
+
+  <nav class="toptabs" role="tablist" id="toptabs">
+    <button data-view="map"      role="tab"><span class="tt-num">I.</span><span class="tt-name">Garden Map</span><span class="tt-count">5 spaces</span></button>
+    <button data-view="plants"   role="tab"><span class="tt-num">II.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
+    <button data-view="calendar" role="tab"><span class="tt-num">III.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
+  </nav>
+</header>
+
+<main id="app"></main>
+
+<footer class="app">
+  <span>Care notes synthesized from ISU, Cornell, CSU, UMass Extensions · Garden Betty · Pepper Geek</span>
+  <span class="mono">Confirmed Spacing v.2026.05</span>
+</footer>
+
+<script>
+/* ============================================================
+ *   FAMILY DEFINITIONS
+ * ============================================================ */
+const FAM = {
+  tomato:   { color: 'var(--c-tom)',    label: 'Tomatoes' },
+  pepper:   { color: 'var(--c-pep)',    label: 'Peppers' },
+  cucumber: { color: 'var(--c-cuke)',   label: 'Cucumbers' },
+  brassica: { color: 'var(--c-bras)',   label: 'Brassicas' },
+  root:     { color: 'var(--c-root)',   label: 'Roots' },
+  allium:   { color: 'var(--c-alli)',   label: 'Alliums' },
+  squash:   { color: 'var(--c-squash)', label: 'Squash' },
+  herb:     { color: 'var(--c-herb)',   label: 'Herbs' },
+  flower:   { color: 'var(--c-flw)',    label: 'Flowers' },
+  berry:    { color: 'var(--c-berry)',  label: 'Berries' },
+  cane:     { color: 'var(--c-cane)',   label: 'Brambles' },
+  legume:   { color: 'var(--c-legume)', label: 'Legumes' },
+};
+
+/* ============================================================
+ *   PLANT INFO  — keyed by plant name
+ *   Calendar months are decimals: 5.33 = May 10 (last frost),
+ *   10.17 = Oct 5 (first frost) for Greenfield MA zone 5b/6a.
+ * ============================================================ */
+const PLANT_INFO = {
+  /* — Flowers — */
+  'Sunflower': { fam: 'flower', code: 'SF', variety: 'Annual, tall heirloom mix',
+    sun: 'Full sun (6-8h)', water: 'Moderate; drought tolerant once established', soil: 'Average, well-drained',
+    days: '60-90 days to bloom', spacing: '18″ apart',
+    care: 'Direct sow after last frost. Tall heads cast shadow — plant on the north edge of beds.',
+    cal: { direct: [5.0, 5.6], bloom: [7.3, 9.5] } },
+
+  /* — Tomatoes — */
+  'Brandywine': { fam: 'tomato', code: 'BW', variety: 'Indeterminate heirloom slicer',
+    sun: 'Full sun (8h+)', water: '1-1.5″ weekly, deep & even', soil: 'Rich, well-drained, pH 6.2-6.8',
+    days: '80-100 days from transplant', spacing: '30″ in-row · 48″ row gap',
+    care: 'Start 6-8 wks before last frost. Cage or stake — vines reach 6-8 ft. Prune suckers below first flower cluster for airflow.',
+    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
+  'San Marzano': { fam: 'tomato', code: 'SM', variety: 'Indeterminate paste',
+    sun: 'Full sun', water: '1-1.5″ weekly, even', soil: 'Rich, well-drained',
+    days: '78-85 days', spacing: '24″ in-row',
+    care: 'Meaty, low-seed — best for sauce and canning. Same indoor-start schedule as other tomatoes.',
+    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
+  'Sungold': { fam: 'tomato', code: 'SG', variety: 'Indeterminate cherry',
+    sun: 'Full sun', water: '1-1.5″ weekly', soil: 'Rich, well-drained',
+    days: '57 days · early',
+    spacing: '24″ in-row',
+    care: 'Heavy producer — needs strong support. Splits if watering is inconsistent.',
+    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [7.5, 9.7] } },
+  'Juliette': { fam: 'tomato', code: 'JU', variety: 'Indeterminate grape',
+    sun: 'Full sun', water: 'Regular', soil: 'Rich, well-drained',
+    days: '60 days', spacing: '24″ in-row',
+    care: 'Crack-resistant grape. Plant east end of tomato row 2.',
+    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [7.5, 9.7] } },
+  'Tomatillo': { fam: 'tomato', code: 'TL', variety: 'Self-incompatible — needs ≥2 plants',
+    sun: 'Full sun', water: 'Regular', soil: 'Average to rich',
+    days: '75-90 days', spacing: '24″ apart',
+    care: 'Sprawling — give space. Plant 2+ for cross-pollination. Harvest when husks split and fruit fills out.',
+    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
+
+  /* — Peppers (nightshades) — */
+  'Bell pepper': { fam: 'pepper', code: 'BL', variety: 'Sweet, large-fruited',
+    sun: 'Full sun', water: '1″ weekly, even', soil: 'Fertile, well-drained',
+    days: '70-85 days from transplant', spacing: '18″ all directions',
+    care: 'Start 8 wks before last frost. Bottom heat (75-80°F) speeds germination. Stake when fruiting.',
+    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.7, 9.5] } },
+  'Shishito pepper': { fam: 'pepper', code: 'SH', variety: 'Japanese, mildly hot',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile',
+    days: '60 days green / 80 red', spacing: '18″ apart',
+    care: '~1 in 10 will be spicy — that\u2019s the fun. Harvest green for blistering.',
+    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.5, 9.5] } },
+  'Jalapeño': { fam: 'pepper', code: 'JL', variety: 'Medium heat',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',
+    days: '70-80 days', spacing: '18″ apart',
+    care: 'Pick green for classic flavor; let some ripen red for sweeter heat.',
+    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.7, 9.7] } },
+  'Habanero': { fam: 'pepper', code: 'HB', variety: 'Super hot, long season',
+    sun: 'Full sun (very warm)', water: 'Even moisture', soil: 'Fertile, well-drained',
+    days: '90-100 days', spacing: '24″ apart',
+    care: 'Start 10 wks indoors. Loves heat — slow to start in cool Mass springs. Mulch with black plastic.',
+    cal: { indoor: [2.7, 3.4], harden: [5.4, 5.7], transplant: [5.85, 6.1], harvest: [8.3, 9.8] } },
+  'Eggplant': { fam: 'pepper', code: 'EG', variety: 'Italian classic',
+    sun: 'Full sun', water: '1″ weekly', soil: 'Rich, warm, well-drained',
+    days: '75-90 days from transplant', spacing: '24″ apart',
+    care: 'Wait until soil >65°F. Flea beetles love eggplant — row cover until flowering.',
+    cal: { indoor: [2.7, 3.4], harden: [5.4, 5.7], transplant: [5.85, 6.1], harvest: [8.0, 9.7] } },
+
+  /* — Herbs — */
+  'Basil': { fam: 'herb', code: 'BA', variety: 'Sweet/Genovese',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '60-70 days', spacing: '12″ apart',
+    care: 'Pinch flower buds to keep leaves coming. Sensitive to cold — wait until soil is 60°F+. Classic companion to tomatoes and peppers.',
+    cal: { indoor: [4.0, 4.4], transplant: [5.7, 6.0], harvest: [6.5, 9.5] } },
+  'Thai basil': { fam: 'herb', code: 'TB', variety: 'Anise-flavored',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '60-80 days', spacing: '12″ apart',
+    care: 'More heat-tolerant than sweet basil. Pinch flowers for continual leaves; allow some to bloom for pollinators.',
+    cal: { indoor: [4.0, 4.4], transplant: [5.7, 6.0], harvest: [6.7, 9.7] } },
+  'Dill': { fam: 'herb', code: 'DL', variety: 'Bouquet, leafy',
+    sun: 'Full to part sun', water: 'Moderate', soil: 'Light, well-drained',
+    days: '40-55 days (leaves)', spacing: '12″ apart',
+    care: 'Direct sow — taproots dislike transplanting. Succession every 3 wks. Keep 24″+ from tomatoes (can stunt growth). Hosts swallowtail butterfly larvae.',
+    cal: { direct: [5.1, 6.2], harvest: [6.7, 8.5] } },
+  'Echinacea': { fam: 'flower', code: 'EC', variety: 'Purple coneflower (perennial)',
+    sun: 'Full sun', water: 'Drought-tolerant once established', soil: 'Average, well-drained',
+    days: 'Blooms year 2+', spacing: '18″ apart',
+    care: 'Permanent spot — perennial. Leave seedheads through fall for goldfinches. Attracts native bees.',
+    cal: { bloom: [7.0, 9.5] } },
+
+  /* — Cucumbers — */
+  'Cucumber': { fam: 'cucumber', code: 'CU', variety: 'Trellised slicing',
+    sun: 'Full sun', water: 'Consistent — 1-2″/wk', soil: 'Fertile, well-drained',
+    days: '50-65 days', spacing: '18″ on trellis',
+    care: 'Trellis for clean fruit and airflow. Pick every 1-2 days once producing — missed fruits go bitter and slow new ones.',
+    cal: { indoor: [4.5, 4.8], harden: [5.55, 5.75], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [7.3, 9.5] } },
+
+  /* — Nasturtium (companion) — */
+  'Nasturtium': { fam: 'flower', code: 'N', variety: 'Trailing/bush (companion plant)',
+    sun: 'Full sun (part shade OK)', water: 'Moderate', soil: 'Lean soil = more flowers; rich soil = leaves',
+    days: '50-65 days to bloom', spacing: '12″ apart',
+    care: 'Direct sow after last frost. Trap crop for aphids, cucumber beetles, squash bugs, and cabbage moths. Flowers and leaves are edible — peppery.',
+    cal: { direct: [5.2, 6.0], bloom: [6.5, 10.0] } },
+
+  /* — Brassicas (leafy greens grouped here too) — */
+  'Bok choy': { fam: 'brassica', code: 'BC', variety: 'Baby/standard',
+    sun: 'Full sun (part shade in summer)', water: 'Even moisture', soil: 'Fertile, well-drained',
+    days: '40-50 days', spacing: '10″ in-row',
+    care: 'Cool-season — bolts in heat. Spring + fall sowings; skip mid-summer.',
+    cal: { direct: [4.3, 4.8], harvest: [5.7, 6.5], indoor: [7.5, 8.0], transplant: [8.3, 8.7] } },
+  'Swiss chard': { fam: 'brassica', code: 'CH', variety: 'Rainbow / Bright Lights',
+    sun: 'Full to part sun', water: 'Regular', soil: 'Fertile',
+    days: '50-60 days', spacing: '12″ apart',
+    care: 'Cut outer leaves continuously — plant keeps producing all season. Frost-tolerant into November.',
+    cal: { indoor: [3.8, 4.2], transplant: [5.0, 5.3], direct: [5.0, 5.6], harvest: [6.5, 10.5] } },
+  'Kale': { fam: 'brassica', code: 'KL', variety: 'Lacinato / Curly',
+    sun: 'Full sun (light shade in summer)', water: 'Regular', soil: 'Fertile',
+    days: '55-75 days', spacing: '15″ in-row',
+    care: 'Sweetens after frost. Cut outer leaves; let center grow. Watch for cabbage worms — handpick or BT spray.',
+    cal: { indoor: [3.5, 4.0], transplant: [4.7, 5.2], harvest: [6.3, 11.3] } },
+  'Green cabbage': { fam: 'brassica', code: 'GC', variety: 'Early-mid heading',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '70-85 days from transplant', spacing: '18″ apart',
+    care: 'Heavy feeder. Watch for cabbage moths — nasturtiums act as trap crop. Harvest when heads feel firm.',
+    cal: { indoor: [3.0, 3.5], transplant: [4.5, 5.0], harvest: [7.0, 8.5] } },
+  'Red cabbage': { fam: 'brassica', code: 'RC', variety: 'Storage type',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '75-95 days', spacing: '18″ apart',
+    care: 'Slower than green, longer storage. Same care as green cabbage.',
+    cal: { indoor: [3.0, 3.5], transplant: [4.5, 5.0], harvest: [7.5, 9.0] } },
+  'Broccoli': { fam: 'brassica', code: 'BR', variety: 'Heading',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile',
+    days: '60-80 days from transplant', spacing: '18″ apart',
+    care: 'Cut main head with 6″ stem to encourage side shoots. Watch for cabbage worms.',
+    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [6.5, 8.0] } },
+  'Cauliflower': { fam: 'brassica', code: 'CF', variety: 'White heading',
+    sun: 'Full sun', water: 'Even moisture (no checks)', soil: 'Fertile',
+    days: '70-85 days', spacing: '18″ apart',
+    care: 'Blanch white heads by tying outer leaves over them when curd is 2-3″ across.',
+    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [7.0, 8.0] } },
+  'Broccolini': { fam: 'brassica', code: 'BN', variety: 'Sprouting broccoli',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile',
+    days: '60-80 days', spacing: '15″ apart',
+    care: 'Looser smaller heads, longer harvest window than broccoli. Cut-and-come-again side shoots.',
+    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [6.7, 9.0] } },
+
+  /* — Roots — */
+  'Red beet': { fam: 'root', code: 'RB', variety: 'Detroit Dark Red',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Loose, stone-free',
+    days: '55-65 days', spacing: '4″ thinned',
+    care: 'Direct sow; thinnings are edible. Succession every 2 wks for steady harvest. Leaves edible like chard.',
+    cal: { direct: [4.7, 5.5], harvest: [6.7, 8.5] } },
+  'Yellow beet': { fam: 'root', code: 'YB', variety: 'Touchstone Gold',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Loose, stone-free',
+    days: '55-65 days', spacing: '4″ thinned',
+    care: 'Won\u2019t bleed like red. Same culture as red — thin to 4″.',
+    cal: { direct: [4.7, 5.5], harvest: [6.7, 8.5] } },
+  'Carrots': { fam: 'root', code: 'CT', variety: 'Nantes / Danvers',
+    sun: 'Full sun', water: 'Even moisture (consistent germ)', soil: 'Loose, deep, stone-free, low N',
+    days: '65-80 days', spacing: '3″ thinned · 6″ between rows',
+    care: 'Sow shallow (¼″), keep moist until germinated (2-3 wks). Thin ruthlessly or roots fork. Adjacent scallions repel carrot fly.',
+    cal: { direct: [4.8, 6.0], harvest: [7.3, 10.0] } },
+
+  /* — Alliums — */
+  'Scallion': { fam: 'allium', code: 'SC', variety: 'Bunching',
+    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '60-70 days', spacing: '3″ apart',
+    care: 'Hill soil around bases for longer white shanks. Companion to carrots — repels carrot fly.',
+    cal: { direct: [4.5, 5.5], harvest: [6.7, 9.7] } },
+  'Leek': { fam: 'allium', code: 'LK', variety: 'King Richard / American Flag',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, deep',
+    days: '90-120 days', spacing: '6″ apart',
+    care: 'Start 10-12 wks before transplant. Trench plant 6″ deep and hill soil up as they grow — blanches the stem white.',
+    cal: { indoor: [2.5, 3.0], transplant: [5.0, 5.5], harvest: [9.0, 11.0] } },
+
+  /* — Squash — */
+  'Zucchini (bush)': { fam: 'squash', code: 'ZU', variety: 'Bush habit, 24-36″',
+    sun: 'Full sun', water: 'Deep weekly (1-2″)', soil: 'Rich, well-drained',
+    days: '45-55 days', spacing: '36″ mound',
+    care: 'Pick young (6-8″) for best texture. One plant feeds a family. Hand-pollinate if bee activity is low.',
+    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.0], direct: [5.7, 6.1], harvest: [7.0, 9.5] } },
+  'Summer squash (bush)': { fam: 'squash', code: 'SS', variety: 'Yellow crookneck / patty pan',
+    sun: 'Full sun', water: 'Deep weekly', soil: 'Rich, well-drained',
+    days: '50-60 days', spacing: '36″ between mounds',
+    care: 'Plant on west edge of 24″ strip; vines sprawl east. Same as zucchini culture.',
+    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.0], direct: [5.7, 6.1], harvest: [7.0, 9.5] } },
+  'Butternut squash': { fam: 'squash', code: 'BU', variety: 'Long-vining winter squash',
+    sun: 'Full sun', water: 'Deep weekly until fruits size', soil: 'Rich, warm',
+    days: '95-110 days', spacing: '48″ mound · 72″ row gap',
+    care: 'Long season — start indoors. Vines sprawl 8-10 ft. Cure 2 wks in a warm dry spot before storage. Stores into winter.',
+    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [9.0, 10.2] } },
+  'Delicata squash': { fam: 'squash', code: 'DE', variety: 'Compact-vining winter squash',
+    sun: 'Full sun', water: 'Deep weekly', soil: 'Rich, warm',
+    days: '80-100 days', spacing: '48″ between mounds',
+    care: 'Shorter vines than butternut (4-6 ft). Skin is edible — no peeling. Best within 2 months of harvest.',
+    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [8.7, 9.8] } },
+
+  /* — Berries — */
+  'Blueberry': { fam: 'berry', code: 'BB', variety: 'Highbush (perennial)',
+    sun: 'Full to part sun', water: 'Even moisture, 1-2″/wk', soil: 'Acidic (pH 4.5-5.5), high organic matter',
+    days: 'Bears year 2-3, full crop year 4+', spacing: '4-5 ft between plants',
+    care: 'Acidify with peat or pine-needle mulch. Prune oldest canes (≥4 yr) in late winter to renew. Net against birds late June onward.',
+    cal: { bloom: [4.8, 5.6], harvest: [7.0, 8.5] } },
+
+  /* — Brambles (raspberries) — */
+  'Red raspberry': { fam: 'cane', code: 'RR', variety: 'Summer or fall-bearing (perennial)',
+    sun: 'Full sun (6-8h)', water: '1-2″/wk', soil: 'Well-drained, slightly acidic (pH 5.6-6.5), rich in organic matter',
+    days: 'Year 2 bears', spacing: '18-24″ apart in-row · 60″ between rows',
+    care: 'Mulch heavily. Train to a 2-wire trellis. Fall-bearers: cut all canes to ground in late winter. Summer-bearers: prune fruited canes after harvest, keep new green canes for next year.',
+    cal: { bloom: [5.5, 6.2], harvest: [7.0, 9.5] } },
+  'Black raspberry': { fam: 'cane', code: 'BR', variety: 'Summer-bearing (perennial)',
+    sun: 'Full sun', water: '1-2″/wk', soil: 'Well-drained, slightly acidic, rich',
+    days: 'Year 2 bears', spacing: '24-36″ in-row · 72″ between rows',
+    care: 'Tip-prune new canes at 24-30″ in early summer to encourage side branching. Remove fruited canes after harvest. Keep 25 ft+ from red raspberries to avoid disease cross-over.',
+    cal: { bloom: [5.5, 6.0], harvest: [7.0, 8.0] } },
+  'Blackberry': { fam: 'cane', code: 'BL', variety: 'Erect / semi-erect thornless (perennial)',
+    sun: 'Full sun (6-8h)', water: '1-2″/wk', soil: 'Well-drained, slightly acidic (pH 5.5-6.5), rich',
+    days: 'Year 2 bears, full crop year 3+', spacing: '36-48″ in-row · 72-96″ between rows',
+    care: 'Train to a 2-wire trellis. Tip-prune primocanes at 36-42″ in early summer. Remove fruited floricanes immediately after harvest. Mulch heavily; ripe berries are fragile, pick every 2-3 days.',
+    cal: { bloom: [5.7, 6.3], harvest: [7.3, 8.7] } },
+
+  /* — Leafy greens (grow bag) — */
+  'Spinach': { fam: 'brassica', code: 'SP', variety: 'Smooth-leaf, cool-season',
+    sun: 'Full sun (cool) / part shade (summer)', water: 'Regular, even', soil: 'Rich, well-drained, slightly alkaline',
+    days: '40-50 days', spacing: '2 plants per 10-gal bag',
+    care: 'Bolts above 70°F — move bag to shade in summer. Succession sow every 2 wks while temps are cool. Cut outer leaves continuously.',
+    cal: { direct: [3.7, 4.5], harvest: [5.3, 6.5], indoor: [7.7, 8.3], transplant: [8.3, 8.7] } },
+  'Romaine': { fam: 'brassica', code: 'RM', variety: 'Cos lettuce — heat tolerant',
+    sun: 'Full sun (spring) / afternoon shade (summer)', water: 'Regular', soil: 'Fertile, well-drained',
+    days: '55-70 days', spacing: '2 plants per 10-gal bag',
+    care: 'More heat-tolerant than other lettuces but still bolts in July heat. Move bag to afternoon shade in mid-summer. Cut outer leaves or harvest whole head.',
+    cal: { direct: [4.0, 4.8], harvest: [5.7, 7.0], indoor: [7.7, 8.3], transplant: [8.3, 8.7] } },
+
+  /* — Legumes (grow bag) — */
+  'Pole bean': { fam: 'legume', code: 'PB', variety: 'Climbing — needs pergola/trellis',
+    sun: 'Full sun', water: '1″/wk, consistent', soil: 'Average — DO NOT over-fertilize (fixes own nitrogen)',
+    days: '55-70 days', spacing: 'Sow 3-4 seeds/bag, thin to 2 strongest',
+    care: 'Direct sow after last frost when soil is 60°F+. Climbs and fixes nitrogen. Pick frequently for continued production — let pods mature too long and the plant slows down.',
+    cal: { direct: [5.4, 6.1], harvest: [7.3, 9.5] } },
+
+  /* — Mystery (grow bag) — */
+  'Mystery cuke/cantaloupe': { fam: 'cucumber', code: 'MY', variety: 'Unknown until fruiting',
+    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',
+    days: '60-80 days', spacing: '1 plant per 10-gal bag',
+    care: 'Keep bags mobile until ID\u2019d. If cucumber: trellis the bag. If cantaloupe: isolate from cukes (cross-pollination ruins flavor), move to absolute warmest spot, support developing fruits with slings.',
+    cal: { indoor: [4.5, 4.9], transplant: [5.85, 6.1], harvest: [7.5, 9.5] } },
+};
+
+/* ============================================================
+ *   BED LAYOUT DATA
+ *   Each bed has rows, each row has tracks (sub-rows) of clusters.
+ * ============================================================ */
+
+/* helper: make plant instance referencing PLANT_INFO */
+let _pid = 0;
+function p(name, opts) {
+  return { id: 'p' + (++_pid), name, ...(opts || {}) };
+}
+
+const BEDS = {
+  left: {
+    title: 'Left Bed',
+    dims: '400″ E-W × 350″ N-S · 318″ used (incl. paths) · 32″ spare',
+    lead: 'Tomatoes, a 2×3 pepper block, herbs and a trellised cucumber row — every row separated by an explicit harvest path. Brandywine sits in its own 2×2 sub-block; the pepper block is shifted west with Habanero, Jalapeño and Thai basil filling the open EW space alongside.',
+    totals: [
+      { k: 'Plants',  v: '53' },
+      { k: 'Families', v: '6' },
+      { k: 'N-S Used', v: '318″ / 350″' },
+      { k: 'Paths',   v: '4 harvest paths' },
+    ],
+    rows: [
+      { letter: 'A', label: 'Sunflower row', dim: '108″ × 18″ · north edge',
+        tracks: [{ clusters: [
+          { plants: Array.from({length:6}, ()=>p('Sunflower')),
+            meta: '6 × Sunflower · 18″ apart' }
+        ]}] },
+      { empty: true, path: true, label: '🚶 Harvest path · 24″ (north edge → tomatoes)' },
+      { letter: 'B', label: 'Tomato row 1 · BW block + SM + TL', dim: '144″ × 30″ (+48″ BW sub-row south)',
+        tracks: [
+          { label: 'north',
+            clusters: [
+              { plants: [p('Brandywine'), p('Brandywine')],
+                meta: 'Brandywine · north pair · 30″ apart' },
+              { plants: [p('Nasturtium', {zone:'between Brandywine & San Marzano'})],
+                meta: 'Nasturtium companion · tomato zone' },
+              { plants: [p('San Marzano'), p('San Marzano'), p('San Marzano')],
+                meta: '3 × San Marzano · 24″' },
+              { plants: [p('Nasturtium', {zone:'between San Marzano & Tomatillo'})],
+                meta: 'Nasturtium companion · tomato zone' },
+              { plants: [p('Tomatillo'), p('Tomatillo')],
+                meta: '2 × Tomatillo · 24″ · close for cross-pollination' },
+            ]},
+          { label: '+48″ S',
+            clusters: [
+              { plants: [p('Brandywine'), p('Brandywine')],
+                meta: 'Brandywine · south pair (48″ south of north pair · per Cornell)' },
+            ]},
+        ] },
+      { letter: 'C', label: 'Tomato row 2 · Sungold + Juliette', dim: '120″ × 24″',
+        tracks: [{ clusters: [
+          { plants: [p('Sungold'), p('Sungold'), p('Sungold'), p('Sungold'), p('Sungold')],
+            meta: '5 × Sungold · 24″' },
+          { plants: [p('Nasturtium', {zone:'between Sungold & Juliette'})],
+            meta: 'Nasturtium companion · tomato zone' },
+          { plants: [p('Juliette'), p('Juliette')],
+            meta: '2 × Juliette · 24″' },
+        ]}] },
+      { empty: true, path: true, label: '🚶 Harvest path · 30″ (tomatoes → peppers)' },
+      { letter: 'D', label: 'Pepper zone · 2×3 block + open EW space', dim: 'block 54″ × 36″  ·  alongside in same 36″ NS strip',
+        tracks: [
+          { label: 'block N',
+            clusters: [
+              { plants: [p('Bell pepper'), p('Basil'), p('Bell pepper'), p('Basil'), p('Bell pepper')],
+                meta: 'Bell pepper × 3 · 18″ apart · Basil × 2 interplanted in gaps' },
+              { spacer: true, label: '· alongside ·' },
+              { plants: [p('Habanero')], meta: 'Habanero · 24″ from neighbors' },
+              { plants: [p('Thai basil'), p('Thai basil')],
+                meta: '2 × Thai basil · 12″ · companion for hot peppers' },
+            ]},
+          { label: 'block S',
+            clusters: [
+              { plants: [p('Shishito pepper'), p('Shishito pepper'), p('Basil')],
+                meta: 'Shishito × 2 · 18″ · Basil fills empty slot' },
+              { spacer: true, label: '· alongside ·' },
+              { plants: [p('Jalapeño')], meta: 'Jalapeño · 18″ from HB' },
+              { plants: [p('Nasturtium', {zone:'pepper zone'})],
+                meta: 'Nasturtium companion · pepper zone (pollinator)' },
+            ]},
+        ]},
+      { empty: true, path: true, label: '🚶 Harvest path · 24″ (peppers → herb border)' },
+      { letter: 'E', label: 'Herb border · Dill + Echinacea', dim: '30″ × 12″',
+        tracks: [{ clusters: [
+          { plants: [p('Dill')], meta: 'Dill · 12″ · keep 24″+ from tomatoes' },
+          { plants: [p('Echinacea')], meta: 'Echinacea · perennial · permanent spot' },
+        ]}]},
+      { empty: true, path: true, label: '🚶 Harvest path · 24″ (herb border → cucumbers)' },
+      { letter: 'F', label: 'Cucumber row (trellised)', dim: '126″ × 18″ · 8 plants on trellis',
+        tracks: [{ clusters: [
+          { plants: [p('Cucumber'), p('Cucumber'), p('Cucumber')],
+            meta: '3 × Cucumber · 18″ on trellis' },
+          { plants: [p('Nasturtium', {zone:'cucumber zone'})],
+            meta: 'Nasturtium companion · cuke zone (beetle deterrent)' },
+          { plants: [p('Cucumber'), p('Cucumber'), p('Cucumber')],
+            meta: '3 × Cucumber · 18″' },
+          { plants: [p('Nasturtium', {zone:'cucumber zone'})],
+            meta: 'Nasturtium companion · cuke zone' },
+          { plants: [p('Cucumber'), p('Cucumber')],
+            meta: '2 × Cucumber · 18″' },
+        ]}]},
+      { empty: true, path: true, label: '🚶 South harvest access · 30″ (cuke trellis south side)' },
+    ],
+  },
+
+  middle: {
+    title: 'Middle Bed · Berry Patch',
+    dims: '400″ E-W × 350″ N-S · 5 rows running N-S',
+    lead: 'Berry patch — five rows running north-south, ordered west → east: three red raspberry rows, then one black raspberry row, then one blackberry row. Black & red kept adjacent at your spec; watch for cross-disease pressure.',
+    totals: [
+      { k: 'Rows', v: '5 N-S' },
+      { k: 'Red raspberry', v: '3 rows' },
+      { k: 'Black raspberry', v: '1 row' },
+      { k: 'Blackberry', v: '1 row' },
+    ],
+    /* canes: each cane row runs N-S → rendered as a vertical column.
+     * Order west → east mirrors the diagram (column A is westernmost). */
+    canes: [
+      { letter: 'A', label: 'Red raspberry · row 1', spacing: '24″ in-row',
+        plants: Array.from({length: 12}, () => p('Red raspberry')) },
+      { letter: 'B', label: 'Red raspberry · row 2', spacing: '24″ in-row',
+        plants: Array.from({length: 12}, () => p('Red raspberry')) },
+      { letter: 'C', label: 'Red raspberry · row 3', spacing: '24″ in-row',
+        plants: Array.from({length: 12}, () => p('Red raspberry')) },
+      { letter: 'D', label: 'Black raspberry', spacing: '30″ in-row',
+        plants: Array.from({length: 10}, () => p('Black raspberry')) },
+      { letter: 'E', label: 'Blackberry', spacing: '42″ in-row',
+        plants: Array.from({length: 8}, () => p('Blackberry')) },
+    ],
+  },
+
+  right: {
+    title: 'Right Bed',
+    dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
+    lead: 'Three zones running N-S: vegetable rows on the west (Rows A–G), a blueberry hedge in the middle, and a fenced 24″ bush-squash strip along the east edge. Squash vines train east up the fence. Explicit 15″ gaps between leafy rows and a 24″ mid-bed harvest path keep everything reachable.',
+    totals: [
+      { k: 'Plants', v: '50+' },
+      { k: 'Veg rows', v: 'A → G' },
+      { k: 'Hedge', v: '6 × Blueberry' },
+      { k: 'Strip', v: '3 squash mounds' },
+    ],
+    rows: [
+      { letter: 'A', label: 'Sunflower row', dim: '90″ × 18″ · north edge · 5 gaps × 18″',
+        tracks: [{ clusters: [
+          { plants: Array.from({length:6}, ()=>p('Sunflower')),
+            meta: '6 × Sunflower · 18″ apart' }
+        ]}]},
+      { empty: true, path: true, label: '🚶 Harvest path · 24″ (north edge → greens)' },
+      { letter: 'B', label: 'Row A — Bok choy & Swiss chard', dim: '66″ × 12″',
+        tracks: [{ clusters: [
+          { plants: [p('Bok choy'),p('Bok choy'),p('Bok choy'),p('Bok choy')],
+            meta: '4 × Bok choy · 10″' },
+          { plants: [p('Swiss chard'),p('Swiss chard'),p('Swiss chard'),p('Swiss chard')],
+            meta: '4 × Swiss chard · 12″' },
+        ]}]},
+      { empty: true, label: '15″ row gap' },
+      { letter: 'C', label: 'Row B — Kale & Green cabbage', dim: '99″ × 18″',
+        tracks: [{ clusters: [
+          { plants: [p('Kale'),p('Kale'),p('Kale'),p('Kale')], meta: '4 × Kale · 15″' },
+          { plants: [p('Green cabbage'),p('Green cabbage'),p('Green cabbage'),p('Green cabbage')],
+            meta: '4 × Green cabbage · 18″' },
+        ]}]},
+      { empty: true, label: '15″ row gap' },
+      { letter: 'D', label: 'Row C — Red cabbage & Broccoli / Cauliflower', dim: '126″ × 18″',
+        tracks: [{ clusters: [
+          { plants: [p('Red cabbage'),p('Red cabbage'),p('Red cabbage'),p('Red cabbage')],
+            meta: '4 × Red cabbage · 18″' },
+          { plants: [p('Nasturtium', {zone:'brassica trap crop'})],
+            meta: 'Nasturtium companion · trap crop for cabbage moths' },
+          { plants: [p('Broccoli'),p('Broccoli'),p('Cauliflower'),p('Cauliflower')],
+            meta: '2 broc + 2 cauli · 18″ · ID when heads form' },
+          { plants: [p('Nasturtium', {zone:'brassica trap crop'})],
+            meta: 'Nasturtium companion · trap crop' },
+        ]}]},
+      { empty: true, label: '15″ row gap' },
+      { letter: 'E', label: 'Row D — Broccolini', dim: '45″ × 15″',
+        tracks: [{ clusters: [
+          { plants: [p('Broccolini'),p('Broccolini'),p('Broccolini'),p('Broccolini')],
+            meta: '4 × Broccolini · 15″' },
+        ]}]},
+      { empty: true, path: true, label: '🚶 Mid-bed harvest path · 24″ (access rows D–G)' },
+      { letter: 'F', label: 'Row E — Beets (direct sow)', dim: '32″ × 12″',
+        tracks: [{ clusters: [
+          { plants: [p('Red beet'),p('Red beet'),p('Red beet'),p('Red beet')],
+            meta: '4 × Red beet · thin to 4″', small: true },
+          { plants: [p('Yellow beet'),p('Yellow beet'),p('Yellow beet'),p('Yellow beet')],
+            meta: '4 × Yellow beet · thin to 4″', small: true },
+        ]}]},
+      { letter: 'G', label: 'Row F — Carrots', dim: '296″ usable EW · 12″ NS · full row',
+        tracks: [{ clusters: [
+          { plants: [p('Carrots', {isBand: true})],
+            meta: 'Direct sow full 296″ EW · thin to 3″', band: true },
+        ]}]},
+      { letter: 'H', label: 'Row G — Scallion & Leek', dim: '42″ × 12″',
+        tracks: [{ clusters: [
+          { plants: [p('Scallion'),p('Scallion'),p('Scallion'),p('Scallion')],
+            meta: '4 × Scallion · 3″ · repels carrot fly', small: true },
+          { plants: [p('Leek'),p('Leek'),p('Leek'),p('Leek')],
+            meta: '4 × Leek · 6″ · trench plant 6″ deep' },
+        ]}]},
+      { empty: true, path: true, label: '🚶 South harvest buffer · 93″ · succession-plant zone' },
+    ],
+    hedge: {
+      title: 'Blueberry hedge',
+      meta: '48″ wide × 300″ N-S',
+      plants: Array.from({length: 6}, () => p('Blueberry')),
+      plantSpacing: '~50″ between bushes',
+    },
+    strip: {
+      title: 'Squash strip',
+      meta: '24″ wide × 300″ N-S<br/>fenced, ground level',
+      mounds: [
+        { letter: 'A', plant: p('Zucchini (bush)'), note: 'Zucchini mound · vines train east' },
+        { gap: true, label: 'gap · 36″' },
+        { nast: [p('Nasturtium', {zone:'between Zucchini and Summer squash'})] },
+        { letter: 'B', plant: p('Summer squash (bush)'), note: 'Summer squash 1' },
+        { gap: true, label: 'gap · 36″' },
+        { nast: [p('Nasturtium', {zone:'between Summer squash mounds'})] },
+        { letter: 'C', plant: p('Summer squash (bush)'), note: 'Summer squash 2' },
+      ],
+    },
+  },
+
+  unfenced: {
+    title: 'Unfenced Area',
+    dims: '126″ E-W × 264″ N-S · long axis runs N-S · 246″ used · 18″ spare',
+    lead: 'Winter squash patch — long axis runs north-south. Two mound rows: Butternut × 3 across the north, and a combined Butternut × 2 (west) + Delicata × 2 (east) row to the south. 72″ vine clearance between rows doubles as the harvest path; south Butternut vines sprawl off the bed.',
+    totals: [
+      { k: 'Mounds', v: '7' },
+      { k: 'Rows', v: '2 N→S' },
+      { k: 'N-S Used', v: '246″ / 264″' },
+    ],
+    rows: [
+      { empty: true, path: true, ns: 36, label: '🚶 North access buffer · 36″' },
+      { letter: 'A', ns: 48, label: 'Butternut row 1', dim: '96″ × 48″ · 3 mounds at 48″ apart',
+        tracks: [{ clusters: [
+          { plants: [p('Butternut squash'),p('Butternut squash'),p('Butternut squash')],
+            meta: '3 × Butternut · 48″ between mounds' }
+        ]}]},
+      { empty: true, path: true, ns: 72, label: '🚶 Vine clearance · 72″ (6 ft) — also harvest path for row 1' },
+      { letter: 'B', ns: 48, label: 'Row 2 — Butternut + Delicata combined', dim: '120″ × 48″ · BN ×2 west · 24″ buffer · DE ×2 east',
+        tracks: [{ clusters: [
+          { plants: [p('Butternut squash'),p('Butternut squash')],
+            meta: '2 × Butternut (west) · 48″ apart' },
+          { spacer: true, label: '· 24″ buffer ·' },
+          { plants: [p('Delicata squash'),p('Delicata squash')],
+            meta: '2 × Delicata (east) · 48″ apart · shorter vines (4-6 ft)' },
+        ]}]},
+      { empty: true, path: true, ns: 36, label: '🚶 South vine sprawl + harvest buffer · 36″' },
+      { vineSouth: true },
+    ],
+  },
+
+  bags: {
+    title: 'Grow Bags',
+    dims: '11 × 10-gallon bags · mobile',
+    lead: 'Heat-loving misfits and cool-season greens that benefit from portability. Move to the warmest/sunniest spot in summer, drag to shade when temps spike above 70°F for the lettuces and spinach.',
+    totals: [
+      { k: 'Bags', v: '11 × 10-gal' },
+      { k: 'Strategy', v: 'Mobile' },
+      { k: 'Sun', v: 'Follow it' },
+    ],
+    bags: [
+      { id: 'B1', plant: p('Eggplant'),
+        note: 'Move to absolute warmest spot (south-facing wall, dark pavement). Bag thrives over in-ground for heat.',
+        n: 1 },
+      { id: 'B2', plant: p('Spinach'), n: 2,
+        note: 'Bag 1 of 2 — 2 plants per bag. Move to afternoon shade once temps reach 70°F to delay bolting.' },
+      { id: 'B3', plant: p('Spinach'), n: 2,
+        note: 'Bag 2 of 2 — 2 plants per bag. Succession with bag 1.' },
+      { id: 'B4', plant: p('Romaine'), n: 2,
+        note: 'Bag 1 of 2 — 2 plants per bag. Move to afternoon shade in July.' },
+      { id: 'B5', plant: p('Romaine'), n: 2,
+        note: 'Bag 2 of 2 — 2 plants per bag.' },
+      { id: 'B6', plant: p('Mystery cuke/cantaloupe'), n: 1,
+        note: 'Bag 1 of 4. Keep mobile until ID\u2019d. If cucumber → trellis; if cantaloupe → isolate from cukes, warmest spot.' },
+      { id: 'B7', plant: p('Mystery cuke/cantaloupe'), n: 1,
+        note: 'Bag 2 of 4.' },
+      { id: 'B8', plant: p('Mystery cuke/cantaloupe'), n: 1,
+        note: 'Bag 3 of 4.' },
+      { id: 'B9', plant: p('Mystery cuke/cantaloupe'), n: 1,
+        note: 'Bag 4 of 4.' },
+      { id: 'B10', plant: p('Pole bean'), n: 2,
+        note: 'Bag 1 of 2 — climb the pergola. Direct sow 3-4 seeds, thin to 2 strongest. Don\u2019t over-fertilize.' },
+      { id: 'B11', plant: p('Pole bean'), n: 2,
+        note: 'Bag 2 of 2 — pergola partner.' },
+    ],
+  },
+};
+
+/* ============================================================
+ *   STATE
+ * ============================================================ */
+let activeView = 'map';
+let activeBed = 'left';
+let activePlantId = null;
+let activeFamilyFilter = 'all';
+let plantSearchQ = '';
+
+/* ============================================================
+ *   UTILITIES
+ * ============================================================ */
+const $ = (s, root) => (root || document).querySelector(s);
+function el(tag, attrs, children) {
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'style') e.setAttribute('style', attrs[k]);
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), attrs[k]);
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  }
+  if (children) (Array.isArray(children) ? children : [children])
+    .forEach(c => c != null && e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
+  return e;
+}
+
+/* index all plants in all beds for detail lookup */
+const PLANT_INDEX = {};
+function indexPlants() {
+  for (const bedKey in BEDS) {
+    const bed = BEDS[bedKey];
+    if (bed.rows) bed.rows.forEach((r, ri) => {
+      if (!r.tracks) return;
+      r.tracks.forEach((t, ti) => {
+        (t.clusters || []).forEach((c, ci) => {
+          if (!c.plants) return;
+          c.plants.forEach((pl, pi) => {
+            pl._bed = bedKey; pl._row = ri; pl._track = ti;
+            pl._cluster = ci; pl._idx = pi;
+            PLANT_INDEX[pl.id] = pl;
+          });
+        });
+      });
+    });
+    if (bed.hedge) {
+      bed.hedge.plants.forEach((pl, pi) => {
+        pl._bed = bedKey; pl._hedge = true; pl._idx = pi;
+        PLANT_INDEX[pl.id] = pl;
+      });
+    }
+    if (bed.strip) {
+      bed.strip.mounds.forEach(m => {
+        if (m.plant) { m.plant._bed = bedKey; m.plant._strip = true; PLANT_INDEX[m.plant.id] = m.plant; }
+        if (m.nast) m.nast.forEach(n => { n._bed = bedKey; n._strip = true; PLANT_INDEX[n.id] = n; });
+      });
+    }
+    if (bed.canes) {
+      bed.canes.forEach((row, ri) => {
+        row.plants.forEach((pl, pi) => {
+          pl._bed = bedKey; pl._cane = true; pl._row = ri; pl._idx = pi;
+          PLANT_INDEX[pl.id] = pl;
+        });
+      });
+    }
+    if (bed.bags) {
+      bed.bags.forEach((bag, bi) => {
+        bag.plant._bed = bedKey; bag.plant._bag = bag.id; bag.plant._idx = bi;
+        PLANT_INDEX[bag.plant.id] = bag.plant;
+      });
+    }
+  }
+}
+indexPlants();
+
+/* unique plant name → list of placements */
+const PLANT_PLACEMENTS = {};
+Object.values(PLANT_INDEX).forEach(pl => {
+  (PLANT_PLACEMENTS[pl.name] = PLANT_PLACEMENTS[pl.name] || []).push(pl);
+});
+
+function plantQty(name) { return (PLANT_PLACEMENTS[name] || []).length; }
+function plantBeds(name) {
+  const beds = {};
+  (PLANT_PLACEMENTS[name] || []).forEach(pl => {
+    beds[pl._bed] = (beds[pl._bed] || 0) + 1;
+  });
+  return beds;
+}
+function bedTitle(k) { return BEDS[k] ? BEDS[k].title : k; }
+
+/* ============================================================
+ *   RENDER: TOP-LEVEL
+ * ============================================================ */
+function renderTopTabs() {
+  document.querySelectorAll('#toptabs button').forEach(b => {
+    b.classList.toggle('is-active', b.dataset.view === activeView);
+    b.onclick = () => {
+      activeView = b.dataset.view;
+      activePlantId = null;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  });
+  $('#plantCount').textContent = Object.keys(PLANT_INFO).length + ' kinds';
+}
+
+function renderAll() {
+  renderTopTabs();
+  const main = $('#app');
+  main.innerHTML = '';
+  const view = el('div', { class: 'view' });
+  main.appendChild(view);
+  if (activeView === 'map') renderMap(view);
+  else if (activeView === 'plants') renderPlants(view);
+  else if (activeView === 'calendar') renderCalendar(view);
+}
+
+/* ============================================================
+ *   RENDER: MAP VIEW
+ * ============================================================ */
+function renderMap(root) {
+  /* sub-tabs */
+  const sub = el('div', { class: 'subtabs' });
+  const bedOrder = ['left','middle','right','unfenced','bags'];
+  const subNames = { left:'Left Bed', middle:'Middle Bed', right:'Right Bed', unfenced:'Unfenced', bags:'Grow Bags' };
+  const subRoman = { left:'i.', middle:'ii.', right:'iii.', unfenced:'iv.', bags:'v.' };
+  bedOrder.forEach(k => {
+    const b = el('button', {
+      class: k === activeBed ? 'is-active' : '',
+      onclick: () => { activeBed = k; activePlantId = null; renderAll(); },
+    });
+    b.innerHTML = `<span class="sub-em">${subRoman[k]}</span>${subNames[k]}`;
+    sub.appendChild(b);
+  });
+  root.appendChild(sub);
+
+  /* two-column grid */
+  const grid = el('div', { class: 'map-grid' });
+  const mainCol = el('div');
+  const side = el('aside', { class: 'side' });
+  grid.appendChild(mainCol); grid.appendChild(side);
+  root.appendChild(grid);
+
+  const bed = BEDS[activeBed];
+
+  /* bed head */
+  const head = el('div', { class: 'bed-head' });
+  head.appendChild(el('h2', { class: 'serif' }, bed.title));
+  head.appendChild(el('span', { class: 'dims mono' }, bed.dims));
+  head.appendChild(el('p', { class: 'lead' }, bed.lead));
+  mainCol.appendChild(head);
+
+  /* totals */
+  const totals = el('div', { class: 'totals' });
+  bed.totals.forEach(({k,v}) => {
+    const d = el('div');
+    d.innerHTML = `<div class="k">${k}</div><div class="v">${v}</div>`;
+    totals.appendChild(d);
+  });
+  mainCol.appendChild(totals);
+
+  /* schematic */
+  const card = el('div', { class: 'diagram-card' });
+  const frame = el('div', { class: 'diagram-frame' });
+  frame.appendChild(el('span', { class: 'ew-tick w' }, 'W'));
+  frame.appendChild(el('span', { class: 'ew-tick e' }, 'E'));
+
+  const schem = el('div', { class: 'schem' });
+  if (activeBed === 'right')        renderRightSchem(schem, bed);
+  else if (activeBed === 'middle')  renderMiddleSchem(schem, bed);
+  else if (activeBed === 'bags')    renderBagsSchem(schem, bed);
+  else if (activeBed === 'unfenced')renderUnfencedSchem(schem, bed);
+  else                              renderRowStack(schem, bed.rows);
+
+  frame.appendChild(schem);
+  card.appendChild(frame);
+  mainCol.appendChild(card);
+
+  /* side panels */
+  side.appendChild(renderDetailsPanel());
+  side.appendChild(renderLegendPanel());
+  side.appendChild(renderRowIndexPanel(bed));
+}
+
+function renderRightSchem(schem, bed) {
+  const layout = el('div', { class: 'right-layout' });
+
+  /* veg rows */
+  const left = el('div', { class: 'rows-col' });
+  renderRowStack(left, bed.rows);
+  layout.appendChild(left);
+
+  /* blueberry hedge */
+  const berry = el('div', { class: 'berry-col' });
+  berry.appendChild(el('h4', null, bed.hedge.title));
+  berry.appendChild(el('div', { class: 'berry-meta', html: bed.hedge.meta + '<br/>' + bed.hedge.plantSpacing }));
+  bed.hedge.plants.forEach(pl => berry.appendChild(plantNode(pl)));
+  layout.appendChild(berry);
+
+  /* far-east squash strip */
+  if (bed.strip) {
+    const strip = el('div', { class: 'strip-col' });
+    strip.appendChild(el('h4', null, bed.strip.title));
+    strip.appendChild(el('div', { class: 'strip-meta', html: bed.strip.meta }));
+    bed.strip.mounds.forEach(m => {
+      if (m.gap) {
+        strip.appendChild(el('div', { class: 'strip-gap' }, m.label));
+        return;
+      }
+      if (m.nast) {
+        const nastRow = el('div', { style: 'display:flex; gap:8px;' });
+        m.nast.forEach(n => nastRow.appendChild(plantNode(n)));
+        strip.appendChild(nastRow);
+        return;
+      }
+      const mr = el('div', { class: 'mound-row' });
+      mr.appendChild(plantNode(m.plant, 'lg'));
+      mr.appendChild(el('div', { class: 'vine-arrow', title: 'vines train east' }));
+      strip.appendChild(mr);
+    });
+    strip.appendChild(el('div', { class: 'strip-fence' }, 'east fence'));
+    layout.appendChild(strip);
+  }
+
+  schem.appendChild(layout);
+}
+
+function renderStripSchem(schem, bed) {
+  const wrap = el('div', { class: 'strip-layout' });
+  bed.rows.forEach(r => {
+    if (r.empty) {
+      wrap.appendChild(el('div', { class: 'strip-row empty' }, r.label));
+      return;
+    }
+    if (r.companion) {
+      const compRow = el('div', { class: 'strip-row' });
+      const info = el('div', { class: 'info' });
+      info.innerHTML = `<strong>${r.label}</strong><em>${r.dim}</em>`;
+      compRow.appendChild(info);
+      const stack = el('div', { style: 'display:flex; gap:8px; flex-wrap:wrap; justify-content:center;' });
+      r.tracks[0].clusters[0].plants.forEach(pl => stack.appendChild(plantNode(pl)));
+      compRow.appendChild(stack);
+      wrap.appendChild(compRow);
+      return;
+    }
+    const row = el('div', { class: 'strip-row' });
+    const info = el('div', { class: 'info' });
+    info.innerHTML = `<strong>Row ${r.letter}</strong>${r.label}<br/><em>${r.dim}</em>`;
+    row.appendChild(info);
+    const mound = el('div', { style: 'display:grid; place-items:center;' });
+    r.tracks[0].clusters[0].plants.forEach(pl => mound.appendChild(plantNode(pl, 'lg')));
+    row.appendChild(mound);
+    if (r.vineEast) row.appendChild(el('div', { class: 'vine-east', title: 'vines train east' }));
+    wrap.appendChild(row);
+  });
+  schem.appendChild(wrap);
+}
+
+function renderMiddleSchem(schem, bed) {
+  const layout = el('div', { class: 'middle-layout' });
+  layout.appendChild(el('div', { class: 'middle-head' }, 'rows run N → S lengthwise'));
+  const cols = el('div', { class: 'middle-cols' });
+  bed.canes.forEach(row => {
+    const col = el('div', { class: 'cane-col' });
+    const lbl = el('div', { class: 'cane-col-label' });
+    lbl.innerHTML = `<span class="cane-letter">${row.letter}</span><strong>${row.label}</strong><br/><span class="cane-spacing">${row.spacing}</span>`;
+    col.appendChild(lbl);
+    const plantsCol = el('div', { class: 'cane-plants' });
+    row.plants.forEach(pl => plantsCol.appendChild(plantNode(pl)));
+    col.appendChild(plantsCol);
+    cols.appendChild(col);
+  });
+  layout.appendChild(cols);
+  schem.appendChild(layout);
+}
+
+function renderBagsSchem(schem, bed) {
+  const layout = el('div', { class: 'bags-layout' });
+  bed.bags.forEach(bag => {
+    const info = PLANT_INFO[bag.plant.name] || {};
+    const famVar = info.fam === 'tomato' ? 'tom' : info.fam === 'pepper' ? 'pep'
+      : info.fam === 'cucumber' ? 'cuke' : info.fam === 'brassica' ? 'bras'
+      : info.fam === 'root' ? 'root' : info.fam === 'allium' ? 'alli'
+      : info.fam === 'squash' ? 'squash' : info.fam === 'herb' ? 'herb'
+      : info.fam === 'berry' ? 'berry' : info.fam === 'cane' ? 'cane'
+      : info.fam === 'legume' ? 'legume' : 'flw';
+    const card = el('div', {
+      class: 'bag-card',
+      style: `--fam-color: var(--c-${famVar})`,
+      onmouseenter: () => setActivePlant(bag.plant.id),
+      onclick: () => setActivePlant(bag.plant.id, true),
+      'data-id': bag.plant.id,
+    });
+    card.innerHTML =
+      '<div class="bag-shape">' +
+        '<svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">' +
+          '<path d="M 14 18 L 46 18 L 50 64 Q 50 67 47 67 L 13 67 Q 10 67 10 64 Z" ' +
+                'fill="color-mix(in srgb, var(--fam-color) 14%, var(--paper))" ' +
+                'stroke="var(--fam-color)" stroke-width="1.8" stroke-linejoin="round"/>' +
+          '<path d="M 16 18 Q 16 12 22 12 L 38 12 Q 44 12 44 18" ' +
+                'fill="none" stroke="var(--fam-color)" stroke-width="1.8" stroke-linecap="round"/>' +
+          '<text x="30" y="46" text-anchor="middle" dominant-baseline="central" ' +
+                'fill="var(--fam-color)" font-size="13" font-weight="700">' + (info.code || '?') + '</text>' +
+        '</svg>' +
+      '</div>' +
+      '<div class="bag-body">' +
+        '<div class="bag-id">' + bag.id + '</div>' +
+        '<div class="bag-plant">' + bag.plant.name + '</div>' +
+        '<div class="bag-meta">' + bag.n + ' plant' + (bag.n === 1 ? '' : 's') + ' · 10-gal bag</div>' +
+        '<div class="bag-note">' + bag.note + '</div>' +
+      '</div>';
+    layout.appendChild(card);
+  });
+  schem.appendChild(layout);
+}
+
+function renderUnfencedSchem(schem, bed) {
+  const wrap = el('div', { class: 'unfenced-layout' });
+  /* N → S ruler */
+  const ruler = el('div', { class: 'ns-ruler' });
+  ruler.innerHTML = '<span style="position:relative; background:var(--paper-2); padding:2px 0;">N</span><span style="position:relative; background:var(--paper-2); padding:2px 0; font-size:8px;">264″</span><span style="position:relative; background:var(--paper-2); padding:2px 0;">S</span>';
+  wrap.appendChild(ruler);
+  const PX_PER_IN = 1.6;
+  bed.rows.forEach(r => {
+    if (r.empty) {
+      const e = el('div', {
+        class: 'squash-row empty' + (r.path ? ' path' : ''),
+        style: r.ns ? `min-height: ${Math.max(28, r.ns * PX_PER_IN)}px;` : '',
+      }, r.label);
+      wrap.appendChild(e);
+      return;
+    }
+    if (r.vineSouth) {
+      wrap.appendChild(el('div', { class: 'vine-south-note' }, 'vines sprawl south'));
+      return;
+    }
+    const row = el('div', {
+      class: 'squash-row',
+      style: r.ns ? `min-height: ${Math.max(70, r.ns * PX_PER_IN)}px;` : '',
+    });
+    const head = el('div');
+    head.innerHTML = `<span class="row-letter" style="display:inline-grid; vertical-align:middle; margin-right:8px;">${r.letter}</span><strong style="font-size:13px;">${r.label}</strong><br/><span style="font-family:ui-monospace,monospace; font-size:10.5px; color:var(--ink-mute);">${r.dim}</span>`;
+    row.appendChild(head);
+    const mounds = el('div', { class: 'mounds' });
+    r.tracks[0].clusters.forEach(c => {
+      if (c.spacer) {
+        mounds.appendChild(el('span', { class: 'cluster-spacer' }, c.label || '·'));
+        return;
+      }
+      const cluster = el('div', { style: 'display:flex; gap:8px;' });
+      c.plants.forEach(pl => cluster.appendChild(plantNode(pl, 'lg')));
+      mounds.appendChild(cluster);
+    });
+    row.appendChild(mounds);
+    wrap.appendChild(row);
+  });
+  schem.appendChild(wrap);
+}
+
+function renderRowStack(container, rows) {
+  rows.forEach(r => {
+    if (r.empty) {
+      container.appendChild(el('div', { class: 'schem-row empty' + (r.path ? ' path' : '') },
+        el('div', { class: 'row-head' }, el('div', { class: 'row-info' },
+          el('p', null, r.label)))));
+      return;
+    }
+    const row = el('div', { class: 'schem-row' + (r.companion ? ' companion' : '') });
+
+    /* row head */
+    const head = el('div', { class: 'row-head' });
+    head.appendChild(el('div', { class: 'row-letter' }, r.letter || '·'));
+    const info = el('div', { class: 'row-info' });
+    info.appendChild(el('h4', null, r.label));
+    info.appendChild(el('p', null, r.dim));
+    head.appendChild(info);
+    row.appendChild(head);
+
+    /* row body */
+    const body = el('div', { class: 'row-body' });
+    r.tracks.forEach(track => {
+      const tNode = el('div', { class: 'track' });
+      if (track.label) tNode.appendChild(el('span', { class: 'track-label' }, track.label));
+      track.clusters.forEach((c, ci) => {
+        if (c.band) {
+          tNode.appendChild(carrotBand(c.plants[0]));
+          return;
+        }
+        if (c.spacer) {
+          tNode.appendChild(el('span', { class: 'cluster-spacer' }, c.label || 'alongside'));
+          return;
+        }
+        if (ci > 0 && !track.label) tNode.appendChild(el('span', { class: 'cluster-sep' }));
+        const cn = el('div', { class: 'cluster' + (c.small ? ' tight' : '') });
+        c.plants.forEach(pl => cn.appendChild(plantNode(pl, c.small ? 'sm' : '')));
+        tNode.appendChild(cn);
+      });
+      body.appendChild(tNode);
+    });
+    row.appendChild(body);
+    container.appendChild(row);
+  });
+}
+
+function plantNode(pl, sizeClass) {
+  const info = PLANT_INFO[pl.name];
+  const isNast = pl.name === 'Nasturtium';
+  const wrap = el('div', {
+    class: 'plant' + (isNast ? ' nast' : '') + (pl.id === activePlantId ? ' is-active' : ''),
+    'data-id': pl.id,
+    onmouseenter: () => setActivePlant(pl.id),
+    onclick: () => setActivePlant(pl.id, true),
+    title: pl.name,
+  });
+  if (info && !isNast) {
+    const famVar = info.fam === 'tomato' ? 'tom' : info.fam === 'pepper' ? 'pep'
+      : info.fam === 'cucumber' ? 'cuke' : info.fam === 'brassica' ? 'bras'
+      : info.fam === 'root' ? 'root' : info.fam === 'allium' ? 'alli'
+      : info.fam === 'squash' ? 'squash' : info.fam === 'herb' ? 'herb'
+      : info.fam === 'berry' ? 'berry' : info.fam === 'cane' ? 'cane'
+      : info.fam === 'legume' ? 'legume' : 'flw';
+    wrap.style.setProperty('--fam-color', `var(--c-${famVar})`);
+  }
+  const disc = el('div', { class: 'disc' + (sizeClass ? ' ' + sizeClass : '') });
+  disc.textContent = info ? info.code : '?';
+  wrap.appendChild(disc);
+  return wrap;
+}
+
+function carrotBand(pl) {
+  const band = el('div', {
+    class: 'carrot-band',
+    onmouseenter: () => setActivePlant(pl.id),
+    onclick: () => setActivePlant(pl.id, true),
+  });
+  band.innerHTML = `CARROTS · DIRECT SOW <small>thin to 3″ · full row 224″ EW</small>`;
+  return band;
+}
+
+function setActivePlant(id, force) {
+  activePlantId = id;
+  document.querySelectorAll('.plant').forEach(p => {
+    p.classList.toggle('is-active', p.dataset.id === id);
+  });
+  renderDetails();
+}
+
+function renderDetailsPanel() {
+  const panel = el('section', { class: 'panel details' });
+  panel.appendChild(el('h3', null, 'Plant Detail'));
+  panel.appendChild(el('div', { id: 'details' }));
+  setTimeout(renderDetails, 0);
+  return panel;
+}
+
+function renderDetails() {
+  const wrap = $('#details');
+  if (!wrap) return;
+  if (!activePlantId || !PLANT_INDEX[activePlantId]) {
+    wrap.innerHTML = `<p class="empty">Hover or tap any plant on the diagram to see its name, spacing, and care notes.</p>`;
+    return;
+  }
+  const pl = PLANT_INDEX[activePlantId];
+  const info = PLANT_INFO[pl.name] || {};
+  const fam = FAM[info.fam] || {};
+  const isNast = pl.name === 'Nasturtium';
+  const qty = plantQty(pl.name);
+  wrap.innerHTML = `
+    <h4 class="name serif">${pl.name}</h4>
+    <div class="fam"><span class="dot" style="background:${isNast ? '#f0d56a' : fam.color}; border-color:${isNast ? 'var(--moss-dk)' : 'rgba(0,0,0,.25)'}"></span>${fam.label || ''}${pl.zone ? ' · ' + pl.zone : ''}</div>
+    <dl>
+      <dt>Variety</dt><dd>${info.variety || '—'}</dd>
+      <dt>Sun</dt><dd>${info.sun || '—'}</dd>
+      <dt>Water</dt><dd>${info.water || '—'}</dd>
+      <dt>Soil</dt><dd>${info.soil || '—'}</dd>
+      <dt>Maturity</dt><dd>${info.days || '—'}</dd>
+      <dt>Spacing</dt><dd>${info.spacing || '—'}</dd>
+      <dt>Bed</dt><dd>${bedTitle(pl._bed)}</dd>
+      <dt>Total qty</dt><dd>${qty} plant${qty===1?'':'s'}</dd>
+    </dl>
+    <div class="notes">
+      <strong>Care notes</strong>
+      ${info.care || ''}
+    </div>
+  `;
+}
+
+function renderLegendPanel() {
+  const panel = el('section', { class: 'panel' });
+  panel.appendChild(el('h3', null, 'Plant Families'));
+  const grid = el('div', { class: 'legend-grid' });
+  grid.innerHTML = `
+    <div class="sw"><span class="dot" style="background:var(--c-tom)"></span>Tomatoes</div>
+    <div class="sw"><span class="dot" style="background:var(--c-pep)"></span>Peppers</div>
+    <div class="sw"><span class="dot" style="background:var(--c-cuke)"></span>Cucumbers</div>
+    <div class="sw"><span class="dot" style="background:var(--c-bras)"></span>Brassicas</div>
+    <div class="sw"><span class="dot" style="background:var(--c-root)"></span>Roots</div>
+    <div class="sw"><span class="dot" style="background:var(--c-alli)"></span>Alliums</div>
+    <div class="sw"><span class="dot" style="background:var(--c-squash)"></span>Squash</div>
+    <div class="sw"><span class="dot" style="background:var(--c-herb)"></span>Herbs</div>
+    <div class="sw"><span class="dot" style="background:var(--c-flw)"></span>Flowers</div>
+    <div class="sw"><span class="dot" style="background:var(--c-berry)"></span>Berries</div>
+    <div class="sw"><span class="nast-dot">N</span>Nasturtium (companion)</div>
+  `;
+  panel.appendChild(grid);
+  return panel;
+}
+
+function renderRowIndexPanel(bed) {
+  const panel = el('section', { class: 'panel' });
+  panel.appendChild(el('h3', null, bed.canes ? 'Cane Rows · N→S' : bed.bags ? 'Bag inventory' : 'Rows — N → S'));
+  const ol = el('ol', { style: 'margin:0; padding:0; list-style:none; font-size:12px;' });
+
+  if (bed.canes) {
+    bed.canes.forEach(r => {
+      const li = el('li', { style: 'padding:7px 0; border-bottom:1px dashed var(--line-soft); display:grid; grid-template-columns:24px 1fr auto; gap:8px;' });
+      li.innerHTML = `<span class="serif" style="font-style:italic; color:var(--terra-dk);">${r.letter}.</span><span>${r.label}</span><span class="mono" style="color:var(--ink-mute); font-size:11px;">${r.spacing || ''}</span>`;
+      ol.appendChild(li);
+    });
+  } else if (bed.bags) {
+    bed.bags.forEach(bag => {
+      const li = el('li', { style: 'padding:7px 0; border-bottom:1px dashed var(--line-soft); display:grid; grid-template-columns:32px 1fr auto; gap:8px;' });
+      li.innerHTML = `<span class="mono" style="color:var(--terra-dk);">${bag.id}</span><span>${bag.plant.name}</span><span class="mono" style="color:var(--ink-mute); font-size:11px;">${bag.n} pl.</span>`;
+      ol.appendChild(li);
+    });
+  } else if (bed.rows) {
+    bed.rows.filter(r => !r.empty && !r.companion && !r.vineSouth).forEach(r => {
+      const li = el('li', { style: 'padding:7px 0; border-bottom:1px dashed var(--line-soft); display:grid; grid-template-columns:24px 1fr auto; gap:8px;' });
+      li.innerHTML = `<span class="serif" style="font-style:italic; color:var(--terra-dk);">${r.letter}.</span><span>${r.label}</span><span class="mono" style="color:var(--ink-mute); font-size:11px;">${r.dim || ''}</span>`;
+      ol.appendChild(li);
+    });
+    if (bed.hedge) {
+      const li = el('li', { style: 'padding:7px 0; border-top:1px solid var(--c-berry); margin-top:4px; display:grid; grid-template-columns:24px 1fr auto; gap:8px;' });
+      li.innerHTML = `<span class="serif" style="font-style:italic; color:var(--c-berry);">★</span><span>${bed.hedge.title}</span><span class="mono" style="color:var(--ink-mute); font-size:11px;">east column</span>`;
+      ol.appendChild(li);
+    }
+    if (bed.strip) {
+      const li = el('li', { style: 'padding:7px 0; display:grid; grid-template-columns:24px 1fr auto; gap:8px;' });
+      li.innerHTML = `<span class="serif" style="font-style:italic; color:var(--c-squash);">★</span><span>${bed.strip.title}</span><span class="mono" style="color:var(--ink-mute); font-size:11px;">east fence</span>`;
+      ol.appendChild(li);
+    }
+  }
+
+  panel.appendChild(ol);
+  return panel;
+}
+
+/* ============================================================
+ *   RENDER: PLANTS VIEW
+ * ============================================================ */
+function renderPlants(root) {
+  /* Toolbar */
+  const bar = el('div', { class: 'plants-toolbar' });
+  const chips = el('div', { class: 'chips' });
+  const families = ['all', ...new Set(Object.values(PLANT_INFO).map(p => p.fam))];
+  families.forEach(f => {
+    const c = el('button', {
+      class: 'chip' + (activeFamilyFilter === f ? ' is-active' : ''),
+      onclick: () => { activeFamilyFilter = f; renderAll(); },
+    });
+    if (f === 'all') c.textContent = 'All';
+    else {
+      c.appendChild(el('span', { class: 'chip-dot', style: `background:${FAM[f].color}` }));
+      c.appendChild(document.createTextNode(FAM[f].label));
+    }
+    chips.appendChild(c);
+  });
+  bar.appendChild(chips);
+  const search = el('input', {
+    class: 'plants-search', type: 'search',
+    placeholder: 'Search plants…',
+    value: plantSearchQ,
+  });
+  search.addEventListener('input', e => {
+    plantSearchQ = e.target.value.toLowerCase();
+    rerenderGrid();
+  });
+  bar.appendChild(search);
+  root.appendChild(bar);
+
+  /* Grid */
+  const grid = el('div', { class: 'plants-grid', id: 'plantsGrid' });
+  root.appendChild(grid);
+  rerenderGrid();
+}
+
+function rerenderGrid() {
+  const grid = $('#plantsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const entries = Object.entries(PLANT_INFO)
+    .filter(([n, info]) => activeFamilyFilter === 'all' || info.fam === activeFamilyFilter)
+    .filter(([n]) => !plantSearchQ || n.toLowerCase().includes(plantSearchQ))
+    .sort((a, b) => {
+      /* sort by family then name */
+      if (a[1].fam !== b[1].fam) return a[1].fam.localeCompare(b[1].fam);
+      return a[0].localeCompare(b[0]);
+    });
+
+  entries.forEach(([name, info]) => grid.appendChild(plantCard(name, info)));
+
+  if (entries.length === 0) {
+    grid.appendChild(el('p', { style: 'color:var(--ink-soft); font-style:italic; padding: 20px;' }, 'No plants match that filter.'));
+  }
+}
+
+function plantCard(name, info) {
+  const fam = FAM[info.fam];
+  const qty = plantQty(name);
+  const beds = plantBeds(name);
+  const card = el('div', {
+    class: 'plant-card' + (name === 'Nasturtium' ? ' nast-card' : ''),
+    style: `--card-color: ${fam.color}`,
+  });
+
+  const head = el('div', { class: 'pc-head' });
+  const disc = el('div', { class: 'pc-disc' }, info.code);
+  head.appendChild(disc);
+  const title = el('div', { style: 'flex:1; min-width:0;' });
+  title.appendChild(el('h4', { class: 'pc-name' }, name));
+  title.appendChild(el('div', { class: 'pc-var' }, info.variety));
+  title.appendChild(el('div', { class: 'pc-fam' }, fam.label));
+  head.appendChild(title);
+  if (qty > 0) {
+    const q = el('div', { class: 'pc-qty' });
+    q.innerHTML = `${qty}<small>plant${qty===1?'':'s'}</small>`;
+    head.appendChild(q);
+  }
+  card.appendChild(head);
+
+  /* rows */
+  const rowDef = [
+    ['Sun', info.sun], ['Water', info.water], ['Soil', info.soil],
+    ['Days', info.days], ['Spacing', info.spacing],
+    ['Location', Object.entries(beds).map(([b,n])=>`${bedTitle(b)} (${n})`).join(', ') || '—'],
+  ];
+  rowDef.forEach(([k,v]) => {
+    if (!v) return;
+    const r = el('div', { class: 'pc-row' });
+    r.innerHTML = `<div class="k">${k}</div><div class="v">${v}</div>`;
+    card.appendChild(r);
+  });
+
+  if (info.care) {
+    const notes = el('div', { class: 'pc-notes' }, info.care);
+    card.appendChild(notes);
+  }
+  return card;
+}
+
+/* ============================================================
+ *   RENDER: CALENDAR VIEW
+ * ============================================================ */
+const FROST = { last: 5.33, first: 10.17 }; /* May 10 · Oct 5 */
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function renderCalendar(root) {
+  /* header */
+  const head = el('div', { class: 'cal-header' });
+  const left = el('div', { class: 'location' });
+  left.appendChild(el('h2', { class: 'serif' }, 'Planting Calendar'));
+  left.appendChild(el('span', { class: 'zone' }, 'Greenfield, MA 01301 · Zone 5b/6a'));
+  head.appendChild(left);
+  const right = el('div', { style: 'display:flex; gap:18px; flex-wrap:wrap;' });
+  right.appendChild(makeFrostNote('Last frost', '≈ May 10'));
+  right.appendChild(makeFrostNote('First frost', '≈ Oct 5'));
+  right.appendChild(makeFrostNote('Growing season', '≈ 148 days'));
+  head.appendChild(right);
+  root.appendChild(head);
+
+  /* legend */
+  const legend = el('div', { class: 'cal-legend' });
+  legend.innerHTML = `
+    <div class="item"><span class="sw" style="background: var(--cal-indoor)"></span>Start indoors</div>
+    <div class="item"><span class="sw" style="background: var(--cal-harden)"></span>Harden off</div>
+    <div class="item"><span class="sw" style="background: var(--cal-transplant)"></span>Transplant out</div>
+    <div class="item"><span class="sw" style="background: var(--cal-direct)"></span>Direct sow</div>
+    <div class="item"><span class="sw" style="background: var(--cal-harvest)"></span>Harvest</div>
+    <div class="item"><span class="sw" style="background: var(--cal-bloom)"></span>Bloom / fruit</div>
+  `;
+  root.appendChild(legend);
+
+  /* table */
+  const table = el('div', { class: 'cal-table' });
+
+  /* months header */
+  const months = el('div', { class: 'cal-months' });
+  months.appendChild(el('div', null, 'Plant'));
+  MONTHS.forEach(m => months.appendChild(el('div', null, m)));
+  table.appendChild(months);
+
+  /* rows wrap with frost overlay */
+  const rowsWrap = el('div', { class: 'cal-rows-wrap' });
+
+  /* group plants by family for section dividers */
+  const order = ['tomato','pepper','cucumber','squash','brassica','root','allium','herb','flower','berry'];
+  const grouped = {};
+  Object.entries(PLANT_INFO).forEach(([name, info]) => {
+    (grouped[info.fam] = grouped[info.fam] || []).push([name, info]);
+  });
+
+  order.forEach(fam => {
+    if (!grouped[fam]) return;
+    const sec = el('div', { class: 'cal-section' });
+    const fLabel = el('div', { class: 'sec-name' }, FAM[fam].label);
+    fLabel.style.borderRight = '1px solid var(--line-soft)';
+    sec.appendChild(fLabel);
+    sec.appendChild(el('div'));
+    rowsWrap.appendChild(sec);
+
+    grouped[fam].sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name, info]) => {
+      rowsWrap.appendChild(calRow(name, info));
+    });
+  });
+
+  /* frost overlays — span only the right portion (after the name col 200px) */
+  /* We place them inside a wrapper that uses the same grid as cal-row */
+  const overlay = el('div', { style: 'position:absolute; inset:0; pointer-events:none; display:grid; grid-template-columns:200px 1fr;' });
+  overlay.appendChild(el('div'));
+  const overTrack = el('div', { style: 'position:relative;' });
+  [['last', FROST.last, '— last frost'], ['first', FROST.first, '— first frost']].forEach(([k, val, lbl]) => {
+    const line = el('div', { class: 'cal-frost', style: `left:${pct(val)}` });
+    line.appendChild(el('div', { class: 'lbl' }, lbl));
+    overTrack.appendChild(line);
+  });
+  overlay.appendChild(overTrack);
+  rowsWrap.appendChild(overlay);
+
+  /* On small screens, override the overlay grid to match */
+  /* (left column is 110px in mobile media query) — handle via CSS variable */
+
+  table.appendChild(rowsWrap);
+  root.appendChild(table);
+}
+
+function makeFrostNote(label, val) {
+  const n = el('div', { class: 'frost-line' });
+  n.innerHTML = `<span class="frost-tick"></span><span><strong>${label}</strong> ${val}</span>`;
+  return n;
+}
+
+function pct(m) { return ((m - 1) / 12 * 100) + '%'; }
+
+function calRow(name, info) {
+  const row = el('div', { class: 'cal-row' });
+  const fam = FAM[info.fam];
+  const label = el('div', { class: 'cal-label' });
+  label.innerHTML = `<span class="dot" style="background:${fam.color}"></span><span class="lname" title="${name}">${name}</span>`;
+  row.appendChild(label);
+  const track = el('div', { class: 'cal-track' });
+  const order = ['indoor', 'harden', 'direct', 'transplant', 'harvest', 'bloom'];
+  const cal = info.cal || {};
+  Object.entries(cal).forEach(([kind, range]) => {
+    if (!Array.isArray(range[0])) {
+      track.appendChild(calBar(kind, range));
+    } else {
+      range.forEach(rng => track.appendChild(calBar(kind, rng)));
+    }
+  });
+  row.appendChild(track);
+  return row;
+}
+
+function calBar(kind, [start, end]) {
+  const left = (start - 1) / 12 * 100;
+  const width = (end - start) / 12 * 100;
+  const bar = el('div', {
+    class: 'cal-bar',
+    'data-kind': kind,
+    style: `left:${left}%; width:${width}%`,
+    title: `${kind} · ${monthLabel(start)} → ${monthLabel(end)}`,
+  });
+  if (width > 6) bar.textContent = kind;
+  return bar;
+}
+
+function monthLabel(decimal) {
+  const m = Math.floor(decimal);
+  const d = Math.round((decimal - m) * 30 + 1);
+  return MONTHS[Math.min(11, m - 1)] + ' ' + Math.max(1, Math.min(30, d));
+}
+
+/* ============================================================
+ *   INIT
+ * ============================================================ */
+renderAll();
+
+/* keyboard nav for top tabs */
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const order = ['map','plants','calendar'];
+  const i = order.indexOf(activeView);
+  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%3]; renderAll(); }
+  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+3)%3]; renderAll(); }
+});
+</script>
+</body>
+</html>
