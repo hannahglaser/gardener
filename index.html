@@ -2723,16 +2723,23 @@ let weatherCache = null;
 
 async function fetchWeather() {
   if (weatherCache) return weatherCache;
+  /* past_days=7 + forecast_days=3 → 10 entries; first 7 are history, last 3 are forecast */
   const url = 'https://api.open-meteo.com/v1/forecast'
     + '?latitude=42.587&longitude=-72.601'
     + '&daily=precipitation_sum,et0_fao_evapotranspiration'
-    + '&past_days=7&forecast_days=0'
+    + '&past_days=7&forecast_days=3'
     + '&timezone=America%2FNew_York';
   const resp = await fetch(url);
   const data = await resp.json();
-  const rain7 = data.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0);
-  const et0_7 = data.daily.et0_fao_evapotranspiration.reduce((a, b) => a + (b || 0), 0);
-  weatherCache = { rain7, et0_7 };
+  const precip = data.daily.precipitation_sum;
+  const et0   = data.daily.et0_fao_evapotranspiration;
+  const histP = precip.slice(0, 7);
+  const foreP = precip.slice(7);
+  const histE = et0.slice(0, 7);
+  const rain7    = histP.reduce((a, b) => a + (b || 0), 0);
+  const et0_7    = histE.reduce((a, b) => a + (b || 0), 0);
+  const forecast = foreP.reduce((a, b) => a + (b || 0), 0);
+  weatherCache = { rain7, et0_7, forecast };
   return weatherCache;
 }
 
@@ -2741,21 +2748,28 @@ function renderWeatherWidget(root) {
   widget.appendChild(el('span', { class: 'weather-loading' }, ['Checking weather…']));
   root.insertBefore(widget, root.firstChild);
 
-  fetchWeather().then(({ rain7, et0_7 }) => {
-    const deficit = Math.max(0, et0_7 - rain7);
-    const defMm = Math.round(deficit);
-    const defIn = (deficit / 25.4).toFixed(1);
+  fetchWeather().then(({ rain7, et0_7, forecast }) => {
+    const rawDeficit = Math.max(0, et0_7 - rain7);
+    const netDeficit = Math.max(0, rawDeficit - forecast);
+    const defMm = Math.round(netDeficit);
+    const defIn = (netDeficit / 25.4).toFixed(1);
 
     let statusClass, rec;
-    if (deficit < 6) {
+    if (forecast >= rawDeficit * 0.8 || netDeficit < 6) {
       statusClass = 'ok';
-      rec = 'Garden is well watered — skip irrigation this week';
-    } else if (deficit < 18) {
+      rec = forecast > 5
+        ? `${Math.round(forecast)}mm rain coming — hold off on watering`
+        : 'Garden is well watered — skip irrigation';
+    } else if (netDeficit < 18) {
       statusClass = 'mild';
-      rec = `Water ~${defMm}mm (${defIn}″) this week`;
+      rec = forecast > 5
+        ? `~${Math.round(forecast)}mm rain forecast; still need ~${defMm}mm (${defIn}″) more`
+        : `Water ~${defMm}mm (${defIn}″)`;
     } else {
       statusClass = 'dry';
-      rec = `Water ~${defMm}mm (${defIn}″) this week — garden is thirsty`;
+      rec = forecast > 5
+        ? `${Math.round(forecast)}mm rain coming, but still short ~${defMm}mm (${defIn}″)`
+        : `Water ~${defMm}mm (${defIn}″) — garden is thirsty`;
     }
 
     widget.className = 'weather-widget weather-' + statusClass;
@@ -2767,7 +2781,11 @@ function renderWeatherWidget(root) {
     };
     widget.appendChild(s('7-day rain', rain7.toFixed(0) + 'mm'));
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
-    widget.appendChild(s('evapotranspiration', et0_7.toFixed(0) + 'mm'));
+    widget.appendChild(s('ET₀ demand', et0_7.toFixed(0) + 'mm'));
+    if (forecast > 1) {
+      widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
+      widget.appendChild(s('3-day forecast', Math.round(forecast) + 'mm'));
+    }
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
     widget.appendChild(el('span', { class: 'weather-rec' }, [rec]));
     widget.appendChild(el('span', { class: 'weather-src' }, ['Open-Meteo']));
