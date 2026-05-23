@@ -151,12 +151,11 @@ function jsxLeftSvg() {
   s += jsq('ba', 714, 163, '#1d9e75', 'B');
   s += jp('sh', 750, 163, 13, '#534ab7', 'SH');
 
-  /* Sub-row below: aligns under pepper section — BP BP SH B */
-  s += `<line x1="588" y1="182" x2="820" y2="182" stroke="#534ab7" stroke-width="0.6" stroke-dasharray="4 2" opacity="0.3"/>`;
+  /* Sub-row below: BP · SH · B */
+  s += `<line x1="588" y1="182" x2="780" y2="182" stroke="#534ab7" stroke-width="0.6" stroke-dasharray="4 2" opacity="0.3"/>`;
   s += jp('bp', 604, 203, 13, '#3c3489', 'BP');
-  s += jp('bp', 676, 203, 13, '#3c3489', 'BP');
-  s += jp('sh', 750, 203, 13, '#534ab7', 'SH');
-  s += jsq('ba', 802, 203, '#1d9e75', 'B');
+  s += jp('sh', 676, 203, 13, '#534ab7', 'SH');
+  s += jsq('ba', 750, 203, '#1d9e75', 'B');
   s += jn(428, 203);
   s += jn(800, 163);
   s += `<text x="592" y="218" font-size="7.5" fill="#534ab7" opacity="0.45" font-style="italic">↑ sub-row</text>`;
