@@ -2750,25 +2750,24 @@ function renderWeatherWidget(root) {
   fetchWeather().then(({ rain7, et0_7, forecast }) => {
     const rawDeficit = Math.max(0, et0_7 - rain7);
     const netDeficit = Math.max(0, rawDeficit - forecast);
-    const defMm = Math.round(netDeficit);
-    const defIn = (netDeficit / 25.4).toFixed(1);
+    const mm2in = mm => (mm / 25.4).toFixed(1) + '″';
 
     let statusClass, rec;
     if (forecast >= rawDeficit * 0.8 || netDeficit < 6) {
       statusClass = 'ok';
       rec = forecast > 5
-        ? `${Math.round(forecast)}mm rain coming — hold off on watering`
+        ? `${mm2in(forecast)} rain coming — hold off on watering`
         : 'Garden is well watered — skip irrigation';
     } else if (netDeficit < 18) {
       statusClass = 'mild';
       rec = forecast > 5
-        ? `~${Math.round(forecast)}mm rain forecast; still need ~${defMm}mm (${defIn}″) more`
-        : `Water ~${defMm}mm (${defIn}″)`;
+        ? `${mm2in(forecast)} rain forecast; still need ~${mm2in(netDeficit)} more`
+        : `Water ~${mm2in(netDeficit)}`;
     } else {
       statusClass = 'dry';
       rec = forecast > 5
-        ? `${Math.round(forecast)}mm rain coming, but still short ~${defMm}mm (${defIn}″)`
-        : `Water ~${defMm}mm (${defIn}″) — garden is thirsty`;
+        ? `${mm2in(forecast)} rain coming, but still short ~${mm2in(netDeficit)}`
+        : `Water ~${mm2in(netDeficit)} — garden is thirsty`;
     }
 
     widget.className = 'weather-widget weather-' + statusClass;
@@ -2778,12 +2777,12 @@ function renderWeatherWidget(root) {
       sp.innerHTML = `<span class="wk">${k}</span><span class="wv">${v}</span>`;
       return sp;
     };
-    widget.appendChild(s('7-day rain', rain7.toFixed(0) + 'mm'));
+    widget.appendChild(s('7-day rain', mm2in(rain7)));
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
-    widget.appendChild(s('ET₀ demand', et0_7.toFixed(0) + 'mm'));
+    widget.appendChild(s('ET₀ demand', mm2in(et0_7)));
     if (forecast > 1) {
       widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
-      widget.appendChild(s('3-day forecast', Math.round(forecast) + 'mm'));
+      widget.appendChild(s('3-day forecast', mm2in(forecast)));
     }
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
     widget.appendChild(el('span', { class: 'weather-rec' }, [rec]));
