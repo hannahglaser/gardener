@@ -1254,6 +1254,22 @@
   .expert-send { padding:9px 18px; background:var(--moss); color:#fff; border:none; border-radius:8px; font-size:14px; cursor:pointer; font-family:inherit; align-self:flex-end; }
   .expert-send:hover { background:var(--moss-dk); }
   .expert-send:disabled { opacity:.45; cursor:default; }
+
+  /* ── Weather widget ─────────────────────────────────── */
+  .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
+  .weather-loading { color:var(--ink-mute); font-style:italic; font-size:13px; }
+  .weather-ok   { border-color:var(--moss); background:color-mix(in srgb,var(--paper) 82%,var(--moss) 18%); }
+  .weather-mild { border-color:var(--terra); background:color-mix(in srgb,var(--paper) 82%,var(--terra) 18%); }
+  .weather-dry  { border-color:#a03030; background:color-mix(in srgb,var(--paper) 80%,#c04040 20%); }
+  .weather-stat { display:flex; flex-direction:column; line-height:1.2; }
+  .weather-stat .wk { font-size:10px; color:var(--ink-mute); text-transform:uppercase; letter-spacing:.05em; }
+  .weather-stat .wv { font-weight:600; font-size:14px; color:var(--ink); }
+  .weather-sep { color:var(--line); font-size:15px; }
+  .weather-rec { font-weight:500; font-size:13px; color:var(--ink); }
+  .weather-ok   .weather-rec { color:var(--moss-dk); }
+  .weather-mild .weather-rec { color:var(--terra-dk); }
+  .weather-dry  .weather-rec { color:#7a1a1a; }
+  .weather-src { margin-left:auto; font-size:11px; color:var(--ink-mute); font-style:italic; }
 </style>
 </head>
 <body>
@@ -1755,8 +1771,9 @@ const BEDS = {};
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence; explicit 15″ gaps between leafy rows and a 24″ mid-bed path keep everything reachable.',
     totals: [
-      { k: 'Plants', v: '50+' },
+      { k: 'Plants', v: '56' },
       { k: 'Veg rows', v: 'A → G' },
+      { k: 'Paths', v: '4 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
       { k: 'Strip', v: '3 squash mounds' },
     ],
@@ -1767,12 +1784,12 @@ const BEDS = {};
       { x0: 344, x1: 368, label: 'Squash strip · 24″' },
     ],
     bands: [
-      { kind:'path', y0:18,  y1:42,  xRange:[0,296], label:'24″ path · N → greens' },
-      { kind:'gap',  y0:54,  y1:69,  xRange:[0,296], label:'15″ gap' },
-      { kind:'gap',  y0:87,  y1:102, xRange:[0,296], label:'15″ gap' },
-      { kind:'gap',  y0:120, y1:135, xRange:[0,296], label:'15″ gap' },
-      { kind:'path', y0:150, y1:174, xRange:[0,296], label:'24″ mid-bed harvest path' },
-      { kind:'path', y0:210, y1:300, xRange:[0,296], label:'90″ south buffer · succession-plant zone' },
+      { kind:'path', y0:18,  y1:42,  xRange:[0,296], label:'24″ north harvest path · enter from N' },
+      { kind:'gap',  y0:54,  y1:69,  xRange:[0,296], label:'15″ gap · bok choy ↔ kale' },
+      { kind:'path', y0:87,  y1:102, xRange:[0,296], label:'15″ cross-path · leafy greens ↔ brassicas' },
+      { kind:'path', y0:120, y1:135, xRange:[0,296], label:'15″ cross-path · brassicas ↔ broccolini' },
+      { kind:'path', y0:150, y1:174, xRange:[0,296], label:'24″ mid-bed harvest path · greens ↔ roots' },
+      { kind:'path', y0:210, y1:300, xRange:[0,296], label:'90″ south buffer · succession-plant zone · enter from S' },
       { kind:'gap',  y0:0,   y1:36,  xRange:[344,368], label:'' },
       { kind:'gap',  y0:72,  y1:108, xRange:[344,368], label:'' },
       { kind:'gap',  y0:144, y1:180, xRange:[344,368], label:'' },
@@ -2006,6 +2023,8 @@ function renderAll() {
  *   RENDER: MAP VIEW
  * ============================================================ */
 function renderMap(root) {
+  renderWeatherWidget(root);
+
   /* sub-tabs */
   const sub = el('div', { class: 'subtabs' });
   const bedOrder = ['left','middle','right','unfenced','bags'];
@@ -2694,6 +2713,65 @@ function monthLabel(decimal) {
   const m = Math.floor(decimal);
   const d = Math.round((decimal - m) * 30 + 1);
   return MONTHS[Math.min(11, m - 1)] + ' ' + Math.max(1, Math.min(30, d));
+}
+
+/* ============================================================
+ *   WEATHER WIDGET  —  Open-Meteo, no API key needed
+ *   Greenfield MA: 42.587°N 72.601°W
+ * ============================================================ */
+let weatherCache = null;
+
+async function fetchWeather() {
+  if (weatherCache) return weatherCache;
+  const url = 'https://api.open-meteo.com/v1/forecast'
+    + '?latitude=42.587&longitude=-72.601'
+    + '&daily=precipitation_sum,et0_fao_evapotranspiration'
+    + '&past_days=7&forecast_days=0'
+    + '&timezone=America%2FNew_York';
+  const resp = await fetch(url);
+  const data = await resp.json();
+  const rain7 = data.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0);
+  const et0_7 = data.daily.et0_fao_evapotranspiration.reduce((a, b) => a + (b || 0), 0);
+  weatherCache = { rain7, et0_7 };
+  return weatherCache;
+}
+
+function renderWeatherWidget(root) {
+  const widget = el('div', { class: 'weather-widget' });
+  widget.appendChild(el('span', { class: 'weather-loading' }, ['Checking weather…']));
+  root.insertBefore(widget, root.firstChild);
+
+  fetchWeather().then(({ rain7, et0_7 }) => {
+    const deficit = Math.max(0, et0_7 - rain7);
+    const defMm = Math.round(deficit);
+    const defIn = (deficit / 25.4).toFixed(1);
+
+    let statusClass, rec;
+    if (deficit < 6) {
+      statusClass = 'ok';
+      rec = 'Garden is well watered — skip irrigation this week';
+    } else if (deficit < 18) {
+      statusClass = 'mild';
+      rec = `Water ~${defMm}mm (${defIn}″) this week`;
+    } else {
+      statusClass = 'dry';
+      rec = `Water ~${defMm}mm (${defIn}″) this week — garden is thirsty`;
+    }
+
+    widget.className = 'weather-widget weather-' + statusClass;
+    widget.innerHTML = '';
+    const s = (k, v) => {
+      const sp = el('span', { class: 'weather-stat' });
+      sp.innerHTML = `<span class="wk">${k}</span><span class="wv">${v}</span>`;
+      return sp;
+    };
+    widget.appendChild(s('7-day rain', rain7.toFixed(0) + 'mm'));
+    widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
+    widget.appendChild(s('evapotranspiration', et0_7.toFixed(0) + 'mm'));
+    widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
+    widget.appendChild(el('span', { class: 'weather-rec' }, [rec]));
+    widget.appendChild(el('span', { class: 'weather-src' }, ['Open-Meteo']));
+  }).catch(() => widget.remove());
 }
 
 /* ============================================================
