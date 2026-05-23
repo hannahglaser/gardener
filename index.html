@@ -1239,7 +1239,7 @@
     <div>
       <p class="kicker">2026 Season · Greenfield, Mass · Zone 5b/6a</p>
       <h1 class="title serif">Hannah <span style="color:var(--terra)">+</span> Dom's Garden</h1>
-      <p class="meta">Four growing spaces · confirmed plant spacing from ISU, Cornell, CSU extensions</p>
+      <p class="meta">Four growing spaces · <span id="totalPlantCount"></span> · confirmed plant spacing from ISU, Cornell, CSU extensions</p>
     </div>
   </div>
 
@@ -1923,6 +1923,18 @@ function indexPlants() {
   }
 }
 indexPlants();
+
+/* total individual plants across all beds */
+(function() {
+  let total = 0;
+  for (const bedKey in BEDS) {
+    const bed = BEDS[bedKey];
+    if (bed.plants) total += bed.plants.length;
+    if (bed.bags) bed.bags.forEach(bag => total += (bag.n || 1));
+  }
+  const el = document.getElementById('totalPlantCount');
+  if (el) el.textContent = total + ' plants';
+})();
 
 /* unique plant name → list of placements */
 const PLANT_PLACEMENTS = {};
