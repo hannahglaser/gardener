@@ -1369,7 +1369,7 @@ const PLANT_INFO = {
     cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
 
   /* — Peppers (nightshades) — */
-  'Bell pepper': { fam: 'pepper', code: 'BL', variety: 'Sweet, large-fruited',
+  'Bell pepper': { fam: 'pepper', code: 'BP', variety: 'Sweet, large-fruited',
     sun: 'Full sun', water: '1″ weekly, even', soil: 'Fertile, well-drained',
     days: '70-85 days from transplant', spacing: '18″ all directions',
     care: 'Start 8 wks before last frost. Bottom heat (75-80°F) speeds germination. Stake when fruiting.',
@@ -1430,7 +1430,7 @@ const PLANT_INFO = {
     cal: { indoor: [4.5, 4.8], harden: [5.55, 5.75], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [7.3, 9.5] } },
 
   /* — Nasturtium (companion) — */
-  'Nasturtium': { fam: 'flower', code: 'N', variety: 'Trailing/bush (companion plant)',
+  'Nasturtium': { fam: 'flower', code: 'NA', variety: 'Trailing/bush (companion plant)',
     sun: 'Full sun (part shade OK)', water: 'Moderate', soil: 'Lean soil = more flowers; rich soil = leaves',
     days: '50-65 days to bloom', spacing: '12″ apart',
     care: 'Direct sow after last frost. Trap crop for aphids, cucumber beetles, squash bugs, and cabbage moths. Flowers and leaves are edible — peppery.',
@@ -1542,12 +1542,12 @@ const PLANT_INFO = {
     days: 'Year 2 bears', spacing: '18-24″ apart in-row · 60″ between rows',
     care: 'Mulch heavily. Train to a 2-wire trellis. Fall-bearers: cut all canes to ground in late winter. Summer-bearers: prune fruited canes after harvest, keep new green canes for next year.',
     cal: { bloom: [5.5, 6.2], harvest: [7.0, 9.5] } },
-  'Black raspberry': { fam: 'cane', code: 'BR', variety: 'Summer-bearing (perennial)',
+  'Black raspberry': { fam: 'cane', code: 'BKR', variety: 'Summer-bearing (perennial)',
     sun: 'Full sun', water: '1-2″/wk', soil: 'Well-drained, slightly acidic, rich',
     days: 'Year 2 bears', spacing: '24-36″ in-row · 72″ between rows',
     care: 'Tip-prune new canes at 24-30″ in early summer to encourage side branching. Remove fruited canes after harvest. Keep 25 ft+ from red raspberries to avoid disease cross-over.',
     cal: { bloom: [5.5, 6.0], harvest: [7.0, 8.0] } },
-  'Blackberry': { fam: 'cane', code: 'BL', variety: 'Erect / semi-erect thornless (perennial)',
+  'Blackberry': { fam: 'cane', code: 'BK', variety: 'Erect / semi-erect thornless (perennial)',
     sun: 'Full sun (6-8h)', water: '1-2″/wk', soil: 'Well-drained, slightly acidic (pH 5.5-6.5), rich',
     days: 'Year 2 bears, full crop year 3+', spacing: '36-48″ in-row · 72-96″ between rows',
     care: 'Train to a 2-wire trellis. Tip-prune primocanes at 36-42″ in early summer. Remove fruited floricanes immediately after harvest. Mulch heavily; ripe berries are fragile, pick every 2-3 days.',
@@ -1646,7 +1646,7 @@ const BEDS = {};
   N('Thai basil', 2, 'east of HB/JL');
   N('Zucchini (bush)', 1, 'pepper zone EW — mound');
   N('Summer squash (bush)', 2, 'pepper zone EW — mounds, east of ZU');
-  N('Swiss chard', 4, 'east of squash mounds');
+  N('Swiss chard', 8, 'east of squash mounds');
   N('Dill', 1, 'herb border · east strip');
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
@@ -1657,7 +1657,7 @@ const BEDS = {};
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Sunflowers north, tomatoes / peppers / squash through the middle, cucumbers trellised south.',
     totals: [
-      { k: 'Plants',  v: '65' },
+      { k: 'Plants',  v: '69' },
       { k: 'Families', v: '7' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
@@ -1669,8 +1669,8 @@ const BEDS = {};
       { letter:'B', y:57,  label:'Row 2 · Tomato row 1', dim:'BW × 4 @ 30″ · SM × 3 · JU × 2 · SG × 1 · TL × 2 · 48″ row gap' },
       { letter:'C', y:132, label:'Row 3 · SG + TB JL HB + peppers (sub-row)', dim:'SG × 4 · TB × 2 · JL · HB · BP B BP B SH · sub-row BP SH B' },
       { letter:'D', y:192, label:'Row 4 · Squash mounds + Swiss chard + herb strip',
-        dim:'ZU + SS × 2 mounds · SC × 4 (12″) · east herb strip DL · EC · CI × 2' },
-      { letter:'F', y:279, label:'Cucumber trellis', dim:'8 × 18″ on trellis · 126″ EW · N interplanted' },
+        dim:'ZU + SS × 2 mounds · CH × 8 (12″) · east herb strip DL · EC · CI × 2' },
+      { letter:'F', y:279, label:'Cucumber trellis', dim:'8 × 18″ on trellis · 126″ EW · NA interplanted' },
     ],
     plants: plants,
   };
@@ -1684,16 +1684,12 @@ const BEDS = {};
   const vegCenter = 148;
 
   /* A · north edge — open buffer (sunflowers are on left bed) */
-  /* B · Row A — Bok choy × 4 + Swiss chard × 4 (y=48) */
+  /* A · Row A — Bok choy × 4 (y=48) */
   plants.push(...line(48, [
     {n:'Bok choy'},
     {n:'Bok choy', after: 10},
     {n:'Bok choy', after: 10},
     {n:'Bok choy', after: 10},
-    {n:'Swiss chard', after: 14},
-    {n:'Swiss chard', after: 12},
-    {n:'Swiss chard', after: 12},
-    {n:'Swiss chard', after: 12},
   ], { centerX: vegCenter }));
 
   /* C · Row B — Kale × 4 + Green cabbage × 4 (y=78) */
@@ -1770,7 +1766,7 @@ const BEDS = {};
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence; explicit 15″ gaps between leafy rows and a 24″ mid-bed path keep everything reachable.',
     totals: [
-      { k: 'Plants', v: '56' },
+      { k: 'Plants', v: '52' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '4 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
@@ -1795,14 +1791,13 @@ const BEDS = {};
       { kind:'gap',  y0:216, y1:300, xRange:[344,368], label:'' },
     ],
     rows: [
-      { letter:'A', y:9,   label:'North edge · open buffer', dim:'24″ clear zone' },
-      { letter:'B', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BC × 4 @ 10″ · SC × 4 @ 12″ · 66″ EW' },
-      { letter:'C', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
-      { letter:'D', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
-      { letter:'E', y:143, label:'Row D · Broccolini', dim:'4 × 15″ · 45″ EW' },
-      { letter:'F', y:180, label:'Row E · Beets (direct sow)', dim:'RB × 4 · YB × 4 · thin to 4″' },
-      { letter:'G', y:192, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
-      { letter:'H', y:204, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
+      { letter:'A', y:48,  label:'Row A · Bok choy', dim:'BC × 4 @ 10″ · 30″ EW' },
+      { letter:'B', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
+      { letter:'C', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
+      { letter:'D', y:143, label:'Row D · Broccolini', dim:'4 × 15″ · 45″ EW' },
+      { letter:'E', y:180, label:'Row E · Beets (direct sow)', dim:'RB × 4 · YB × 4 · thin to 4″' },
+      { letter:'F', y:192, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
+      { letter:'G', y:204, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
       { letter:'☘', y:130, label:'Squash strip', dim:'3 mounds · 36″ apart · vines train east', col:'strip' },
     ],
