@@ -34,7 +34,7 @@ const JSX_CODE_TO_NAME = {
   lb:  'Lowbush blueberry',
   ga:  'Garlic',             sl:  'Shallots',
   ow:  'Overwintering onions', ry: 'Annual rye',
-  as:  'Asparagus',
+  as:  'Asparagus',   tr:  'French Tarragon',
 };
 
 /* Build a code → queue<plant-id> map from a bed's plant list, so each
@@ -518,15 +518,19 @@ function jsxLeftBedFallSvg() {
     `<text x="430" y="224" text-anchor="middle" font-size="10" fill="#3d5a2a" fill-opacity="0.4">Seeded after Oct 5 frost · tilled under May before planting</text>` +
     `</g>`;
 
-  /* Echinacea — permanent spot */
+  /* Perennials — stay in ground */
   s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
-  s += `<text x="690" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC (perennial)</text>`;
+  s += `<text x="690" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC</text>`;
+  s += jsq('tr', 810, 302, '#c9a227', 'TR');
+  s += `<text x="810" y="323" text-anchor="middle" font-size="7.5" fill="#c9a227" opacity="0.6" font-style="italic">TR</text>`;
+  s += `<text x="750" y="340" text-anchor="middle" font-size="7.5" fill="#94886a" font-style="italic">perennials — mulch after ground freezes</text>`;
 
   s += `</svg>`;
 
   const legend = [
     {c:'#7a9e6b', l:'Annual rye — whole bed'},
     {c:'#d4537e', l:'EC · Echinacea (perennial)'},
+    {c:'#c9a227', l:'TR · French tarragon (perennial)', sq:true},
   ];
 
   return { note: 'Left bed — all summer crops cleared after Oct 5 frost · annual rye cover crop', svg: s, legend };
