@@ -1085,6 +1085,7 @@
   }
   .plant-card .pc-qty {
     margin-left: auto;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 5px;
     font-family: "Cormorant Garamond", Georgia, serif;
     font-size: 22px; line-height: 1; color: var(--terra-dk);
   }
@@ -1092,7 +1093,7 @@
     font-family: ui-sans-serif, sans-serif;
     font-size: 10px; color: var(--ink-mute);
     text-transform: uppercase; letter-spacing: .1em;
-    display: block; line-height: 1;
+    display: block; line-height: 1; order: 2;
   }
   .plant-card .pc-companions {
     margin-top: 8px; padding-top: 8px;
