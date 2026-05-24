@@ -1237,37 +1237,16 @@
     .row-body { overflow-x: visible; }
   }
 
-  /* ── Expert chat tab ───────────────────────────────── */
-  .expert-wrap { display:flex; flex-direction:column; height:calc(100vh - 170px); max-width:760px; margin:0 auto; }
-  .expert-key-bar { display:flex; gap:8px; align-items:center; padding:10px 14px; background:var(--paper); border:1px solid var(--line); border-radius:8px; margin:0 0 12px; }
-  .expert-key-bar label { font-size:13px; color:var(--ink-soft); white-space:nowrap; }
-  .expert-key-bar input { flex:1; padding:6px 10px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--ink); font-size:13.5px; font-family:inherit; }
-  .expert-key-bar input:focus { outline:none; border-color:var(--moss); }
-  .expert-key-bar button { padding:6px 14px; background:var(--moss); color:#fff; border:none; border-radius:6px; font-size:13.5px; cursor:pointer; white-space:nowrap; }
-  .expert-key-bar button:hover { background:var(--moss-dk); }
-  .expert-chat { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:14px; padding:4px 0 16px; }
-  .expert-empty { text-align:center; color:var(--ink-mute); font-style:italic; margin:auto; padding:48px 20px; max-width:380px; line-height:1.6; }
-  .expert-msg { display:flex; flex-direction:column; max-width:82%; }
-  .expert-msg.user { align-self:flex-end; align-items:flex-end; }
-  .expert-msg.assistant { align-self:flex-start; align-items:flex-start; }
-  .expert-bubble { padding:10px 14px; border-radius:12px; font-size:14.5px; line-height:1.6; }
-  .expert-msg.user .expert-bubble { background:var(--terra); color:#fff; border-bottom-right-radius:3px; }
-  .expert-msg.assistant .expert-bubble { background:var(--paper); border:1px solid var(--line); border-bottom-left-radius:3px; color:var(--ink); }
-  .expert-bubble p { margin:0 0 .55em; } .expert-bubble p:last-child { margin:0; }
-  .expert-bubble strong { font-weight:600; }
-  .expert-bubble em { font-style:italic; }
-  .expert-bubble ul, .expert-bubble ol { margin:.3em 0 .55em 1.2em; padding:0; }
-  .expert-bubble li { margin-bottom:.2em; }
-  .expert-thinking-dot { display:inline-block; animation:dot-pulse 1.2s infinite; }
-  .expert-thinking-dot:nth-child(2) { animation-delay:.2s; }
-  .expert-thinking-dot:nth-child(3) { animation-delay:.4s; }
-  @keyframes dot-pulse { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
-  .expert-input-row { display:flex; gap:8px; padding:12px 0 0; border-top:1px solid var(--line-soft); }
-  .expert-input-row textarea { flex:1; padding:9px 12px; border:1px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink); font-size:14.5px; font-family:inherit; line-height:1.45; resize:none; min-height:42px; max-height:160px; }
-  .expert-input-row textarea:focus { outline:none; border-color:var(--moss); }
-  .expert-send { padding:9px 18px; background:var(--moss); color:#fff; border:none; border-radius:8px; font-size:14px; cursor:pointer; font-family:inherit; align-self:flex-end; }
-  .expert-send:hover { background:var(--moss-dk); }
-  .expert-send:disabled { opacity:.45; cursor:default; }
+  /* ── Expert launch tab ──────────────────────────────── */
+  .expert-launch { display:flex; justify-content:center; padding:60px 20px; }
+  .expert-launch-card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:36px 40px; max-width:480px; width:100%; box-shadow:var(--shadow); }
+  .expert-launch-card h2 { margin:0 0 10px; font-size:22px; }
+  .expert-launch-desc { color:var(--ink-soft); font-size:14.5px; line-height:1.6; margin:0 0 28px; }
+  .expert-launch-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .expert-launch-btn { display:inline-block; padding:11px 22px; background:var(--moss); color:#fff; border-radius:8px; font-size:15px; font-weight:500; text-decoration:none; transition:background .15s; }
+  .expert-launch-btn:hover { background:var(--moss-dk); }
+  .expert-copy-btn { padding:10px 16px; background:transparent; border:1px solid var(--line); border-radius:8px; font:inherit; font-size:14px; color:var(--ink-soft); cursor:pointer; transition:all .15s; }
+  .expert-copy-btn:hover { border-color:var(--ink-soft); color:var(--ink); }
 
   /* ── Weather widget ─────────────────────────────────── */
   .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
@@ -2802,187 +2781,71 @@ function renderWeatherWidget(root) {
 /* ============================================================
  *   RENDER: GARDEN EXPERT
  * ============================================================ */
-let expertHistory = [];
-
-function buildExpertSystemPrompt() {
+function buildGardenContext() {
   const lines = [
-    'You are a knowledgeable, practical gardening expert advising Hannah and Dom about their vegetable and berry garden in Greenfield, Massachusetts (Zone 5b/6a). Last frost is around May 10; first frost around October 5.',
+    'I need gardening help. Here is my full garden context so you can answer specifically:',
     '',
-    'Their garden has five growing spaces:',
+    'Location: Greenfield, Massachusetts · Zone 5b/6a · Last frost ~May 10 · First frost ~Oct 5',
     '',
   ];
-
   for (const bedKey in BEDS) {
     const bed = BEDS[bedKey];
-    lines.push(`### ${bed.title}`);
-    lines.push(bed.dims);
+    lines.push(`${bed.title} — ${bed.dims}`);
     lines.push(bed.lead);
-
     if (bed.plants) {
       const counts = {};
       bed.plants.forEach(pl => { counts[pl.name] = (counts[pl.name] || 0) + 1; });
-      lines.push('Plants: ' + Object.entries(counts).map(([n, c]) => c > 1 ? `${n} ×${c}` : n).join(' · '));
+      lines.push('Plants: ' + Object.entries(counts).map(([n, c]) => c > 1 ? `${n} ×${c}` : n).join(', '));
     }
     if (bed.bags) {
-      lines.push('Grow bags: ' + bed.bags.map(b => `${b.plant.name} ×${b.n}`).join(' · '));
+      lines.push('Bags: ' + bed.bags.map(b => `${b.plant.name} ×${b.n}`).join(', '));
     }
     lines.push('');
   }
-
-  lines.push('### Companion Planting Notes (from plant care data)');
-  for (const name in PLANT_INFO) {
-    const info = PLANT_INFO[name];
-    if (info.care && (
-      info.care.includes('compan') || info.care.includes('Compan') ||
-      info.care.includes('trap') || info.care.includes('Trap') ||
-      info.care.includes('attract') || info.care.includes('repel') ||
-      info.care.includes('interplant') || info.care.includes('nitrogen') ||
-      info.care.includes('Nasturtium') || info.care.includes('Basil')
-    )) {
-      lines.push(`- **${name}**: ${info.care}`);
-    }
-  }
-  lines.push('');
-  lines.push('Answer questions about timing, watering, companion planting, pest management, harvesting, and anything else related to this specific garden. Be specific — reference actual plant names and bed locations. Keep answers concise and actionable.');
+  lines.push('What should I be doing in the garden right now?');
   return lines.join('\n');
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function markdownToHtml(text) {
-  let s = escapeHtml(text);
-  s = s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  // unordered lists
-  s = s.replace(/((?:^- .+\n?)+)/gm, match => {
-    const items = match.trim().split('\n').map(l => `<li>${l.replace(/^- /,'')}</li>`).join('');
-    return `<ul>${items}</ul>`;
-  });
-  // paragraphs from double newlines
-  s = '<p>' + s.replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
-  return s;
-}
-
 function renderExpert(root) {
-  const savedKey = localStorage.getItem('expert_api_key') || '';
+  const wrap = el('div', { class: 'expert-launch' });
 
-  const wrap = el('div', { class: 'expert-wrap' });
+  const card = el('div', { class: 'expert-launch-card' });
 
-  /* API key bar */
-  const keyBar = el('div', { class: 'expert-key-bar', style: savedKey ? 'display:none' : '' });
-  keyBar.appendChild(el('label', {}, ['Anthropic API key']));
-  const keyInput = el('input', { type: 'password', placeholder: 'sk-ant-…', autocomplete: 'off' });
-  const keySave = el('button', {}, ['Save']);
-  keySave.onclick = () => {
-    const v = keyInput.value.trim();
-    if (v) { localStorage.setItem('expert_api_key', v); keyBar.style.display = 'none'; }
-  };
-  keyBar.appendChild(keyInput);
-  keyBar.appendChild(keySave);
+  card.appendChild(el('h2', { class: 'serif' }, ['Garden Expert']));
+  card.appendChild(el('p', { class: 'expert-launch-desc' }, [
+    'Opens Claude with your full garden context — all beds, plants, and location — pre-loaded as the first message.'
+  ]));
 
-  /* Chat area */
-  const chat = el('div', { class: 'expert-chat' });
+  const btn = el('a', {
+    class: 'expert-launch-btn',
+    target: '_blank',
+    rel: 'noopener',
+  }, ['Open in Claude →']);
 
-  function renderMessages() {
-    chat.innerHTML = '';
-    if (expertHistory.length === 0) {
-      chat.appendChild(el('div', { class: 'expert-empty' }, [
-        'Ask me anything about your garden — watering schedules, pest control, when to harvest, companion planting, what to do next…'
-      ]));
-      return;
-    }
-    expertHistory.forEach(msg => {
-      const msgEl = el('div', { class: 'expert-msg ' + msg.role });
-      const bubble = el('div', { class: 'expert-bubble' });
-      bubble.innerHTML = markdownToHtml(msg.content);
-      msgEl.appendChild(bubble);
-      chat.appendChild(msgEl);
+  /* Build URL lazily on click so it always reflects current data */
+  btn.addEventListener('click', () => {
+    btn.href = 'https://claude.ai/new?q=' + encodeURIComponent(buildGardenContext());
+  });
+  /* Also set href on mousedown so middle-click / right-click → open in new tab works */
+  btn.addEventListener('mousedown', () => {
+    btn.href = 'https://claude.ai/new?q=' + encodeURIComponent(buildGardenContext());
+  });
+
+  const copyBtn = el('button', { class: 'expert-copy-btn' }, ['Copy context']);
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(buildGardenContext()).then(() => {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => { copyBtn.textContent = 'Copy context'; }, 2000);
     });
-    chat.scrollTop = chat.scrollHeight;
-  }
-
-  renderMessages();
-
-  /* Input row */
-  const inputRow = el('div', { class: 'expert-input-row' });
-  const textarea = el('textarea', { placeholder: 'Ask about your garden…', rows: '1' });
-  const sendBtn = el('button', { class: 'expert-send' }, ['Ask']);
-
-  textarea.addEventListener('input', () => {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-  });
-  textarea.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); }
-  });
-
-  sendBtn.onclick = async () => {
-    const key = localStorage.getItem('expert_api_key') || '';
-    if (!key) { keyBar.style.display = ''; keyInput.focus(); return; }
-    const text = textarea.value.trim();
-    if (!text || sendBtn.disabled) return;
-
-    textarea.value = '';
-    textarea.style.height = '';
-    sendBtn.disabled = true;
-
-    expertHistory.push({ role: 'user', content: text });
-    renderMessages();
-
-    /* Thinking indicator */
-    const thinkEl = el('div', { class: 'expert-msg assistant' });
-    const thinkBubble = el('div', { class: 'expert-bubble' });
-    thinkBubble.innerHTML = '<span class="expert-thinking-dot">●</span><span class="expert-thinking-dot">●</span><span class="expert-thinking-dot">●</span>';
-    thinkEl.appendChild(thinkBubble);
-    chat.appendChild(thinkEl);
-    chat.scrollTop = chat.scrollHeight;
-
-    try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
-        body: JSON.stringify({
-          model: 'claude-opus-4-7',
-          max_tokens: 1024,
-          system: buildExpertSystemPrompt(),
-          messages: expertHistory,
-        }),
-      });
-
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        const msg = err.error?.message || `HTTP ${resp.status}`;
-        if (resp.status === 401) localStorage.removeItem('expert_api_key');
-        throw new Error(msg);
-      }
-
-      const data = await resp.json();
-      expertHistory.push({ role: 'assistant', content: data.content[0].text });
-    } catch(e) {
-      expertHistory.push({ role: 'assistant', content: `⚠️ ${e.message}` });
-    }
-
-    sendBtn.disabled = false;
-    renderMessages();
-    setTimeout(() => textarea.focus(), 50);
   };
 
-  inputRow.appendChild(textarea);
-  inputRow.appendChild(sendBtn);
+  const actions = el('div', { class: 'expert-launch-actions' });
+  actions.appendChild(btn);
+  actions.appendChild(copyBtn);
+  card.appendChild(actions);
 
-  wrap.appendChild(keyBar);
-  wrap.appendChild(chat);
-  wrap.appendChild(inputRow);
+  wrap.appendChild(card);
   root.appendChild(wrap);
-
-  setTimeout(() => textarea.focus(), 50);
 }
 
 /* ============================================================
