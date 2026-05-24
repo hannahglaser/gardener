@@ -1184,6 +1184,20 @@
     text-transform: uppercase; letter-spacing: .08em;
   }
 
+  .cal-today {
+    position: absolute; top: 0; bottom: 0; width: 0;
+    border-left: 1.5px dotted var(--moss-dk, #3e5c2e);
+    pointer-events: none; z-index: 4;
+  }
+  .cal-today .lbl {
+    position: absolute; bottom: 4px; left: 4px;
+    font-size: 9.5px; color: var(--moss-dk, #3e5c2e);
+    background: var(--paper); padding: 1px 5px;
+    border-radius: 3px; white-space: nowrap;
+    font-family: ui-monospace, monospace;
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+
   .cal-section {
     display: grid; grid-template-columns: 200px 1fr;
     background: var(--paper-2);
@@ -2637,6 +2651,14 @@ function renderCalendar(root) {
     line.appendChild(el('div', { class: 'lbl' }, lbl));
     overTrack.appendChild(line);
   });
+
+  /* today line */
+  const now = new Date();
+  const todayDecimal = now.getMonth() + 1 + (now.getDate() - 1) / 30;
+  const todayLine = el('div', { class: 'cal-today', style: `left:${pct(todayDecimal)}` });
+  todayLine.appendChild(el('div', { class: 'lbl' }, '— today'));
+  overTrack.appendChild(todayLine);
+
   overlay.appendChild(overTrack);
   rowsWrap.appendChild(overlay);
 
