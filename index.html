@@ -1511,9 +1511,11 @@ const BEDS = {};
     {n:'Leek', after: 6},
   ], { centerX: vegCenter }));
 
-  /* Nasturtium × 2 — interplanted in brassica rows B/C as trap crop */
-  plants.push(plantAt('Nasturtium', 148, 108, { zone: 'right bed · brassica row B · trap crop' }));
-  plants.push(plantAt('Nasturtium', 148, 136, { zone: 'right bed · brassica row C · trap crop' }));
+  /* Nasturtium × 8 — flanking rows A–D (west + east ends) as trap crop */
+  [92, 120, 148, 176].forEach(y => {
+    plants.push(plantAt('Nasturtium', 155, y, { zone: 'right bed · brassica rows A-D · trap crop' }));
+    plants.push(plantAt('Nasturtium', 600, y, { zone: 'right bed · brassica rows A-D · trap crop' }));
+  });
 
   /* Asparagus — established perennial west strip (~4 crowns, count unconfirmed) */
   for (let i = 0; i < 4; i++) plants.push(plantAt('Asparagus', 89, 60 + i * 70, { zone: 'right bed · west strip · established perennial' }));
@@ -1531,7 +1533,7 @@ const BEDS = {};
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence; explicit 15″ gaps between leafy rows and a 24″ mid-bed path keep everything reachable.',
     totals: [
-      { k: 'Plants', v: '58' },
+      { k: 'Plants', v: '64' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '4 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
@@ -1588,6 +1590,13 @@ const BEDS = {};
   plants.push(plantAt('Delicata squash',  75,  180));
   plants.push(plantAt('Delicata squash',  123, 180));
 
+  /* Nasturtium × 5 — between squash mounds as trap crop */
+  plants.push(plantAt('Nasturtium',  39,  60,  { zone: 'unfenced · row 1 · between mounds' }));
+  plants.push(plantAt('Nasturtium',  87,  60,  { zone: 'unfenced · row 1 · between mounds' }));
+  plants.push(plantAt('Nasturtium',  27,  180, { zone: 'unfenced · row 2 · between BN mounds' }));
+  plants.push(plantAt('Nasturtium',  63,  180, { zone: 'unfenced · row 2 · buffer zone' }));
+  plants.push(plantAt('Nasturtium',  99,  180, { zone: 'unfenced · row 2 · between DE mounds' }));
+
   BEDS.unfenced = {
     title: 'Unfenced Area',
     dims: '126″ E-W × 264″ N-S · 246″ used · 18″ spare',
@@ -1596,6 +1605,7 @@ const BEDS = {};
       { k: 'Mounds', v: '7' },
       { k: 'Rows', v: '2 N→S' },
       { k: 'N-S Used', v: '246″ / 264″' },
+      { k: 'Nasturtiums', v: '5 · trap crop' },
     ],
     ewIn: 126, nsIn: 264,
     bands: [
