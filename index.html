@@ -36,6 +36,7 @@
     --c-berry:  #4a5d9a;
     --c-cane:   #a13e6e;
     --c-legume: #8d9243;
+    --c-peren:  #5a7a52;
 
     --shadow: 0 1px 0 rgba(120,90,40,.10), 0 12px 30px -18px rgba(80,55,15,.35);
     --shadow-sm: 0 1px 2px rgba(80,55,15,.10);
@@ -1318,6 +1319,7 @@ const FAM = {
   berry:    { color: 'var(--c-berry)',  label: 'Berries' },
   cane:     { color: 'var(--c-cane)',   label: 'Brambles' },
   legume:   { color: 'var(--c-legume)', label: 'Legumes' },
+  perennial:{ color: 'var(--c-peren)',  label: 'Perennials' },
 };
 
 /* ============================================================
@@ -1546,6 +1548,14 @@ const PLANT_INFO = {
     care: 'Train to a 2-wire trellis. Tip-prune primocanes at 36-42″ in early summer. Remove fruited floricanes immediately after harvest. Mulch heavily; ripe berries are fragile, pick every 2-3 days.',
     cal: { bloom: [5.7, 6.3], harvest: [7.3, 8.7] } },
 
+  /* — Perennials — */
+  'Purple asparagus': { fam: 'perennial', code: 'AS', variety: 'Purple Passion or similar — sweeter, more tender than green',
+    sun: 'Full sun (8h+)', water: '1-2″/wk; deep infrequent', soil: 'Deep, well-drained, pH 6.5-7.0 · amend with compost before planting',
+    days: 'Year 1: no harvest · Year 2: harvest lightly · Year 3+: full harvest · 20+ year producer',
+    spacing: '12-18″ in-row · 4-5 ft between rows · plant crowns 6-8″ deep',
+    care: 'Do not harvest year 1 — let ferns develop to establish roots. Year 2 take only a few spears. Cut spears when 6-8″ tall, before tips open. Purple turns green when cooked; eat raw or lightly sauté to keep color. Top-dress with compost each spring. Cut ferns to ground after first frost.',
+    cal: { harvest: [[4.5, 6.5]] } },
+
   /* — Leafy greens (grow bag) — */
   'Spinach': { fam: 'brassica', code: 'SP', variety: 'Smooth-leaf, cool-season',
     sun: 'Full sun (cool) / part shade (summer)', water: 'Regular, even', soil: 'Rich, well-drained, slightly alkaline',
@@ -1644,13 +1654,14 @@ const BEDS = {};
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
   N('Cucumber', 8, 'trellised · 18″ apart');
+  N('Purple asparagus', 4, 'asparagus row · perennial');
 
   BEDS.left = {
     title: 'Left Bed',
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Sunflowers north, tomatoes / peppers / squash through the middle, cucumbers trellised south.',
     totals: [
-      { k: 'Plants',  v: '69' },
+      { k: 'Plants',  v: '73' },
       { k: 'Families', v: '7' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
