@@ -1331,6 +1331,8 @@
   .task-body { flex: 1; min-width: 0; }
   .task-text { font-size: 14px; color: var(--ink); line-height: 1.4; }
   .task-detail { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .tasks-month.is-past { opacity: .45; }
+  .tasks-month.is-past .task-text { text-decoration: line-through; color: var(--ink-mute); }
 
   /* ── Weather widget ─────────────────────────────────── */
   #weather-bar { max-width: 1240px; margin: 0 auto; padding: 10px 24px 0; }
@@ -1407,6 +1409,7 @@ const FAM = {
   cane:     { color: 'var(--c-cane)',   label: 'Brambles' },
   legume:   { color: 'var(--c-legume)', label: 'Legumes' },
   perennial:{ color: 'var(--c-peren)',  label: 'Perennials' },
+  cover:    { color: 'var(--c-cover)',  label: 'Cover crops' },
 };
 
 /* PLANT_INFO — defined in plants.js */
@@ -2949,8 +2952,9 @@ function renderTasks(root) {
   MONTHS.forEach(({ n, name, sub }) => {
     const tasks = GARDEN_TASKS.filter(t => t.month === n);
     const isCurrent = n === currentMonth;
+    const isPast    = n < currentMonth;
 
-    const section = el('div', { class: 'tasks-month' + (isCurrent ? ' is-current' : '') });
+    const section = el('div', { class: 'tasks-month' + (isCurrent ? ' is-current' : isPast ? ' is-past' : '') });
 
     const hdr = el('div', { class: 'tasks-month-header' });
     hdr.appendChild(el('span', { class: 'tasks-month-name' }, [name]));
