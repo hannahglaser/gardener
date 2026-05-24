@@ -1753,12 +1753,12 @@ BEDS.bags = {
   BEDS.rightFall = {
     title: 'Right Bed',
     dims: '296″ veg  +  48″ blueberry  +  24″ strip  =  368″ E-W × 300″ N-S',
-    lead: 'Fall / winter layout: garlic (49 cloves) in row A, shallots + overwintering onion sets in row B. Rows C–D cleared and amended. Beets, carrots, scallions, and leeks (rows E–G) hold through first frost. Open zone seeded to annual rye.',
+    lead: 'Fall / winter layout: garlic (49 cloves) in row A, shallots + overwintering onion sets in row B. Rows C–D cleared and amended. Beets, carrots, scallions, and leeks (rows E–G) hold through first frost. Open zone seeded to winter-killed oats.',
     totals: [
       { k: 'Garlic', v: '49 cloves' },
       { k: 'Shallots', v: '~25 sets' },
       { k: 'Onion sets', v: '~25 sets' },
-      { k: 'Cover crop', v: 'Annual rye (open zone)' },
+      { k: 'Cover crop', v: 'Winter-killed oats (open zone)' },
     ],
     plants: [
       ...fa('Garlic', 12),
@@ -1767,7 +1767,7 @@ BEDS.bags = {
       ...fa('Red beet', 4), ...fa('Yellow beet', 4),
       p('Carrots'),
       ...fa('Scallion', 4), ...fa('Leek', 4),
-      p('Annual rye'),
+      p('Winter-killed oats'),
       ...fa('Asparagus', 4),
       ...fa('Lowbush blueberry', 2), ...fa('Blueberry', 4),
     ],
@@ -1776,22 +1776,22 @@ BEDS.bags = {
   BEDS.leftFall = {
     title: 'Left Bed',
     dims: '400″ E-W × 350″ N-S',
-    lead: 'All summer crops cleared after Oct 5 frost. Entire bed seeded to annual rye. Echinacea and French tarragon remain in place — mulch both after ground freezes.',
+    lead: 'All summer crops cleared after Oct 5 frost. Entire bed seeded to winter-killed oats. Echinacea and French tarragon remain in place — mulch both after ground freezes.',
     totals: [
-      { k: 'Cover crop', v: 'Annual rye' },
+      { k: 'Cover crop', v: 'Winter-killed oats' },
       { k: 'Perennials', v: 'EC · TR' },
     ],
-    plants: [p('Annual rye'), p('Echinacea'), p('French Tarragon')],
+    plants: [p('Winter-killed oats'), p('Echinacea'), p('French Tarragon')],
   };
 
   BEDS.unfencedFall = {
     title: 'Unfenced Area',
     dims: '126″ E-W × 264″ N-S',
-    lead: 'Winter squash cleared and cured by mid-October. Entire area seeded to annual rye cover crop.',
+    lead: 'Winter squash cleared and cured by mid-October. Entire area seeded to winter-killed oats cover crop.',
     totals: [
-      { k: 'Cover crop', v: 'Annual rye' },
+      { k: 'Cover crop', v: 'Winter-killed oats' },
     ],
-    plants: [p('Annual rye')],
+    plants: [p('Winter-killed oats')],
   };
 }
 
@@ -1800,7 +1800,7 @@ BEDS.bags = {
  * ============================================================ */
 const GARDEN_TASKS = [
   /* ── May ─────────────────────────────────────────────────── */
-  { month:5, cat:'maintain', text:'Till under annual rye cover crop (left bed + unfenced)',  detail:'Mow or cut down first, then turn in · wait 3-4 weeks before planting to let it decompose · nutrients release back into soil' },
+  { month:5, cat:'maintain', text:'Rake dead oat mat from covered beds',  detail:'Left bed + unfenced + right bed rows C–D · oats die in hard freeze so no tilling needed · just rake aside dead straw and compost it · beds ready to plant immediately' },
   { month:5, cat:'build',    text:'Set up tomato cages (16)',                          detail:'One per plant at transplant time — wire cages 5 ft+' },
   { month:5, cat:'build',    text:'Set up cucumber trellis',                           detail:'8 plants @ 18″ · 12 ft single run or 4 × 3 ft sections · 6 ft tall' },
   { month:5, cat:'plant',    text:'Transplant tomatoes & tomatillos',                  detail:'After last frost (May 10) · Brandywine × 4, San Marzano × 3, Sungold × 5, Juliette × 2, Tomatillo × 2 · water in daily first week' },
@@ -1857,7 +1857,7 @@ const GARDEN_TASKS = [
   { month:10, cat:'maintain', text:'Log what worked — sketch 2027 crop rotation',     detail:'Rotate tomato/pepper family and brassica family to different beds' },
   { month:10, cat:'plant',   text:'Plant garlic in right bed row A (49 cloves)',      detail:'6 heads hardneck seed garlic · 6″ apart · 2-3″ deep · pointed end up · firm soil after planting' },
   { month:10, cat:'plant',   text:'Plant shallots (row B west) + overwintering onion sets (row B east)', detail:'~25 shallots @ 6-8″ · ~25 onion sets @ 4-6″ · just below soil surface · pointed end up' },
-  { month:9,  cat:'plant',   text:'Seed annual rye in cleared beds',                  detail:'Left bed + unfenced area + right bed open zone + right bed rows C–D (after brassicas clear) · broadcast 2 lbs per 1000 sq ft · germinates above 34°F' },
+  { month:9,  cat:'plant',   text:'Seed winter-killed oats in cleared beds',                  detail:'Left bed + unfenced area + right bed open zone + right bed rows C–D (after brassicas clear) · broadcast 2 lbs per 1000 sq ft · germinates above 34°F' },
 
   /* ── November ─────────────────────────────────────────────── */
   { month:11, cat:'maintain', text:'Mulch garlic, shallots, echinacea & French tarragon after ground freezes', detail:'Right bed rows A–B (garlic/shallots) + left bed herb strip (EC/TR) · 4-6″ straw after first hard freeze · typically mid-Nov' },
