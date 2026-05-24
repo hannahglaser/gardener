@@ -135,7 +135,7 @@ function jsxLeftSvg() {
   s += jp('tl', 718, 100, 11, '#854f0b', 'TL');
   s += jn(738, 90);
   s += jp('tl', 758, 100, 11, '#854f0b', 'TL');
-  s += `<text x="42" y="138" font-size="8" fill="#94886a" font-style="italic">48″ gap</text>`;
+  s += jpath(x0, W, 124, 18, 'harvest path · breathing room for tomatoes');
 
   /* Row 3: main row + sub-row (SG x4 | TB x2 | JL | HB | BP B BP B SH) */
   s += jband(x0, W, 142, 80, '#ef9f27', `SG × 4 | TB × 2 | JL | HB | peppers (sub-row below)`);
