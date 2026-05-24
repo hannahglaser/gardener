@@ -106,12 +106,12 @@ function jnote(text) { return `<p class="jsx-note">${text}</p>`; }
 function jsxLeftSvg() {
   const W = 780, x0 = 40;
   let s = '';
-  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 434" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
-  s += `<rect x="30" y="20" width="800" height="402" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 464" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="20" width="800" height="432" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
   s += `<text x="430" y="13" text-anchor="middle" font-size="10" fill="#94886a">LEFT BED — north at top | hover any plant for details</text>`;
-  s += `<text x="18"  y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,222)">WEST</text>`;
-  s += `<text x="842" y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,222)">EAST</text>`;
-  s += `<text x="430" y="430" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
+  s += `<text x="18"  y="237" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,237)">WEST</text>`;
+  s += `<text x="842" y="237" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,237)">EAST</text>`;
+  s += `<text x="430" y="460" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
   s += `<text x="830" y="34"  font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
   s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
 
@@ -135,14 +135,14 @@ function jsxLeftSvg() {
   s += jp('tl', 718, 100, 11, '#854f0b', 'TL');
   s += jn(738, 90);
   s += jp('tl', 758, 100, 11, '#854f0b', 'TL');
-  s += jpath(x0, W, 124, 18, 'harvest path · breathing room for tomatoes');
+  s += jpath(x0, W, 124, 48, 'harvest path · breathing room for tomatoes');
 
   /* Row 3: main row + sub-row (SG x4 | TB x2 | JL | HB | BP B BP B SH) */
-  s += jband(x0, W, 142, 80, '#ef9f27', `SG × 4 | TB × 2 | JL | HB | peppers (sub-row below)`);
-  [68, 152, 236, 320].forEach(cx => s += jp('sg', cx, 163, 13, '#ef9f27', 'SG'));
-  s += jn(110, 153);
-  s += jsq('tb', 408, 163, '#0f6e56', 'TB');
-  s += jsq('tb', 448, 163, '#0f6e56', 'TB');
+  s += jband(x0, W, 172, 80, '#ef9f27', `SG × 4 | TB × 2 | JL | HB | peppers (sub-row below)`);
+  [68, 152, 236, 320].forEach(cx => s += jp('sg', cx, 193, 13, '#ef9f27', 'SG'));
+  s += jn(110, 183);
+  s += jsq('tb', 408, 193, '#0f6e56', 'TB');
+  s += jsq('tb', 448, 193, '#0f6e56', 'TB');
   s += jp('jl', 492, 163, 13, '#993556', 'JL');
   s += jp('hb', 548, 163, 13, '#993556', 'HB');
   s += jp('bp', 604, 163, 13, '#3c3489', 'BP');
@@ -152,48 +152,48 @@ function jsxLeftSvg() {
   s += jp('sh', 750, 163, 13, '#534ab7', 'SH');
 
   /* Sub-row below: BP · SH · B */
-  s += `<line x1="588" y1="182" x2="780" y2="182" stroke="#534ab7" stroke-width="0.6" stroke-dasharray="4 2" opacity="0.3"/>`;
-  s += jp('bp', 604, 203, 13, '#3c3489', 'BP');
-  s += jp('sh', 676, 203, 13, '#534ab7', 'SH');
-  s += jsq('ba', 750, 203, '#1d9e75', 'B');
-  s += jn(428, 203);
-  s += jn(800, 163);
-  s += `<text x="592" y="218" font-size="7.5" fill="#534ab7" opacity="0.45" font-style="italic">↑ sub-row</text>`;
+  s += `<line x1="588" y1="212" x2="780" y2="212" stroke="#534ab7" stroke-width="0.6" stroke-dasharray="4 2" opacity="0.3"/>`;
+  s += jp('bp', 604, 233, 13, '#3c3489', 'BP');
+  s += jp('sh', 676, 233, 13, '#534ab7', 'SH');
+  s += jsq('ba', 750, 233, '#1d9e75', 'B');
+  s += jn(428, 233);
+  s += jn(800, 193);
+  s += `<text x="592" y="248" font-size="7.5" fill="#534ab7" opacity="0.45" font-style="italic">↑ sub-row</text>`;
 
   /* Path 2: peppers to squash row */
-  s += jpath(x0, W, 228, 22, 'harvest path');
+  s += jpath(x0, W, 258, 22, 'harvest path');
 
   /* Row 4: ZU + SS mounds + Swiss chard east + herb strip */
-  s += jband(x0, W, 250, 44, '#639922', 'Squash mounds (ZU × 1, SS × 2) + Swiss chard × 4 + herb strip');
-  s += jmound('zu', 120, 273, 26, 18, '#639922', 'ZU');
-  s += jn(170, 262);
-  s += jmound('ss', 230, 273, 26, 18, '#97c459', 'SS');
-  s += jmound('ss', 330, 273, 26, 18, '#97c459', 'SS');
-  s += jn(382, 262);
+  s += jband(x0, W, 280, 44, '#639922', 'Squash mounds (ZU × 1, SS × 2) + Swiss chard × 4 + herb strip');
+  s += jmound('zu', 120, 303, 26, 18, '#639922', 'ZU');
+  s += jn(170, 292);
+  s += jmound('ss', 230, 303, 26, 18, '#97c459', 'SS');
+  s += jmound('ss', 330, 303, 26, 18, '#97c459', 'SS');
+  s += jn(382, 292);
   /* Swiss chard x4 east of squash mounds, 12" apart */
-  s += jp('sc', 470, 273, 11, '#639922', 'SC');
-  s += jp('sc', 510, 273, 11, '#639922', 'SC');
-  s += jp('sc', 550, 273, 11, '#639922', 'SC');
-  s += jp('sc', 590, 273, 11, '#639922', 'SC');
+  s += jp('sc', 470, 303, 11, '#639922', 'SC');
+  s += jp('sc', 510, 303, 11, '#639922', 'SC');
+  s += jp('sc', 550, 303, 11, '#639922', 'SC');
+  s += jp('sc', 590, 303, 11, '#639922', 'SC');
   /* Herb strip — east end: DL, EC, CI, CI, TR */
-  s += jsq('dl', 650, 263, '#97c459', 'DL');
-  s += jp('ec', 690, 263, 11, '#d4537e', 'EC');
-  s += jp('cit', 730, 263, 11, '#7daf3a', 'CI');
-  s += jp('cit', 770, 263, 11, '#7daf3a', 'CI');
-  s += jsq('tr', 810, 263, '#c9a227', 'TR');
-  s += `<text x="730" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
+  s += jsq('dl', 650, 293, '#97c459', 'DL');
+  s += jp('ec', 690, 293, 11, '#d4537e', 'EC');
+  s += jp('cit', 730, 293, 11, '#7daf3a', 'CI');
+  s += jp('cit', 770, 293, 11, '#7daf3a', 'CI');
+  s += jsq('tr', 810, 293, '#c9a227', 'TR');
+  s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
-  s += jpath(x0, W, 298, 48, 'harvest path · wider for squash leaf clearance + cucurbit pest separation');
+  s += jpath(x0, W, 328, 48, 'harvest path · wider for squash leaf clearance + cucurbit pest separation');
 
   /* Cucumbers */
-  s += jband(x0, W, 346, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
-  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 365, 12, '#185fa5', 'CU'));
-  s += jn(113, 354); s += jn(446, 354); s += jn(726, 354);
+  s += jband(x0, W, 376, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
+  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 395, 12, '#185fa5', 'CU'));
+  s += jn(113, 384); s += jn(446, 384); s += jn(726, 384);
 
   /* Path 5 south */
-  s += jpath(x0, W, 380, 26, '30″ south access — cuke harvest');
-  s += `<text x="430" y="422" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">spare — south end of bed</text>`;
+  s += jpath(x0, W, 410, 26, '30″ south access — cuke harvest');
+  s += `<text x="430" y="452" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">spare — south end of bed</text>`;
   s += `</svg>`;
 
   const legend = [
