@@ -231,6 +231,12 @@ function jsxRightSvg() {
   s += `<rect x="694" y="26" width="30"  height="356" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
   s += `<text x="709" y="205" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,205)" font-style="italic">24″ strip (open)</text>`;
 
+  /* Asparagus — ~4 established crowns running N-S (cx=89, west strip) */
+  [56, 131, 206, 281].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
+
+  /* Blueberry hedge — 6 bushes ~50″ apart running N-S (cx=657) */
+  [36, 86, 136, 186, 236, 286].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+
   s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
   s += jpath(148, 470, ys.pSF, 22, '24″ path');
 
@@ -279,7 +285,8 @@ function jsxRightSvg() {
     {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB (4)'},
     {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
-    {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#b96b3e', l:'harvest paths'},
+    {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
+    {c:'#3c3489', l:'BB (6)'}, {c:'#b96b3e', l:'harvest paths'},
   ];
 
   return { note: 'Right bed — 296″ usable E-W × 300″ N-S · 210″ used · 90″ open south', svg: s, legend };
