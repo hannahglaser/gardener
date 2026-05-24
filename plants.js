@@ -412,6 +412,43 @@ const PLANT_INFO = {
     ],
     cal: { direct: [5.4, 6.1], harvest: [7.3, 9.5] } },
 
+  /* — Fall / Winter — */
+  'Garlic': { fam: 'allium', code: 'GA', variety: 'Hardneck (Rocambole / Purple Stripe)',
+    sun: 'Full sun', water: 'Moderate; stop watering when tops yellow in June', soil: 'Fertile, well-drained, pH 6.0-7.0',
+    days: 'Plant Oct · harvest July (8-9 months)',
+    spacing: '6″ in-row · 12″ between rows · 2-3″ deep pointed-end up',
+    care: 'Plant individual cloves pointed-up, 2-3″ deep, after first frost. Mulch 4-6″ after ground freezes. Remove scapes (curling tops) in June to direct energy to bulb. Harvest when lower 1/3 of leaves yellow and upper 2/3 still green. Cure in shade 3-4 weeks.',
+    companions: [
+      { with: 'Brassicas', benefit: 'allium scent deters aphids and cabbage moths' },
+      { with: 'Carrots', benefit: 'mutual: allium scent repels carrot fly; carrot scent confuses onion fly' },
+    ],
+    cal: { plant: [10.0, 11.0], harvest: [6.5, 7.3] } },
+  'Shallots': { fam: 'allium', code: 'SL', variety: 'French shallot sets',
+    sun: 'Full sun', water: 'Moderate', soil: 'Fertile, well-drained',
+    days: 'Plant Oct · harvest July (8-9 months)',
+    spacing: '6-8″ in-row · 12″ between rows · pointed end just below soil',
+    care: 'Plant sets pointed-end up, just below soil surface. Mulch after ground freezes. Each set multiplies into 4-8 bulbs by harvest. Tops yellow and fall over when ready — cure 2-3 weeks in a warm dry spot.',
+    companions: [
+      { with: 'Carrots', benefit: 'allium scent repels carrot fly' },
+    ],
+    cal: { plant: [10.0, 11.0], harvest: [6.5, 7.3] } },
+  'Overwintering onions': { fam: 'allium', code: 'OW', variety: 'Hardy bunching sets (Electric / Radar)',
+    sun: 'Full sun', water: 'Moderate', soil: 'Fertile, well-drained',
+    days: 'Plant Oct · harvest June (7-8 months)',
+    spacing: '4-6″ in-row · 1″ deep · pointed end up',
+    care: 'Plant small sets 1″ deep after first frost. Hardy to Zone 4 — some top die-back in winter is normal. Resume growth in early spring. Harvest June, several weeks ahead of spring-planted onions.',
+    companions: [
+      { with: 'Carrots', benefit: 'mutual: allium scent repels carrot fly; carrot scent deters onion fly' },
+    ],
+    cal: { plant: [10.0, 11.0], harvest: [5.8, 6.5] } },
+  'Annual rye': { fam: 'cover', code: 'RY', variety: 'Winter rye (Secale cereale)',
+    sun: 'Full sun', water: 'Low — establishes on rainfall', soil: 'Any; improves structure and suppresses weeds',
+    days: 'Seed Sept–Oct · till under April–May',
+    spacing: 'Broadcast at 2 lbs per 1000 sq ft',
+    care: 'Germinates in cool soil above 34°F. Over-winters as green mat. Mow or crimp in spring when 12-18″ tall, then till under 3-4 weeks before planting. Excellent winter weed suppressor and organic matter builder.',
+    companions: [],
+    cal: { direct: [9.0, 10.17] } },
+
   /* — Mystery (grow bag) — */
   'Mystery cuke/cantaloupe': { fam: 'cucumber', code: 'MY', variety: 'Unknown until fruiting',
     sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',

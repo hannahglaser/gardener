@@ -32,6 +32,9 @@ const JSX_CODE_TO_NAME = {
   lk:  'Leek',
   bn:  'Butternut squash',   de:  'Delicata squash',
   lb:  'Lowbush blueberry',
+  ga:  'Garlic',             sl:  'Shallots',
+  ow:  'Overwintering onions', ry: 'Annual rye',
+  as:  'Asparagus',
 };
 
 /* Build a code → queue<plant-id> map from a bed's plant list, so each
@@ -410,14 +413,161 @@ function renderJsxBags(schem, bed) {
   });
 }
 
+/* ── RIGHT BED — FALL ─────────────────────────────────────────────── */
+function jsxRightBedFallSvg() {
+  let s = '';
+  const ys = { sf:28, pSF:56, A:80, B:108, C:136, D:160, pMid:192, E:222, pEF:244, F:258, pFG:276, G:290, open:316 };
+  const mid = (y, h) => y + h / 2;
+  const RB = (y, h, fill, label) => jband(148, 470, y, h, fill, label);
+
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="18" width="700" height="372" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<text x="380" y="11" text-anchor="middle" font-size="10" fill="#94886a">RIGHT BED — fall / winter layout</text>`;
+  s += `<text x="718" y="30" font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
+  s += `<polygon points="718,34 715,46 718,44 721,46" fill="#b96b3e" opacity="0.55"/>`;
+
+  /* Asparagus zone */
+  s += `<rect x="38" y="26" width="102" height="356" rx="4" fill="#3b6d11" fill-opacity="0.09" stroke="#3b6d11" stroke-width="0.6" stroke-opacity="0.35"/>`;
+  s += `<text x="89" y="205" text-anchor="middle" font-size="8.5" fill="#27500a" opacity="0.75" transform="rotate(-90,89,205)" font-style="italic">Asparagus (established N-S)</text>`;
+  [100, 130, 278, 308].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
+
+  /* Blueberry hedge */
+  s += `<rect x="622" y="26" width="70" height="356" rx="4" fill="#3c3489" fill-opacity="0.09" stroke="#3c3489" stroke-width="0.6" stroke-opacity="0.35"/>`;
+  s += `<text x="657" y="205" text-anchor="middle" font-size="8.5" fill="#26215c" opacity="0.75" transform="rotate(90,657,205)" font-style="italic">Blueberries 4ft</text>`;
+  [79, 129].forEach(cy => s += jp('lb', 657, cy, 9, '#6a7ec2', 'LB'));
+  [179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+
+  /* East strip */
+  s += `<rect x="694" y="26" width="30" height="356" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
+  s += `<text x="709" y="205" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,205)" font-style="italic">24″ strip (open)</text>`;
+
+  s += RB(ys.sf, 26, '#c9bd9f', 'North buffer');
+  s += jpath(148, 470, ys.pSF, 22, '24″ path');
+
+  /* Row A — Garlic × 49 (showing 12 representative) */
+  s += RB(ys.A, 24, '#c49a2a', 'A — Garlic × 49 cloves (6″ spacing)');
+  [163,200,237,274,311,348,385,422,459,496,533,570].forEach(cx => s += jp('ga', cx, mid(ys.A, 24), 9, '#c49a2a', 'GA'));
+
+  /* Row B — Shallots (W) + Overwintering onions (E) */
+  s += RB(ys.B, 24, '#8d8a82', 'B — Shallots × 25 (west)  +  Overwintering onions × 25 (east)');
+  [163,210,257,304,351].forEach(cx => s += jp('sl', cx, mid(ys.B, 24), 9, '#a07d55', 'SL'));
+  [415,462,509,556,603].forEach(cx => s += jp('ow', cx, mid(ys.B, 24), 9, '#7d9e6b', 'OW'));
+
+  /* Rows C-D cleared */
+  s += `<rect x="148" y="${ys.C}" width="470" height="${ys.pMid - ys.C}" rx="3" fill="#f5efe1" fill-opacity="0.6" stroke="#c9bd9f" stroke-width="0.5" stroke-dasharray="4 3" stroke-opacity="0.4"/>`;
+  s += `<text x="383" y="${ys.C + (ys.pMid - ys.C)/2 + 4}" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">Rows C–D cleared Oct · amended · open for spring</text>`;
+
+  s += jpath(148, 470, ys.pMid, 28, '24″ harvest path');
+
+  /* Rows E-G — persist through frost */
+  s += RB(ys.E, 22, '#a32d2d', 'E — beets (hold through frost)');
+  [160, 204, 248, 292].forEach(cx => s += jp('rb', cx, mid(ys.E, 22), 9, '#a32d2d', 'RB'));
+  [378, 422, 466, 510].forEach(cx => s += jp('yb', cx, mid(ys.E, 22), 9, '#ef9f27', 'YB'));
+
+  s += jpath(148, 470, ys.pEF, 14, '12″ path');
+
+  s += `<g class="jsx-plant" data-code="ca">` +
+    `<rect x="148" y="${ys.F}" width="470" height="18" rx="3" fill="#d85a30" fill-opacity="0.12" stroke="#d85a30" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.55"/>` +
+    `<text x="383" y="${ys.F + 12}" text-anchor="middle" font-size="8.5" fill="#712b13" font-weight="600">F — Carrots (harvest through Oct 5 · last frost)</text>` +
+    `</g>`;
+
+  s += jpath(148, 470, ys.pFG, 14, '12″ path');
+
+  s += RB(ys.G, 24, '#5f5e5a', 'G — scallions + leeks (frost-hardy)');
+  [160, 206, 252, 298].forEach(cx => s += jp('sn', cx, mid(ys.G, 24), 9, '#5f5e5a', 'SN'));
+  [378, 424, 468, 512].forEach(cx => s += jp('lk', cx, mid(ys.G, 24), 9, '#888780', 'LK'));
+
+  /* Open zone — annual rye */
+  s += `<g class="jsx-plant" data-code="ry">` +
+    `<rect x="148" y="${ys.open}" width="470" height="60" rx="4" fill="#7a9e6b" fill-opacity="0.12" stroke="#7a9e6b" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.55"/>` +
+    `<text x="383" y="${ys.open + 28}" text-anchor="middle" font-size="9" fill="#3d5a2a" font-weight="600">Annual rye — cover crop</text>` +
+    `<text x="383" y="${ys.open + 44}" text-anchor="middle" font-size="7.5" fill="#3d5a2a" fill-opacity="0.7">Seeded Sept · till under May before planting</text>` +
+    `</g>`;
+
+  s += `</svg>`;
+
+  const legend = [
+    {c:'#c49a2a', l:'GA · Garlic (49 cloves)'},
+    {c:'#a07d55', l:'SL · Shallots (~25)'},
+    {c:'#7d9e6b', l:'OW · Overwintering onions (~25)'},
+    {c:'#a32d2d', l:'RB (4)'}, {c:'#ef9f27', l:'YB (4)'},
+    {c:'#d85a30', l:'Carrots band'},
+    {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
+    {c:'#7a9e6b', l:'RY · Annual rye'},
+    {c:'#27500a', l:'AS · Asparagus (~4)'},
+    {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
+  ];
+
+  return { note: 'Right bed — fall / winter · garlic & alliums Oct–July · cover crop open zone', svg: s, legend };
+}
+
+/* ── LEFT BED — FALL ──────────────────────────────────────────────── */
+function jsxLeftBedFallSvg() {
+  const W = 780, x0 = 40;
+  let s = '';
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 464" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="20" width="800" height="432" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<text x="430" y="13" text-anchor="middle" font-size="10" fill="#94886a">LEFT BED — fall / winter layout</text>`;
+  s += `<text x="830" y="34" font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
+  s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
+
+  /* Annual rye — whole bed */
+  s += `<g class="jsx-plant" data-code="ry">` +
+    `<rect x="${x0}" y="30" width="${W}" height="390" rx="6" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="1" stroke-dasharray="7 4" stroke-opacity="0.5"/>` +
+    `<text x="430" y="200" text-anchor="middle" font-size="18" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Annual rye cover crop</text>` +
+    `<text x="430" y="224" text-anchor="middle" font-size="10" fill="#3d5a2a" fill-opacity="0.4">Seeded after Oct 5 frost · tilled under May before planting</text>` +
+    `</g>`;
+
+  /* Echinacea — permanent spot */
+  s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
+  s += `<text x="690" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC (perennial)</text>`;
+
+  s += `</svg>`;
+
+  const legend = [
+    {c:'#7a9e6b', l:'Annual rye — whole bed'},
+    {c:'#d4537e', l:'EC · Echinacea (perennial)'},
+  ];
+
+  return { note: 'Left bed — all summer crops cleared after Oct 5 frost · annual rye cover crop', svg: s, legend };
+}
+
+/* ── UNFENCED — FALL ──────────────────────────────────────────────── */
+function jsxUnfencedFallSvg() {
+  let s = '';
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<text x="240" y="13" text-anchor="middle" font-size="10" fill="#94886a">UNFENCED — fall / winter layout</text>`;
+  s += `<rect x="26" y="20" width="428" height="368" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+
+  /* Annual rye — whole area */
+  s += `<g class="jsx-plant" data-code="ry">` +
+    `<rect x="34" y="26" width="412" height="320" rx="6" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="1" stroke-dasharray="7 4" stroke-opacity="0.5"/>` +
+    `<text x="240" y="170" text-anchor="middle" font-size="16" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Annual rye cover crop</text>` +
+    `<text x="240" y="192" text-anchor="middle" font-size="9" fill="#3d5a2a" fill-opacity="0.4">Seeded after squash harvest clears · tilled under May</text>` +
+    `</g>`;
+
+  s += `<text x="240" y="380" text-anchor="middle" font-size="8" fill="#94886a" font-style="italic">Winter squash cured and in storage by mid-Oct</text>`;
+  s += `</svg>`;
+
+  const legend = [
+    {c:'#7a9e6b', l:'Annual rye — whole area'},
+  ];
+
+  return { note: 'Unfenced — squash harvested and cured · annual rye seeded after clearing', svg: s, legend };
+}
+
 /* ── DISPATCHER ───────────────────────────────────────────────────── */
-function renderJsxBed(schem, bed, bedKey) {
+function renderJsxBed(schem, bed, bedKey, season) {
   schem.innerHTML = '';
 
-  const draw = bedKey === 'left' ? jsxLeftSvg
-             : bedKey === 'right' ? jsxRightSvg
-             : bedKey === 'unfenced' ? jsxUnfencedSvg
-             : null;
+  const draw =
+    (season === 'fall' && bedKey === 'right')    ? jsxRightBedFallSvg :
+    (season === 'fall' && bedKey === 'left')     ? jsxLeftBedFallSvg :
+    (season === 'fall' && bedKey === 'unfenced') ? jsxUnfencedFallSvg :
+    bedKey === 'left'     ? jsxLeftSvg :
+    bedKey === 'right'    ? jsxRightSvg :
+    bedKey === 'unfenced' ? jsxUnfencedSvg :
+    null;
   if (!draw) { schem.textContent = 'No diagram for ' + bedKey; return; }
 
   const { note, svg, legend } = draw();

@@ -38,6 +38,7 @@
     --c-cane:   #a13e6e;
     --c-legume: #8d9243;
     --c-peren:  #5a7a52;
+    --c-cover:  #7a9e6b;
 
     --shadow: 0 1px 0 rgba(120,90,40,.10), 0 12px 30px -18px rgba(80,55,15,.35);
     --shadow-sm: 0 1px 2px rgba(80,55,15,.10);
@@ -172,6 +173,22 @@
     color: inherit; opacity: .7;
   }
 
+  .season-toggle {
+    display: flex; gap: 6px; margin: -6px 0 14px;
+  }
+  .season-toggle button {
+    appearance: none; background: var(--paper);
+    border: 1px solid var(--line); color: var(--ink-soft);
+    padding: 4px 14px; font: inherit; font-size: 12px;
+    border-radius: 999px; cursor: pointer;
+    transition: all .15s;
+  }
+  .season-toggle button:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .season-toggle button.is-active {
+    background: var(--moss); color: var(--paper);
+    border-color: var(--moss);
+  }
+
   .map-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;
@@ -199,15 +216,18 @@
     overflow: hidden; background: var(--paper);
     margin-bottom: 16px;
   }
-  .totals > div { padding: 10px 14px; border-right: 1px solid var(--line); }
+  .totals > div {
+    padding: 10px 14px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 6px;
+  }
   .totals > div:last-child { border-right: 0; }
   .totals .k {
     font-size: 10px; text-transform: uppercase; letter-spacing: .18em;
-    color: var(--ink-soft);
+    color: var(--ink-soft); order: 2;
   }
   .totals .v {
     font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 22px; line-height: 1.1; margin-top: 8px;
+    font-size: 22px; line-height: 1.1; order: 1;
   }
 
   .diagram-card {
@@ -1725,6 +1745,57 @@ BEDS.bags = {
 };
 
 /* ============================================================
+ *   FALL / WINTER BEDS  ·  Oct planting layout
+ * ============================================================ */
+{
+  const fa = (n, count) => Array.from({length: count}, () => p(n));
+
+  BEDS.rightFall = {
+    title: 'Right Bed',
+    dims: '296″ veg  +  48″ blueberry  +  24″ strip  =  368″ E-W × 300″ N-S',
+    lead: 'Fall / winter layout: garlic (49 cloves) in row A, shallots + overwintering onion sets in row B. Rows C–D cleared and amended. Beets, carrots, scallions, and leeks (rows E–G) hold through first frost. Open zone seeded to annual rye.',
+    totals: [
+      { k: 'Garlic', v: '49 cloves' },
+      { k: 'Shallots', v: '~25 sets' },
+      { k: 'Onion sets', v: '~25 sets' },
+      { k: 'Cover crop', v: 'Annual rye (open zone)' },
+    ],
+    plants: [
+      ...fa('Garlic', 12),
+      ...fa('Shallots', 5),
+      ...fa('Overwintering onions', 5),
+      ...fa('Red beet', 4), ...fa('Yellow beet', 4),
+      p('Carrots'),
+      ...fa('Scallion', 4), ...fa('Leek', 4),
+      p('Annual rye'),
+      ...fa('Asparagus', 4),
+      ...fa('Lowbush blueberry', 2), ...fa('Blueberry', 4),
+    ],
+  };
+
+  BEDS.leftFall = {
+    title: 'Left Bed',
+    dims: '400″ E-W × 350″ N-S',
+    lead: 'All summer crops cleared after Oct 5 frost. Entire bed seeded to annual rye. Echinacea remains (perennial).',
+    totals: [
+      { k: 'Cover crop', v: 'Annual rye' },
+      { k: 'Perennials', v: 'Echinacea' },
+    ],
+    plants: [p('Annual rye'), p('Echinacea')],
+  };
+
+  BEDS.unfencedFall = {
+    title: 'Unfenced Area',
+    dims: '126″ E-W × 264″ N-S',
+    lead: 'Winter squash cleared and cured by mid-October. Entire area seeded to annual rye cover crop.',
+    totals: [
+      { k: 'Cover crop', v: 'Annual rye' },
+    ],
+    plants: [p('Annual rye')],
+  };
+}
+
+/* ============================================================
  *   GARDEN TASKS  ·  Zone 5b/6a · Greenfield MA · May–Oct
  * ============================================================ */
 const GARDEN_TASKS = [
@@ -1799,6 +1870,7 @@ const GARDEN_TASKS = [
 let activeView = 'map';
 let activeBed = 'left';
 let activePlantId = null;
+let gardenSeason = 'summer';
 let activeFamilyFilter = 'all';
 let plantSearchQ = '';
 
@@ -1907,6 +1979,19 @@ function renderMap(root) {
   });
   root.appendChild(sub);
 
+  /* season toggle */
+  const seasonToggle = el('div', { class: 'season-toggle' });
+  ['summer','fall'].forEach(s => {
+    const label = s === 'summer' ? 'Summer 2026' : 'Fall / Winter 2026';
+    const b = el('button', {
+      class: s === gardenSeason ? 'is-active' : '',
+      onclick: () => { gardenSeason = s; activePlantId = null; renderAll(); },
+    });
+    b.textContent = label;
+    seasonToggle.appendChild(b);
+  });
+  root.appendChild(seasonToggle);
+
   /* two-column grid */
   const grid = el('div', { class: 'map-grid' });
   const mainCol = el('div');
@@ -1914,7 +1999,8 @@ function renderMap(root) {
   grid.appendChild(mainCol); grid.appendChild(side);
   root.appendChild(grid);
 
-  const bed = BEDS[activeBed];
+  const fallKey = activeBed + 'Fall';
+  const bed = (gardenSeason === 'fall' && BEDS[fallKey]) ? BEDS[fallKey] : BEDS[activeBed];
 
   /* bed head */
   const head = el('div', { class: 'bed-head' });
@@ -1941,7 +2027,7 @@ function renderMap(root) {
   const schem = el('div', { class: 'schem' });
   if (activeBed === 'bags')           renderJsxBags(schem, bed);
   else if (activeBed === 'middle')    renderBedSVG(schem, bed);
-  else                                renderJsxBed(schem, bed, activeBed);
+  else                                renderJsxBed(schem, bed, activeBed, gardenSeason);
 
   frame.appendChild(schem);
   card.appendChild(frame);
@@ -1962,7 +2048,7 @@ function renderBagsSchem(schem, bed) {
       : info.fam === 'root' ? 'root' : info.fam === 'allium' ? 'alli'
       : info.fam === 'squash' ? 'squash' : info.fam === 'herb' ? 'herb'
       : info.fam === 'berry' ? 'berry' : info.fam === 'cane' ? 'cane'
-      : info.fam === 'legume' ? 'legume' : 'flw';
+      : info.fam === 'legume' ? 'legume' : info.fam === 'cover' ? 'cover' : 'flw';
     const card = el('div', {
       class: 'bag-card',
       style: `--fam-color: var(--c-${famVar})`,
@@ -2036,6 +2122,7 @@ function plantCircleColors(name, info) {
     tomato:'tom', pepper:'pep', cucumber:'cuke', brassica:'bras',
     root:'root', allium:'alli', squash:'squash', herb:'herb',
     flower:'flw', berry:'berry', cane:'cane', legume:'legume',
+    perennial:'peren', cover:'cover',
   }[info.fam] || 'tom';
   const c = 'var(--c-' + famVar + ')';
   return {
