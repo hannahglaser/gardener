@@ -339,7 +339,13 @@ const PLANT_INFO = {
     cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [8.7, 9.8] } },
 
   /* — Berries — */
-  'Blueberry': { fam: 'berry', code: 'BB', variety: 'Highbush (perennial)',
+  'Lowbush blueberry': { fam: 'berry', code: 'LB', variety: 'Lowbush (perennial) · 1-2 ft · wild-type',
+    sun: 'Full to part sun', water: 'Even moisture', soil: 'Acidic (pH 4.5-5.0), sandy or rocky OK',
+    days: 'Bears year 2-3, spreads by rhizome',
+    spacing: '18-24″ apart',
+    care: 'Shorter than highbush — 1-2 ft. Spreads slowly by rhizome to form a patch. Acidify with peat or pine-needle mulch. Tip-prune oldest canes in late winter. Berries are smaller and more intensely flavored than highbush. Net against birds.',
+    cal: { bloom: [4.8, 5.4], harvest: [7.0, 8.0] } },
+  'Blueberry': { fam: 'berry', code: 'BB', variety: 'Highbush (perennial) · 5-6 ft',
     sun: 'Full to part sun', water: 'Even moisture, 1-2″/wk', soil: 'Acidic (pH 4.5-5.5), high organic matter',
     days: 'Bears year 2-3, full crop year 4+', spacing: '4-5 ft between plants',
     care: 'Acidify with peat or pine-needle mulch. Prune oldest canes (≥4 yr) in late winter to renew. Net against birds late June onward.',

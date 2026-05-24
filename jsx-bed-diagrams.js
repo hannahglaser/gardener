@@ -31,6 +31,7 @@ const JSX_CODE_TO_NAME = {
   ca:  'Carrots',            sn:  'Scallion',
   lk:  'Leek',
   bn:  'Butternut squash',   de:  'Delicata squash',
+  lb:  'Lowbush blueberry',
 };
 
 /* Build a code → queue<plant-id> map from a bed's plant list, so each
@@ -230,8 +231,9 @@ function jsxRightSvg() {
   /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
   [100, 130, 278, 308].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
 
-  /* Blueberry hedge — 6 bushes centered in zone */
-  [79, 129, 179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+  /* Blueberry hedge — 2 lowbush (N) + 4 highbush (S) */
+  [79, 129].forEach(cy => s += jp('lb', 657, cy, 9, '#6a7ec2', 'LB'));
+  [179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
 
 
   s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
@@ -290,7 +292,7 @@ function jsxRightSvg() {
     {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
-    {c:'#3c3489', l:'BB (6)'},
+    {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
     {c:'#b96b3e', l:'harvest paths'},
   ];
 
