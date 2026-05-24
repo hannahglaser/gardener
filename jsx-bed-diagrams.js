@@ -231,11 +231,11 @@ function jsxRightSvg() {
   s += `<rect x="694" y="26" width="30"  height="356" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
   s += `<text x="709" y="205" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,205)" font-style="italic">24″ strip (open)</text>`;
 
-  /* Asparagus — ~4 established crowns running N-S (cx=89, west strip) */
-  [56, 131, 206, 281].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
+  /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
+  [100, 130, 278, 308].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
 
-  /* Blueberry hedge — 6 bushes ~50″ apart running N-S (cx=657) */
-  [36, 86, 136, 186, 236, 286].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+  /* Blueberry hedge — 6 bushes centered in zone (y=26–382, gap=50) */
+  [79, 129, 179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
 
   s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
   s += jpath(148, 470, ys.pSF, 22, '24″ path');
