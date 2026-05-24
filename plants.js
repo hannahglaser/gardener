@@ -445,7 +445,7 @@ const PLANT_INFO = {
     sun: 'Full sun', water: 'Low — establishes on rainfall', soil: 'Any; improves structure, suppresses weeds',
     days: 'Seed Sept–Oct · overwinters · till under spring (3–4 weeks before planting)',
     spacing: 'Broadcast at 2 lbs per 1000 sq ft',
-    care: 'Germinates above 34°F — sow before first frost. Survives Zone 5b winter and resumes growth in spring. Till or mow under when 6–12″ tall; wait 3–4 weeks before planting so residue can break down. Allelopathic — suppresses weed germination through winter and into spring.',
+    care: 'Germinates above 34°F — sow before first frost. Survives Zone 5b winter and resumes growth in spring. Till or mow under when 6–12″ tall; wait 3–4 weeks before planting so residue can break down. Allelopathic — suppresses weed germination through winter and into spring. Soil benefits: deep fibrous roots prevent erosion and improve structure; scavenges leftover nitrogen so it doesn\'t leach over winter; adds organic matter when tilled under in spring.',
     companions: [],
     cal: { direct: [9.0, 10.17] } },
 
