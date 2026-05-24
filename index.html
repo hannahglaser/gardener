@@ -1249,7 +1249,18 @@
   .cal-bar[data-kind="harvest"]   { background: var(--cal-harvest); color: white; }
   .cal-bar[data-kind="bloom"]     { background: var(--cal-bloom); }
   .cal-bar[data-kind="harden"]    { background: var(--cal-harden); }
-  .cal-bar:hover { filter: brightness(.95); }
+  .cal-bar:hover { filter: brightness(.95); cursor: default; }
+
+  #cal-tip {
+    position: fixed; z-index: 9999; pointer-events: none;
+    background: var(--ink-dk, #2a2418); color: #fff;
+    font-size: 11px; line-height: 1.45;
+    padding: 5px 10px; border-radius: 5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    opacity: 0; transition: opacity .1s;
+  }
+  #cal-tip.visible { opacity: 1; }
 
   /* ============================================================
    *   FOOTER
@@ -2665,6 +2676,12 @@ function calRow(name, info) {
   return row;
 }
 
+const CAL_KIND_LABEL = {
+  indoor: 'Start indoors', harden: 'Harden off', transplant: 'Transplant out',
+  direct: 'Direct sow', harvest: 'Harvest window', bloom: 'Bloom / fruit',
+  plant: 'Plant',
+};
+
 function calBar(kind, [start, end]) {
   const left = (start - 1) / 12 * 100;
   const width = (end - start) / 12 * 100;
@@ -2672,9 +2689,12 @@ function calBar(kind, [start, end]) {
     class: 'cal-bar',
     'data-kind': kind,
     style: `left:${left}%; width:${width}%`,
-    title: `${kind} · ${monthLabel(start)} → ${monthLabel(end)}`,
   });
   if (width > 6) bar.textContent = kind;
+  const tipText = `${CAL_KIND_LABEL[kind] || kind}  ·  ${monthLabel(start)} → ${monthLabel(end)}`;
+  bar.addEventListener('mouseenter', e => showCalTip(e, tipText));
+  bar.addEventListener('mousemove',  e => moveCalTip(e));
+  bar.addEventListener('mouseleave', hideCalTip);
   return bar;
 }
 
@@ -2683,6 +2703,31 @@ function monthLabel(decimal) {
   const d = Math.round((decimal - m) * 30 + 1);
   return MONTHS[Math.min(11, m - 1)] + ' ' + Math.max(1, Math.min(30, d));
 }
+
+/* ── calendar tooltip ── */
+let _calTip = null;
+function getCalTip() {
+  if (!_calTip) {
+    _calTip = document.createElement('div');
+    _calTip.id = 'cal-tip';
+    document.body.appendChild(_calTip);
+  }
+  return _calTip;
+}
+function showCalTip(e, text) {
+  const tip = getCalTip();
+  tip.textContent = text;
+  tip.classList.add('visible');
+  posCalTip(e);
+}
+function moveCalTip(e) { posCalTip(e); }
+function posCalTip(e) {
+  const tip = getCalTip();
+  const x = e.clientX + 12, y = e.clientY - 32;
+  tip.style.left = Math.min(x, window.innerWidth - tip.offsetWidth - 8) + 'px';
+  tip.style.top  = Math.max(4, y) + 'px';
+}
+function hideCalTip() { getCalTip().classList.remove('visible'); }
 
 /* ============================================================
  *   WEATHER WIDGET  —  Open-Meteo, no API key needed
