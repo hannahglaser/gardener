@@ -1401,9 +1401,8 @@ const BEDS = {};
   N('Habanero', 1, 'east of pepper block');
   N('Jalapeño', 1, 'east of habanero');
   N('Thai basil', 2, 'east of HB/JL');
-  N('Zucchini (bush)', 1, 'pepper zone EW — mound');
-  N('Summer squash (bush)', 2, 'pepper zone EW — mounds, east of ZU');
-  N('Swiss chard', 4, 'east of squash mounds');
+  N('Zucchini (bush)', 2, 'pepper zone EW — mounds');
+  N('Summer squash (bush)', 2, 'pepper zone EW — mounds');
   N('Dill', 1, 'herb border · east strip');
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
@@ -1415,8 +1414,8 @@ const BEDS = {};
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Five rows (A–E) running E-W on a 400″ bed: sunflowers at the north edge, tomatoes across row B with a half-height SG + pepper sub-row below, squash mounds and an east herb strip in row D, and cucumbers trellised along the south fence in row E. Five harvest paths — including a 48″ gap between the tomato and squash rows — keep every row reachable from both sides.',
     totals: [
-      { k: 'Plants',  v: '70' },
-      { k: 'Families', v: '8' },
+      { k: 'Plants',  v: '67' },
+      { k: 'Families', v: '7' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
     ],
@@ -1427,7 +1426,7 @@ const BEDS = {};
       { letter:'B', y:57,  label:'Tomatoes', dim:'BW × 4 @ 30″ · SM × 3 · JU × 2 · SG × 1 · TL × 2 · 48″ row gap' },
       { letter:'C', y:132, label:'SG + peppers (sub-row)', dim:'SG × 4 · TB × 2 · JL · HB · BP B BP B SH · sub-row BP SH B' },
       { letter:'D', y:192, label:'Squash + Swiss chard + herb strip',
-        dim:'ZU + SS × 2 mounds · CH × 4 (12″) · east herb strip DL · EC · CI × 2 · TR' },
+        dim:'ZU × 2 + SS × 2 mounds · east herb strip DL · EC · CI × 2 · TR' },
       { letter:'E', y:279, label:'Cucumbers', dim:'8 × 18″ on trellis · NA interplanted' },
     ],
     plants: plants,
@@ -1441,13 +1440,16 @@ const BEDS = {};
   const plants = [];
   const vegCenter = 148;
 
-  /* A · north edge — open buffer (sunflowers are on left bed) */
-  /* A · Row A — Bok choy × 4 (y=48) */
+  /* A · Row A — Bok choy × 4 (y=48) + Swiss chard × 4 (12″) */
   plants.push(...line(48, [
     {n:'Bok choy'},
     {n:'Bok choy', after: 10},
     {n:'Bok choy', after: 10},
     {n:'Bok choy', after: 10},
+    {n:'Swiss chard', after: 20},
+    {n:'Swiss chard', after: 12},
+    {n:'Swiss chard', after: 12},
+    {n:'Swiss chard', after: 12},
   ], { centerX: vegCenter }));
 
   /* C · Row B — Kale × 4 + Green cabbage × 4 (y=78) */
@@ -1523,21 +1525,18 @@ const BEDS = {};
   /* Blueberry hedge (x=320, 6 bushes ~50" apart) */
   for (let i = 0; i < 6; i++) plants.push(plantAt('Blueberry', 320, 25 + i * 50));
 
-  /* Squash strip (x=356, 3 mounds) */
-  plants.push(plantAt('Zucchini (bush)',       356, 54));
-  plants.push(plantAt('Summer squash (bush)',  356, 126));
-  plants.push(plantAt('Summer squash (bush)',  356, 198));
+  /* East strip — open (no squash; squash is left bed + unfenced only) */
 
   BEDS.right = {
     title: 'Right Bed',
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
-    lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence. A 24″ mid-bed path separates leafy greens (rows A–D) from roots and alliums (rows E–G); 12″ paths between E/F and F/G allow reach from both ends.',
+    lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Row A mixes bok choy and swiss chard; rows B–D carry brassicas with nasturtium trap crops. A 24″ mid-bed path separates leafy greens from roots and alliums (rows E–G); 12″ paths between E/F and F/G allow reach from both ends.',
     totals: [
-      { k: 'Plants', v: '64' },
+      { k: 'Plants', v: '65' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '6 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
-      { k: 'Strip', v: '3 squash mounds' },
+      { k: 'Strip', v: '24″ open east strip' },
     ],
     ewIn: 368, nsIn: 300,
     zones: [
@@ -1560,7 +1559,7 @@ const BEDS = {};
       { kind:'gap',  y0:216, y1:300, xRange:[344,368], label:'' },
     ],
     rows: [
-      { letter:'A', y:48,  label:'Row A · Bok choy', dim:'BC × 4 @ 10″ · 30″ EW' },
+      { letter:'A', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BK × 4 @ 10″ · CH × 4 @ 12″ · 66″ EW' },
       { letter:'B', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
       { letter:'C', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
       { letter:'D', y:143, label:'Row D · Broccolini', dim:'4 × 15″ · 45″ EW' },
@@ -1568,7 +1567,7 @@ const BEDS = {};
       { letter:'F', y:204, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
       { letter:'G', y:228, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
-      { letter:'☘', y:130, label:'Squash strip', dim:'3 mounds · 36″ apart · vines train east', col:'strip' },
+      { letter:'☘', y:130, label:'East strip (open)', dim:'24″ · no squash — squash is left bed + unfenced', col:'strip' },
       { letter:'♦', y:175, label:'Asparagus (established)', dim:'~4 crowns · perennial · west strip · N-S', col:'asparagus' },
     ],
     plants: plants,

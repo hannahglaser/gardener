@@ -163,18 +163,14 @@ function jsxLeftSvg() {
   /* Path 2: peppers to squash row */
   s += jpath(x0, W, 258, 22, 'harvest path');
 
-  /* Row 4: ZU + SS mounds + Swiss chard east + herb strip */
-  s += jband(x0, W, 280, 44, '#639922', 'Squash mounds (ZU × 1, SS × 2) + Swiss chard × 4 + herb strip');
-  s += jmound('zu', 120, 303, 26, 18, '#639922', 'ZU');
-  s += jn(170, 302);
-  s += jmound('ss', 230, 303, 26, 18, '#97c459', 'SS');
-  s += jmound('ss', 330, 303, 26, 18, '#97c459', 'SS');
-  s += jn(382, 302);
-  /* Swiss chard x4 east of squash mounds, 12" apart */
-  s += jp('sc', 470, 303, 11, '#639922', 'SC');
-  s += jp('sc', 510, 303, 11, '#639922', 'SC');
-  s += jp('sc', 550, 303, 11, '#639922', 'SC');
-  s += jp('sc', 590, 303, 11, '#639922', 'SC');
+  /* Row 4: ZU×2 + SS×2 mounds + herb strip */
+  s += jband(x0, W, 280, 44, '#639922', 'Squash mounds (ZU × 2, SS × 2) + herb strip');
+  s += jmound('zu', 100, 303, 26, 18, '#639922', 'ZU');
+  s += jn(155, 302);
+  s += jmound('ss', 210, 303, 26, 18, '#97c459', 'SS');
+  s += jmound('ss', 320, 303, 26, 18, '#97c459', 'SS');
+  s += jn(375, 302);
+  s += jmound('zu', 430, 303, 26, 18, '#639922', 'ZU');
   /* Herb strip — east end: DL, EC, CI, CI, TR */
   s += jsq('dl', 650, 302, '#97c459', 'DL');
   s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
@@ -234,15 +230,17 @@ function jsxRightSvg() {
   /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
   [100, 130, 278, 308].forEach(cy => s += jp('as', 89, cy, 8, '#27500a', 'AS'));
 
-  /* Blueberry hedge — 6 bushes centered in zone (y=26–382, gap=50) */
+  /* Blueberry hedge — 6 bushes centered in zone */
   [79, 129, 179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+
 
   s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
   s += jpath(148, 470, ys.pSF, 22, '24″ path');
 
-  s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″)`);
+  s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″) + swiss chard x4 (12″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('bk', cx, mid(ys.A, 24), 10, '#0f6e56', 'BK'));
-  s += jn(370, mid(ys.A, 24)); s += jn(530, mid(ys.A, 24));
+  [370, 410, 450, 490].forEach(cx => s += jp('ch', cx, mid(ys.A, 24), 10, '#d4793a', 'CH'));
+  s += jn(335, mid(ys.A, 24)); s += jn(545, mid(ys.A, 24));
 
   s += RB(ys.B, 24, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('kl', cx, mid(ys.B, 24), 10, '#1d7a3c', 'KL'));
@@ -284,7 +282,7 @@ function jsxRightSvg() {
   s += `</svg>`;
 
   const legend = [
-    {c:'#0f6e56', l:'BK (4)'},
+    {c:'#0f6e56', l:'BK (4)'}, {c:'#d4793a', l:'CH · Swiss chard (4)'},
     {c:'#1d7a3c', l:'KL (4)'}, {c:'#185fa5', l:'GC (4)'},
     {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR · Broccoli (2)'},
     {c:'#534ab7', l:'CF (2)'},
@@ -292,7 +290,8 @@ function jsxRightSvg() {
     {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
-    {c:'#3c3489', l:'BB (6)'}, {c:'#b96b3e', l:'harvest paths'},
+    {c:'#3c3489', l:'BB (6)'},
+    {c:'#b96b3e', l:'harvest paths'},
   ];
 
   return { note: 'Right bed — 296″ usable E-W × 300″ N-S · ~250″ used · ~50″ open south', svg: s, legend };
