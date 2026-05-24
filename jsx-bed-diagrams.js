@@ -215,7 +215,7 @@ function jsxLeftSvg() {
 /* ── RIGHT BED ────────────────────────────────────────────────────── */
 function jsxRightSvg() {
   let s = '';
-  const ys = { sf:28, pSF:56, A:80, B:108, C:136, D:164, pMid:192, E:222, F:244, G:266, open:298 };
+  const ys = { sf:28, pSF:56, A:80, B:108, C:136, D:164, pMid:192, E:222, pEF:244, F:258, pFG:276, G:290, open:316 };
   const mid = (y, h) => y + h / 2;
   const RB = (y, h, fill, label) => jband(148, 470, y, h, fill, label);
 
@@ -265,18 +265,22 @@ function jsxRightSvg() {
   [160, 204, 248, 292].forEach(cx => s += jp('rb', cx, mid(ys.E, 22), 9, '#a32d2d', 'RB'));
   [378, 422, 466, 510].forEach(cx => s += jp('yb', cx, mid(ys.E, 22), 9, '#ef9f27', 'YB'));
 
+  s += jpath(148, 470, ys.pEF, 14, '12″ path');
+
   /* Carrot band: hover-able rect */
   s += `<g class="jsx-plant" data-code="ca">` +
     `<rect x="148" y="${ys.F}" width="470" height="18" rx="3" fill="#d85a30" fill-opacity="0.12" stroke="#d85a30" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.55"/>` +
     `<text x="383" y="${ys.F + 12}" text-anchor="middle" font-size="8.5" fill="#712b13" font-weight="600">F — Carrots (direct sow full row, thin to 3″)</text>` +
     `</g>`;
 
+  s += jpath(148, 470, ys.pFG, 14, '12″ path');
+
   s += RB(ys.G, 24, '#5f5e5a', `G — scallions x4 (3″) + leeks x4 (6″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('sn', cx, mid(ys.G, 24), 9, '#5f5e5a', 'SN'));
   [378, 424, 468, 512].forEach(cx => s += jp('lk', cx, mid(ys.G, 24), 9, '#888780', 'LK'));
 
-  s += `<rect x="148" y="${ys.open}" width="470" height="78" rx="4" fill="#fbf6ea" fill-opacity="0.6" stroke="#c9bd9f" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.4"/>`;
-  s += `<text x="383" y="${ys.open + 42}" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">90″ open — succession / south harvest access</text>`;
+  s += `<rect x="148" y="${ys.open}" width="470" height="60" rx="4" fill="#fbf6ea" fill-opacity="0.6" stroke="#c9bd9f" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.4"/>`;
+  s += `<text x="383" y="${ys.open + 34}" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">~50″ open — succession / south harvest access</text>`;
   s += `</svg>`;
 
   const legend = [
@@ -291,7 +295,7 @@ function jsxRightSvg() {
     {c:'#3c3489', l:'BB (6)'}, {c:'#b96b3e', l:'harvest paths'},
   ];
 
-  return { note: 'Right bed — 296″ usable E-W × 300″ N-S · 210″ used · 90″ open south', svg: s, legend };
+  return { note: 'Right bed — 296″ usable E-W × 300″ N-S · ~250″ used · ~50″ open south', svg: s, legend };
 }
 
 /* ── UNFENCED ─────────────────────────────────────────────────────── */
