@@ -184,7 +184,7 @@ function jsxLeftSvg() {
   s += `<text x="730" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
-  s += jpath(x0, W, 298, 48, 'harvest path');
+  s += jpath(x0, W, 298, 48, 'harvest path · wider for squash leaf clearance + cucurbit pest separation');
 
   /* Cucumbers */
   s += jband(x0, W, 346, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
