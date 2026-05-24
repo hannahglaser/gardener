@@ -189,7 +189,7 @@ function jsxLeftSvg() {
   /* Cucumbers */
   s += jband(x0, W, 346, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
   [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 365, 12, '#185fa5', 'CU'));
-  s += jn(180, 354); s += jn(450, 354); s += jn(680, 354);
+  s += jn(113, 354); s += jn(446, 354); s += jn(726, 354);
 
   /* Path 5 south */
   s += jpath(x0, W, 380, 26, '30″ south access — cuke harvest');
