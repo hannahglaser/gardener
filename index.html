@@ -1319,11 +1319,8 @@
   .tasks-month-name { font-family: var(--serif); font-size: 20px; color: var(--ink); }
   .tasks-month-badge { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--terra); background: rgba(180,90,40,.10); border-radius: 20px; padding: 2px 9px; }
   .tasks-list { list-style: none; padding: 0; margin: 0; }
-  .task-item { display: flex; gap: 12px; align-items: baseline; padding: 10px 20px; border-bottom: 1px solid var(--line); transition: background .15s; }
+  .task-item { display: flex; gap: 12px; align-items: baseline; padding: 10px 20px; border-bottom: 1px solid var(--line); }
   .task-item:last-child { border-bottom: none; }
-  .task-item.done { opacity: .45; }
-  .task-item.done .task-text { text-decoration: line-through; }
-  .task-cb { flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: var(--moss-dk, #3e5c2e); margin-top: 1px; }
   .task-cat { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; min-width: 62px; text-align: center; }
   .cat-plant    { background: #e8f4e9; color: #2a6b31; }
   .cat-harvest  { background: #fdf0e6; color: #9e4e12; }
@@ -1918,13 +1915,6 @@ let plantSearchQ = '';
  * ============================================================ */
 const $ = (s, root) => (root || document).querySelector(s);
 
-/* ── task checkbox persistence ── */
-function _taskStore() { try { return JSON.parse(localStorage.getItem('garden_done') || '{}'); } catch { return {}; } }
-function taskDone(key) { return !!_taskStore()[key]; }
-function setTaskDone(key, val) {
-  const s = _taskStore(); if (val) s[key] = 1; else delete s[key];
-  localStorage.setItem('garden_done', JSON.stringify(s));
-}
 function el(tag, attrs, children) {
   const e = document.createElement(tag);
   if (attrs) for (const k in attrs) {
@@ -2969,17 +2959,8 @@ function renderTasks(root) {
     section.appendChild(hdr);
 
     const list = el('ul', { class: 'tasks-list' });
-    tasks.forEach((t, idx) => {
-      const key = `${n}-${idx}`;
-      const isDone = taskDone(key);
-      const item = el('li', { class: 'task-item' + (isDone ? ' done' : '') });
-      const cb = el('input', { type: 'checkbox', class: 'task-cb' });
-      cb.checked = isDone;
-      cb.addEventListener('change', () => {
-        setTaskDone(key, cb.checked);
-        item.classList.toggle('done', cb.checked);
-      });
-      item.appendChild(cb);
+    tasks.forEach(t => {
+      const item = el('li', { class: 'task-item' });
       item.appendChild(el('span', { class: `task-cat cat-${t.cat}` }, [CAT_LABEL[t.cat]]));
       const body = el('div', { class: 'task-body' });
       body.appendChild(el('div', { class: 'task-text' }, [t.text]));
