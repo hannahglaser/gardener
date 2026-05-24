@@ -1329,7 +1329,8 @@
   .task-detail { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
 
   /* ── Weather widget ─────────────────────────────────── */
-  .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
+  #weather-bar { max-width: 1240px; margin: 0 auto; padding: 10px 24px 0; }
+  .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
   .weather-loading { color:var(--ink-mute); font-style:italic; font-size:13px; }
   .weather-ok   { border-color:var(--moss); background:color-mix(in srgb,var(--paper) 82%,var(--moss) 18%); }
   .weather-mild { border-color:var(--terra); background:color-mix(in srgb,var(--paper) 82%,var(--terra) 18%); }
@@ -1373,6 +1374,7 @@
   </nav>
 </header>
 
+<div id="weather-bar"></div>
 <main id="app"></main>
 
 <footer class="app">
@@ -1988,8 +1990,6 @@ function renderAll() {
  *   RENDER: MAP VIEW
  * ============================================================ */
 function renderMap(root) {
-  renderWeatherWidget(root);
-
   /* sub-tabs */
   const sub = el('div', { class: 'subtabs' });
   const bedOrder = ['left','middle','right','unfenced','bags'];
@@ -2779,10 +2779,13 @@ async function fetchWeather() {
   return weatherCache;
 }
 
-function renderWeatherWidget(root) {
+function renderWeatherWidget() {
+  const bar = $('#weather-bar');
+  if (!bar || bar.dataset.loaded) return;
+  bar.dataset.loaded = '1';
   const widget = el('div', { class: 'weather-widget' });
   widget.appendChild(el('span', { class: 'weather-loading' }, ['Checking weather…']));
-  root.insertBefore(widget, root.firstChild);
+  bar.appendChild(widget);
 
   fetchWeather().then(({ rain7, et0_7, forecast }) => {
     const rawDeficit = Math.max(0, et0_7 - rain7);
@@ -2946,6 +2949,7 @@ function renderTasks(root) {
  *   INIT
  * ============================================================ */
 renderAll();
+renderWeatherWidget();
 
 /* keyboard nav for top tabs */
 window.addEventListener('keydown', e => {
