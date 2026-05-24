@@ -242,22 +242,22 @@ function jsxRightSvg() {
 
   s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('bk', cx, mid(ys.A, 24), 10, '#0f6e56', 'BK'));
-  s += jn(155, mid(ys.A, 24)); s += jn(600, mid(ys.A, 24));
+  s += jn(370, mid(ys.A, 24)); s += jn(530, mid(ys.A, 24));
 
   s += RB(ys.B, 24, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('kl', cx, mid(ys.B, 24), 10, '#1d7a3c', 'KL'));
   [388, 440, 492, 540].forEach(cx => s += jp('gc', cx, mid(ys.B, 24), 10, '#185fa5', 'GC'));
-  s += jn(155, mid(ys.B, 24)); s += jn(600, mid(ys.B, 24));
+  s += jn(349, mid(ys.B, 24)); s += jn(580, mid(ys.B, 24));
 
   s += RB(ys.C, 24, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('rc', cx, mid(ys.C, 24), 10, '#993556', 'RC'));
   [378, 428].forEach(cx => s += jp('br', cx, mid(ys.C, 24), 10, '#7080c4', 'BR'));
   [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'CF'));
-  s += jn(155, mid(ys.C, 24)); s += jn(600, mid(ys.C, 24));
+  s += jn(344, mid(ys.C, 24)); s += jn(580, mid(ys.C, 24));
 
   s += RB(ys.D, 24, '#1d9e75', `D — broccolini x4 (15″)`);
   [175, 295, 415, 535].forEach(cx => s += jp('brl', cx, mid(ys.D, 24), 10, '#1d9e75', 'BRL'));
-  s += jn(155, mid(ys.D, 24)); s += jn(600, mid(ys.D, 24));
+  s += jn(235, mid(ys.D, 24)); s += jn(355, mid(ys.D, 24));
 
   s += jpath(148, 470, ys.pMid, 28, '24″ harvest path — mid bed');
 
