@@ -453,9 +453,11 @@ function jsxRightBedFallSvg() {
   [163,210,257,304,351].forEach(cx => s += jp('sl', cx, mid(ys.B, 24), 9, '#a07d55', 'SL'));
   [415,462,509,556,603].forEach(cx => s += jp('ow', cx, mid(ys.B, 24), 9, '#7d9e6b', 'OW'));
 
-  /* Rows C-D cleared */
-  s += `<rect x="148" y="${ys.C}" width="470" height="${ys.pMid - ys.C}" rx="3" fill="#f5efe1" fill-opacity="0.6" stroke="#c9bd9f" stroke-width="0.5" stroke-dasharray="4 3" stroke-opacity="0.4"/>`;
-  s += `<text x="383" y="${ys.C + (ys.pMid - ys.C)/2 + 4}" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">Rows C–D cleared Oct · amended · open for spring</text>`;
+  /* Rows C-D — annual rye after brassicas clear */
+  s += `<g class="jsx-plant" data-code="ry">` +
+    `<rect x="148" y="${ys.C}" width="470" height="${ys.pMid - ys.C}" rx="3" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.5"/>` +
+    `<text x="383" y="${ys.C + (ys.pMid - ys.C)/2 + 4}" text-anchor="middle" font-size="9" fill="#3d5a2a">Annual rye — rows C–D</text>` +
+    `</g>`;
 
   s += jpath(148, 470, ys.pMid, 28, '24″ harvest path');
 
