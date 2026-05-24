@@ -175,12 +175,13 @@ function jsxLeftSvg() {
   s += jp('sc', 510, 273, 11, '#639922', 'SC');
   s += jp('sc', 550, 273, 11, '#639922', 'SC');
   s += jp('sc', 590, 273, 11, '#639922', 'SC');
-  /* Herb strip — east end: DL, EC, CI, CI */
+  /* Herb strip — east end: DL, EC, CI, CI, TR */
   s += jsq('dl', 650, 263, '#97c459', 'DL');
   s += jp('ec', 690, 263, 11, '#d4537e', 'EC');
   s += jp('cit', 730, 263, 11, '#7daf3a', 'CI');
   s += jp('cit', 770, 263, 11, '#7daf3a', 'CI');
-  s += `<text x="710" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
+  s += jsq('tr', 810, 263, '#c9a227', 'TR');
+  s += `<text x="730" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers */
   s += jpath(x0, W, 298, 26, 'harvest path');
@@ -204,12 +205,12 @@ function jsxLeftSvg() {
     {c:'#534ab7', l:'SH (2)'}, {c:'#993556', l:'HB / JL'},
     {c:'#1d9e75', l:'B · Basil', sq:true}, {c:'#0f6e56', l:'TB · Thai basil', sq:true},
     {c:'#97c459', l:'DL · Dill', sq:true}, {c:'#d4537e', l:'EC · Echinacea'},
-    {c:'#7daf3a', l:'CI · Citronella (2)'},
+    {c:'#7daf3a', l:'CI · Citronella (2)'}, {c:'#c9a227', l:'TR · Tarragon', sq:true},
     {c:'#185fa5', l:'CU (8)'}, {c:'#639922', l:'ZU mound · SC (4)'},
     {c:'#97c459', l:'SS mound x2'}, {c:'#b96b3e', l:'harvest paths'},
   ];
 
-  return { note: 'Left bed — 400″ E-W × 350″ N-S · 318″ used incl. harvest paths · 32″ spare · ZU+SS now in pepper zone EW', svg: s, legend };
+  return { note: 'Left bed — 400″ E-W × 350″ N-S · 318″ used incl. harvest paths · 32″ spare', svg: s, legend };
 }
 
 /* ── RIGHT BED ────────────────────────────────────────────────────── */

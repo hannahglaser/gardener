@@ -1549,12 +1549,18 @@ const PLANT_INFO = {
     cal: { bloom: [5.7, 6.3], harvest: [7.3, 8.7] } },
 
   /* — Perennials — */
-  'Purple asparagus': { fam: 'perennial', code: 'AS', variety: 'Purple Passion or similar — sweeter, more tender than green',
+  'Asparagus': { fam: 'perennial', code: 'AS', variety: 'Purple crowns — variety unconfirmed · likely Purple Passion or similar',
     sun: 'Full sun (8h+)', water: '1-2″/wk; deep infrequent', soil: 'Deep, well-drained, pH 6.5-7.0 · amend with compost before planting',
     days: 'Year 1: no harvest · Year 2: harvest lightly · Year 3+: full harvest · 20+ year producer',
-    spacing: '12-18″ in-row · 4-5 ft between rows · plant crowns 6-8″ deep',
-    care: 'Do not harvest year 1 — let ferns develop to establish roots. Year 2 take only a few spears. Cut spears when 6-8″ tall, before tips open. Purple turns green when cooked; eat raw or lightly sauté to keep color. Top-dress with compost each spring. Cut ferns to ground after first frost.',
-    cal: { harvest: [[4.5, 6.5]] } },
+    spacing: '12-18″ in-row · 4-5 ft between rows · crowns 6-8″ deep · row runs S→N',
+    care: 'Do not harvest year 1 — let ferns establish roots. Year 2 take only a few spears. Cut spears at 6-8″ before tips open. Purple turns green when cooked; eat raw or quick-sauté to keep color. Top-dress with compost each spring. Cut ferns to ground after first frost.',
+    cal: { harvest: [4.5, 6.5] } },
+  'French Tarragon': { fam: 'perennial', code: 'TR', variety: 'French (sterile — propagate by division, not seed)',
+    sun: 'Full sun to part shade', water: 'Moderate; well-drained — dislikes wet feet', soil: 'Sandy to loamy, well-drained, not too rich',
+    days: 'Harvest throughout season once established',
+    spacing: '18-24″ apart · grows 18-24″ tall',
+    care: 'True French tarragon is sterile — buy as a division or transplant, never from seed (that is Russian tarragon, far less flavorful). Cut back by half in midsummer to prevent woody stems and encourage fresh growth. Divide every 2-3 years to maintain vigor. Mulch heavily over winter in Zone 5b.',
+    cal: { harvest: [5.5, 10.0] } },
 
   /* — Leafy greens (grow bag) — */
   'Spinach': { fam: 'brassica', code: 'SP', variety: 'Smooth-leaf, cool-season',
@@ -1654,14 +1660,15 @@ const BEDS = {};
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
   N('Cucumber', 8, 'trellised · 18″ apart');
-  N('Purple asparagus', 4, 'asparagus row · perennial');
+  N('Asparagus', 4, 'asparagus row · S→N · perennial');
+  N('French Tarragon', 1, 'east herb strip · TR');
 
   BEDS.left = {
     title: 'Left Bed',
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Sunflowers north, tomatoes / peppers / squash through the middle, cucumbers trellised south.',
     totals: [
-      { k: 'Plants',  v: '73' },
+      { k: 'Plants',  v: '74' },
       { k: 'Families', v: '7' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
@@ -1673,7 +1680,7 @@ const BEDS = {};
       { letter:'B', y:57,  label:'Row 2 · Tomato row 1', dim:'BW × 4 @ 30″ · SM × 3 · JU × 2 · SG × 1 · TL × 2 · 48″ row gap' },
       { letter:'C', y:132, label:'Row 3 · SG + TB JL HB + peppers (sub-row)', dim:'SG × 4 · TB × 2 · JL · HB · BP B BP B SH · sub-row BP SH B' },
       { letter:'D', y:192, label:'Row 4 · Squash mounds + Swiss chard + herb strip',
-        dim:'ZU + SS × 2 mounds · CH × 8 (12″) · east herb strip DL · EC · CI × 2' },
+        dim:'ZU + SS × 2 mounds · CH × 8 (12″) · east herb strip DL · EC · CI × 2 · TR' },
       { letter:'F', y:279, label:'Cucumber trellis', dim:'8 × 18″ on trellis · 126″ EW · NA interplanted' },
     ],
     plants: plants,
