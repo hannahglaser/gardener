@@ -116,14 +116,14 @@ function jsxLeftSvg() {
   s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
 
   /* Row 1: SF x12 */
-  s += jband(x0, W, 28, 30, '#d9b13a', 'Row 1 (north edge) — sunflowers x12');
+  s += jband(x0, W, 28, 30, '#d9b13a', 'Sunflowers × 12 (north edge)');
   [58,116,174,232,300,368,436,504,572,640,708,780].forEach(cx => s += jp('sf', cx, 44, 12, '#c79628', 'SF'));
 
   /* Path 1 */
   s += jpath(x0, W, 58, 28, '24″ harvest path');
 
   /* Row 2: Tomatoes as planted — BW x4 | SM SM | JU | SM | JU | SG | TL TL */
-  s += jband(x0, W, 86, 38, '#a32d2d', `Row 2 — BW x4 | SM x3 | JU x2 | SG x1 | TL x2 (as planted)`);
+  s += jband(x0, W, 86, 38, '#a32d2d', `Tomatoes — BW × 4 | SM × 3 | JU × 2 | SG × 1 | TL × 2`);
   [68, 142, 216, 290].forEach(cx => s += jp('bw', cx, 107, 13, '#a32d2d', 'BW'));
   s += jp('sm', 362, 107, 13, '#d85a30', 'SM');
   s += jp('sm', 420, 107, 13, '#d85a30', 'SM');
@@ -138,7 +138,7 @@ function jsxLeftSvg() {
   s += `<text x="42" y="138" font-size="8" fill="#94886a" font-style="italic">48″ gap</text>`;
 
   /* Row 3: main row + sub-row (SG x4 | TB x2 | JL | HB | BP B BP B SH) */
-  s += jband(x0, W, 142, 80, '#ef9f27', `Row 3 — SG x4 | TB x2 | JL | HB | peppers inline (sub-row below)`);
+  s += jband(x0, W, 142, 80, '#ef9f27', `SG × 4 | TB × 2 | JL | HB | peppers (sub-row below)`);
   [68, 152, 236, 320].forEach(cx => s += jp('sg', cx, 163, 13, '#ef9f27', 'SG'));
   s += jn(110, 153);
   s += jsq('tb', 408, 163, '#0f6e56', 'TB');
@@ -164,7 +164,7 @@ function jsxLeftSvg() {
   s += jpath(x0, W, 228, 22, 'harvest path');
 
   /* Row 4: ZU + SS mounds + Swiss chard east + herb strip */
-  s += jband(x0, W, 250, 44, '#639922', 'Row 4 — squash mounds (ZU x1, SS x2) + swiss chard x4 + herb strip');
+  s += jband(x0, W, 250, 44, '#639922', 'Squash mounds (ZU × 1, SS × 2) + Swiss chard × 4 + herb strip');
   s += jmound('zu', 120, 273, 26, 18, '#639922', 'ZU');
   s += jn(170, 262);
   s += jmound('ss', 230, 273, 26, 18, '#97c459', 'SS');
@@ -185,7 +185,6 @@ function jsxLeftSvg() {
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
   s += jpath(x0, W, 298, 48, 'harvest path + nasturtiums (cucurbit pest deterrent)');
-  s += jn(110, 322); s += jn(300, 322); s += jn(500, 322); s += jn(700, 322);
 
   /* Cucumbers */
   s += jband(x0, W, 346, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
