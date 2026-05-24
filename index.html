@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hannah + Dom's Garden</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f5f0e8' stroke='%232d2d2d' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%232d2d2d' stroke-width='1.2' stroke-dasharray='4 3'/%3E%3Cline x1='32' y1='44' x2='32' y2='28' stroke='%234a2e0f' stroke-width='2' stroke-linecap='round'/%3E%3Cellipse cx='26' cy='28' rx='7' ry='5' fill='%233d7a2f' transform='rotate(-30 26 28)'/%3E%3Cellipse cx='38' cy='26' rx='7' ry='5' fill='%236b4c1e' transform='rotate(25 38 26)'/%3E%3Cline x1='20' y1='44' x2='44' y2='44' stroke='%232d2d2d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   /* ============================================================
    *   TOKENS
@@ -1260,6 +1261,28 @@
   .expert-copy-btn { padding:10px 16px; background:transparent; border:1px solid var(--line); border-radius:8px; font:inherit; font-size:14px; color:var(--ink-soft); cursor:pointer; transition:all .15s; }
   .expert-copy-btn:hover { border-color:var(--ink-soft); color:var(--ink); }
 
+  /* ── Garden Tasks (Tab V) ───────────────────────────────── */
+  .tasks-view { max-width: 780px; margin: 0 auto; padding: 28px 20px 60px; display: flex; flex-direction: column; gap: 20px; }
+  .tasks-month { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .tasks-month.is-current { border-color: var(--terra); box-shadow: 0 0 0 2px rgba(180,90,40,.10); }
+  .tasks-month-header { display: flex; align-items: baseline; gap: 10px; padding: 14px 20px 12px; border-bottom: 1px solid var(--line); background: var(--bg); }
+  .tasks-month.is-current .tasks-month-header { background: #fdf6f0; }
+  .tasks-month-name { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+  .tasks-month-badge { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--terra); background: rgba(180,90,40,.10); border-radius: 20px; padding: 2px 9px; }
+  .tasks-list { list-style: none; padding: 0; margin: 0; }
+  .task-item { display: flex; gap: 12px; align-items: baseline; padding: 10px 20px; border-bottom: 1px solid var(--line); }
+  .task-item:last-child { border-bottom: none; }
+  .task-cat { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; min-width: 62px; text-align: center; }
+  .cat-plant    { background: #e8f4e9; color: #2a6b31; }
+  .cat-harvest  { background: #fdf0e6; color: #9e4e12; }
+  .cat-maintain { background: #e8eef8; color: #2d5491; }
+  .cat-build    { background: #f3ede4; color: #6b4a22; }
+  .cat-watch    { background: #fdecea; color: #b02a1a; }
+  .cat-feed     { background: #f0ecf8; color: #5b3d99; }
+  .task-body { flex: 1; min-width: 0; }
+  .task-text { font-size: 14px; color: var(--ink); line-height: 1.4; }
+  .task-detail { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+
   /* ── Weather widget ─────────────────────────────────── */
   .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
   .weather-loading { color:var(--ink-mute); font-style:italic; font-size:13px; }
@@ -1301,6 +1324,7 @@
     <button data-view="plants"   role="tab"><span class="tt-num">II.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
     <button data-view="calendar" role="tab"><span class="tt-num">III.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
     <button data-view="expert"   role="tab"><span class="tt-num">IV.</span><span class="tt-name">Garden Expert</span><span class="tt-count">Ask Claude</span></button>
+    <button data-view="tasks"    role="tab"><span class="tt-num">V.</span><span class="tt-name">Garden Tasks</span><span class="tt-count">May–Oct</span></button>
   </nav>
 </header>
 
@@ -1308,7 +1332,7 @@
 
 <footer class="app">
   <span>Care notes synthesized from ISU, Cornell, CSU, UMass Extensions · Garden Betty · Pepper Geek</span>
-  <span class="mono">Confirmed Spacing v.2026.05</span>
+  <span class="mono">Gardener v1.0</span>
 </footer>
 
 <script src="jsx-bed-diagrams.js"></script>
@@ -1700,6 +1724,67 @@ BEDS.bags = {
 };
 
 /* ============================================================
+ *   GARDEN TASKS  ·  Zone 5b/6a · Greenfield MA · May–Oct
+ * ============================================================ */
+const GARDEN_TASKS = [
+  /* ── May ─────────────────────────────────────────────────── */
+  { month:5, cat:'build',    text:'Set up tomato cages (16)',                          detail:'One per plant at transplant time — wire cages 5 ft+' },
+  { month:5, cat:'build',    text:'Set up cucumber trellis',                           detail:'8 plants @ 18″ · 12 ft single run or 4 × 3 ft sections · 6 ft tall' },
+  { month:5, cat:'plant',    text:'Transplant tomatoes & tomatillos',                  detail:'After last frost (May 10) · Brandywine × 4, San Marzano × 3, Sungold × 5, Juliette × 2, Tomatillo × 2 · water in daily first week' },
+  { month:5, cat:'plant',    text:'Transplant peppers & eggplant',                     detail:'Soil 65°F+ · peppers in left bed · eggplant bag to warmest south-facing spot' },
+  { month:5, cat:'plant',    text:'Transplant cucumbers to trellis',                   detail:'8 plants @ 18″ · left bed row E south fence' },
+  { month:5, cat:'plant',    text:'Direct sow beets & carrots (right bed rows E–F)',   detail:'Beets: 1″ deep, thin to 4″ · Carrots: full row, thin to 3″ · 3 weeks to thin' },
+  { month:5, cat:'plant',    text:'Direct sow scallions (right bed row G)',            detail:'3″ apart · sow in batches every 2–3 weeks for succession' },
+  { month:5, cat:'plant',    text:'Sow pole beans (bags B10–B11)',                     detail:'3–4 seeds per bag, thin to 2 strongest · don\'t over-fertilize' },
+  { month:5, cat:'watch',    text:'Identify mystery seedlings (bags B6–B9)',           detail:'Cucumber → trellis · cantaloupe → isolate from cukes, warmest spot' },
+  { month:5, cat:'maintain', text:'Move spinach & romaine bags to afternoon shade once temps reach 70°F', detail:'Bags B2–B5 · delays bolting into June' },
+
+  /* ── June ────────────────────────────────────────────────── */
+  { month:6, cat:'maintain', text:'Prune tomato suckers below first flower cluster',   detail:'Especially Brandywine — single-stem improves airflow and fruit size · weekly from here' },
+  { month:6, cat:'maintain', text:'Thin beets to 4″, carrots to 3″',                  detail:'Right bed rows E–F · thinnings are edible greens' },
+  { month:6, cat:'watch',    text:'Check for cucumber beetles on cucumbers & squash',  detail:'Nasturtiums are trap crop — beetles hit those first · yellow-striped or spotted' },
+  { month:6, cat:'watch',    text:'Check brassicas for cabbage worm',                  detail:'White butterflies laying eggs = check leaf undersides · handpick or Bt spray' },
+  { month:6, cat:'harvest',  text:'First harvest: spinach, romaine, bok choy, scallions', detail:'Pull outer leaves — leave center to keep producing' },
+  { month:6, cat:'maintain', text:'Net blueberries before berries begin to color',     detail:'Right bed hedge · birds move fast once they ripen' },
+  { month:6, cat:'plant',    text:'Succession sow scallions (row G)',                  detail:'Every 2–3 weeks for continuous harvest through fall' },
+
+  /* ── July ────────────────────────────────────────────────── */
+  { month:7, cat:'harvest',  text:'Harvest cucumbers every 1–2 days once producing',  detail:'Missed fruits go bitter and halt new production · left bed row E' },
+  { month:7, cat:'harvest',  text:'First tomatoes: Sungold & Juliette, then Brandywine & San Marzano', detail:'Sungold ~70 days from transplant · taste-test daily near color change' },
+  { month:7, cat:'harvest',  text:'Harvest Jalafuego & other peppers once full size',  detail:'Pick green for heat · let some go red for sweetness' },
+  { month:7, cat:'harvest',  text:'Red & black raspberry peak harvest',                detail:'Middle bed rows A–D · pick every 2 days — overripe berries mold fast' },
+  { month:7, cat:'watch',    text:'Watch for squash vine borer on ZU, SS, butternut, delicata', detail:'Moth lays eggs at stem base July–Aug · sudden wilting = check stem immediately' },
+  { month:7, cat:'maintain', text:'Continue pruning tomato suckers weekly',            detail:'Keep single main stem on Brandywine and San Marzano' },
+  { month:7, cat:'feed',     text:'Side-dress tomatoes and squash with compost',       detail:'Heavy feeders in peak production · scratch in around drip line' },
+  { month:7, cat:'maintain', text:'Pull bolted spinach & romaine',                     detail:'Once they flower they turn bitter — compost the plants, reuse bags' },
+  { month:7, cat:'plant',    text:'Succession sow beets in right bed open zone (rows E–F area)', detail:'Fall beets for Oct harvest before first frost' },
+
+  /* ── August ──────────────────────────────────────────────── */
+  { month:8, cat:'harvest',  text:'Peak harvest: tomatoes, cucumbers, peppers, zucchini & summer squash', detail:'Check zucchini daily — they double overnight' },
+  { month:8, cat:'harvest',  text:'Harvest pole beans before pods dry on vine',        detail:'Bags B10–B11 · pick regularly to keep producing' },
+  { month:8, cat:'harvest',  text:'Blackberry harvest (middle bed row E)',             detail:'Fully black and slightly soft · 8 canes — pick every 2–3 days' },
+  { month:8, cat:'watch',    text:'Check butternut & delicata skin — harvest when thumbnail can\'t scratch it', detail:'Stem should be dry and corky · 80–100 days from transplant' },
+  { month:8, cat:'maintain', text:'Remove spent brassica plants from right bed rows A–D', detail:'Check for disease before composting · clear space for fall succession' },
+  { month:8, cat:'plant',    text:'Plant fall succession in right bed open zone',      detail:'Kale, spinach, scallions for Oct–Nov harvest' },
+  { month:8, cat:'maintain', text:'Cut red & black raspberry floricanes to ground',   detail:'Second-year canes are done — remove cleanly · leave first-year canes' },
+
+  /* ── September ───────────────────────────────────────────── */
+  { month:9, cat:'harvest',  text:'Harvest winter squash before frost',                detail:'Butternut & delicata · cure butternut 10 days at 80°F · delicata stores best at 55°F' },
+  { month:9, cat:'harvest',  text:'Continue tomatoes, peppers & eggplant until frost threatens', detail:'First frost Oct 5 — watch forecast from late Sept' },
+  { month:9, cat:'harvest',  text:'Harvest leeks — they sweeten after light frost',   detail:'Right bed row G' },
+  { month:9, cat:'maintain', text:'Pull spent cucumber vines after production drops',  detail:'Clean trellis for storage · left bed row E' },
+  { month:9, cat:'watch',    text:'Watch frost forecast from Sept 20 onward',          detail:'First frost Oct 5 · have row cover ready for tomatoes & peppers' },
+
+  /* ── October ─────────────────────────────────────────────── */
+  { month:10, cat:'harvest',  text:'Harvest all remaining tomatoes & peppers before hard frost', detail:'Green tomatoes ripen fine on the counter — never refrigerate' },
+  { month:10, cat:'maintain', text:'Pull all frost-killed plants after Oct 5',         detail:'Diseased material in trash · healthy plants to compost' },
+  { month:10, cat:'maintain', text:'Mulch asparagus bed after ground cools',           detail:'Right bed west strip · 3–4″ straw after first hard freeze' },
+  { month:10, cat:'maintain', text:'Cut blackberry floricanes to ground',              detail:'Middle bed row E · leave first-year primocanes for next year\'s fruit' },
+  { month:10, cat:'maintain', text:'Clean & store grow bags indoors',                  detail:'Empty soil into beds · rinse bags dry · store for 2027' },
+  { month:10, cat:'maintain', text:'Log what worked — sketch 2027 crop rotation',     detail:'Rotate tomato/pepper family and brassica family to different beds' },
+];
+
+/* ============================================================
  *   STATE
  * ============================================================ */
 let activeView = 'map';
@@ -1789,6 +1874,7 @@ function renderAll() {
   else if (activeView === 'plants') renderPlants(view);
   else if (activeView === 'calendar') renderCalendar(view);
   else if (activeView === 'expert') renderExpert(view);
+  else if (activeView === 'tasks') renderTasks(view);
 }
 
 /* ============================================================
@@ -2647,6 +2733,50 @@ function renderExpert(root) {
   root.appendChild(wrap);
 }
 
+function renderTasks(root) {
+  const MONTHS = [
+    { n: 5,  name: 'May',       sub: 'Last frost May 10 · transplant season' },
+    { n: 6,  name: 'June',      sub: 'Establishment · first harvests' },
+    { n: 7,  name: 'July',      sub: 'Peak production begins' },
+    { n: 8,  name: 'August',    sub: 'Full harvest · summer peak' },
+    { n: 9,  name: 'September', sub: 'Wind down · winter squash' },
+    { n: 10, name: 'October',   sub: 'First frost Oct 5 · close out' },
+  ];
+  const CAT_LABEL = { plant:'Plant', harvest:'Harvest', maintain:'Maintain', build:'Build', watch:'Watch', feed:'Feed' };
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+
+  const wrap = el('div', { class: 'tasks-view' });
+
+  MONTHS.forEach(({ n, name, sub }) => {
+    const tasks = GARDEN_TASKS.filter(t => t.month === n);
+    const isCurrent = n === currentMonth;
+
+    const section = el('div', { class: 'tasks-month' + (isCurrent ? ' is-current' : '') });
+
+    const hdr = el('div', { class: 'tasks-month-header' });
+    hdr.appendChild(el('span', { class: 'tasks-month-name' }, [name]));
+    if (isCurrent) hdr.appendChild(el('span', { class: 'tasks-month-badge' }, ['This month']));
+    else hdr.appendChild(el('span', { style: 'font-size:12px;color:var(--ink-soft)' }, [sub]));
+    section.appendChild(hdr);
+
+    const list = el('ul', { class: 'tasks-list' });
+    tasks.forEach(t => {
+      const item = el('li', { class: 'task-item' });
+      item.appendChild(el('span', { class: `task-cat cat-${t.cat}` }, [CAT_LABEL[t.cat]]));
+      const body = el('div', { class: 'task-body' });
+      body.appendChild(el('div', { class: 'task-text' }, [t.text]));
+      if (t.detail) body.appendChild(el('div', { class: 'task-detail' }, [t.detail]));
+      item.appendChild(body);
+      list.appendChild(item);
+    });
+    section.appendChild(list);
+    wrap.appendChild(section);
+  });
+
+  root.appendChild(wrap);
+}
+
 /* ============================================================
  *   INIT
  * ============================================================ */
@@ -2655,10 +2785,10 @@ renderAll();
 /* keyboard nav for top tabs */
 window.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  const order = ['map','plants','calendar','expert'];
+  const order = ['map','plants','calendar','expert','tasks'];
   const i = order.indexOf(activeView);
-  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%4]; renderAll(); }
-  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+4)%4]; renderAll(); }
+  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%5]; renderAll(); }
+  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+5)%5]; renderAll(); }
 });
 </script>
 </body>
