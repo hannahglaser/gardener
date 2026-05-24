@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hannah + Dom's Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f5f0e8' stroke='%232d2d2d' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%232d2d2d' stroke-width='1.2' stroke-dasharray='4 3'/%3E%3Cline x1='32' y1='44' x2='32' y2='28' stroke='%234a2e0f' stroke-width='2' stroke-linecap='round'/%3E%3Cellipse cx='26' cy='28' rx='7' ry='5' fill='%233d7a2f' transform='rotate(-30 26 28)'/%3E%3Cellipse cx='38' cy='26' rx='7' ry='5' fill='%236b4c1e' transform='rotate(25 38 26)'/%3E%3Cline x1='20' y1='44' x2='44' y2='44' stroke='%232d2d2d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   /* ============================================================
@@ -63,6 +66,7 @@
       radial-gradient(circle at 12% 8%, rgba(185, 107, 62, .04), transparent 40%),
       radial-gradient(circle at 88% 92%, rgba(77, 106, 53, .05), transparent 45%);
     background-attachment: fixed;
+    overflow-x: clip;
   }
   .serif {
     font-family: "Cormorant Garamond", "Garamond", "Georgia", "Iowan Old Style", "Times New Roman", serif;
@@ -907,7 +911,7 @@
   /* ============================================================
    *   SIDE PANEL
    * ============================================================ */
-  aside.side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  aside.side { display: flex; flex-direction: column; gap: 14px; min-width: 0; position: sticky; top: 16px; align-self: flex-start; max-height: calc(100vh - 80px); overflow-y: auto; }
   .panel {
     background: var(--paper); border: 1px solid var(--line);
     border-radius: 10px; padding: 14px 16px;
@@ -1315,8 +1319,11 @@
   .tasks-month-name { font-family: var(--serif); font-size: 20px; color: var(--ink); }
   .tasks-month-badge { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--terra); background: rgba(180,90,40,.10); border-radius: 20px; padding: 2px 9px; }
   .tasks-list { list-style: none; padding: 0; margin: 0; }
-  .task-item { display: flex; gap: 12px; align-items: baseline; padding: 10px 20px; border-bottom: 1px solid var(--line); }
+  .task-item { display: flex; gap: 12px; align-items: baseline; padding: 10px 20px; border-bottom: 1px solid var(--line); transition: background .15s; }
   .task-item:last-child { border-bottom: none; }
+  .task-item.done { opacity: .45; }
+  .task-item.done .task-text { text-decoration: line-through; }
+  .task-cb { flex-shrink: 0; width: 16px; height: 16px; cursor: pointer; accent-color: var(--moss-dk, #3e5c2e); margin-top: 1px; }
   .task-cat { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 2px 7px; border-radius: 10px; min-width: 62px; text-align: center; }
   .cat-plant    { background: #e8f4e9; color: #2a6b31; }
   .cat-harvest  { background: #fdf0e6; color: #9e4e12; }
@@ -1895,8 +1902,12 @@ const GARDEN_TASKS = [
 /* ============================================================
  *   STATE
  * ============================================================ */
-let activeView = 'map';
-let activeBed = 'left';
+const VALID_VIEWS = ['map','plants','calendar','expert','tasks'];
+const VALID_BEDS  = ['left','middle','right','unfenced','bags'];
+let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1)
+               : (localStorage.getItem('activeView') || 'map');
+let activeBed  = VALID_BEDS.includes(localStorage.getItem('activeBed'))
+               ? localStorage.getItem('activeBed') : 'left';
 let activePlantId = null;
 let gardenSeason = 'summer';
 let activeFamilyFilter = 'all';
@@ -1906,6 +1917,14 @@ let plantSearchQ = '';
  *   UTILITIES
  * ============================================================ */
 const $ = (s, root) => (root || document).querySelector(s);
+
+/* ── task checkbox persistence ── */
+function _taskStore() { try { return JSON.parse(localStorage.getItem('garden_done') || '{}'); } catch { return {}; } }
+function taskDone(key) { return !!_taskStore()[key]; }
+function setTaskDone(key, val) {
+  const s = _taskStore(); if (val) s[key] = 1; else delete s[key];
+  localStorage.setItem('garden_done', JSON.stringify(s));
+}
 function el(tag, attrs, children) {
   const e = document.createElement(tag);
   if (attrs) for (const k in attrs) {
@@ -1966,10 +1985,15 @@ function renderTopTabs() {
     b.onclick = () => {
       activeView = b.dataset.view;
       activePlantId = null;
+      location.hash = activeView;
+      localStorage.setItem('activeView', activeView);
       renderAll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   });
+  /* scroll active tab into view on narrow screens */
+  const activeBtn = document.querySelector('#toptabs button.is-active');
+  if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
   $('#plantCount').textContent = Object.keys(PLANT_INFO).length + ' kinds';
 }
 
@@ -1998,7 +2022,7 @@ function renderMap(root) {
   bedOrder.forEach(k => {
     const b = el('button', {
       class: k === activeBed ? 'is-active' : '',
-      onclick: () => { activeBed = k; activePlantId = null; renderAll(); },
+      onclick: () => { activeBed = k; activePlantId = null; localStorage.setItem('activeBed', k); renderAll(); },
     });
     b.innerHTML = `<span class="sub-em">${subRoman[k]}</span>${subNames[k]}`;
     sub.appendChild(b);
@@ -2376,6 +2400,13 @@ function renderDetailsPanel() {
   const panel = el('section', { class: 'panel details' });
   panel.appendChild(el('h3', null, 'Plant Detail'));
   panel.appendChild(el('div', { id: 'details' }));
+  /* auto-select first plant in bed so the panel is never empty */
+  if (!activePlantId) {
+    const fallKey = activeBed + 'Fall';
+    const bed = (gardenSeason === 'fall' && BEDS[fallKey]) ? BEDS[fallKey] : BEDS[activeBed];
+    const firstPl = (bed && bed.plants && bed.plants[0]) || null;
+    if (firstPl) activePlantId = firstPl.id;
+  }
   setTimeout(renderDetails, 0);
   return panel;
 }
@@ -2516,6 +2547,14 @@ function rerenderGrid() {
 
   if (entries.length === 0) {
     grid.appendChild(el('p', { style: 'color:var(--ink-soft); font-style:italic; padding: 20px;' }, 'No plants match that filter.'));
+  }
+
+  const countEl = $('#plantCount');
+  if (countEl) {
+    const total = Object.keys(PLANT_INFO).length;
+    countEl.textContent = entries.length < total
+      ? `${entries.length} / ${total}`
+      : `${total} kinds`;
   }
 }
 
@@ -2713,6 +2752,7 @@ function calBar(kind, [start, end]) {
     style: `left:${left}%; width:${width}%`,
   });
   if (width > 6) bar.textContent = kind;
+  else if (width > 2) bar.textContent = kind[0].toUpperCase();
   const tipText = `${CAL_KIND_LABEL[kind] || kind}  ·  ${monthLabel(start)} → ${monthLabel(end)}`;
   bar.addEventListener('mouseenter', e => showCalTip(e, tipText));
   bar.addEventListener('mousemove',  e => moveCalTip(e));
@@ -2929,8 +2969,17 @@ function renderTasks(root) {
     section.appendChild(hdr);
 
     const list = el('ul', { class: 'tasks-list' });
-    tasks.forEach(t => {
-      const item = el('li', { class: 'task-item' });
+    tasks.forEach((t, idx) => {
+      const key = `${n}-${idx}`;
+      const isDone = taskDone(key);
+      const item = el('li', { class: 'task-item' + (isDone ? ' done' : '') });
+      const cb = el('input', { type: 'checkbox', class: 'task-cb' });
+      cb.checked = isDone;
+      cb.addEventListener('change', () => {
+        setTaskDone(key, cb.checked);
+        item.classList.toggle('done', cb.checked);
+      });
+      item.appendChild(cb);
       item.appendChild(el('span', { class: `task-cat cat-${t.cat}` }, [CAT_LABEL[t.cat]]));
       const body = el('div', { class: 'task-body' });
       body.appendChild(el('div', { class: 'task-text' }, [t.text]));
