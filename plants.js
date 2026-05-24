@@ -87,7 +87,7 @@ const PLANT_INFO = {
       { with: 'Nasturtium', benefit: 'trap crop — draws aphids away from pepper plants' },
     ],
     cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.5, 9.5] } },
-  'Jalapeño': { fam: 'pepper', code: 'JL', variety: 'Medium heat',
+  'Jalapeño': { fam: 'pepper', code: 'JL', variety: 'Jalafuego',
     sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',
     days: '70-80 days', spacing: '18″ apart',
     care: 'Pick green for classic flavor; let some ripen red for sweeter heat.',
