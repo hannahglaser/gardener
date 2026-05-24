@@ -131,16 +131,16 @@ function jsxLeftSvg() {
   s += jp('sm', 536, 107, 13, '#d85a30', 'SM');
   s += jp('ju', 594, 107, 13, '#d4537e', 'JU');
   s += jp('sg', 648, 107, 13, '#ef9f27', 'SG');
-  s += jn(326, 97);
-  s += jp('tl', 718, 100, 11, '#854f0b', 'TL');
-  s += jn(738, 90);
-  s += jp('tl', 758, 100, 11, '#854f0b', 'TL');
+  s += jn(326, 107);
+  s += jp('tl', 718, 107, 11, '#854f0b', 'TL');
+  s += jn(738, 107);
+  s += jp('tl', 758, 107, 11, '#854f0b', 'TL');
   s += jpath(x0, W, 124, 48, 'harvest path · breathing room for tomatoes');
 
   /* Row 3: main row + sub-row (SG x4 | TB x2 | JL | HB | BP B BP B SH) */
   s += jband(x0, W, 172, 80, '#ef9f27', `SG × 4 | TB × 2 | JL | HB | peppers (sub-row below)`);
   [68, 152, 236, 320].forEach(cx => s += jp('sg', cx, 193, 13, '#ef9f27', 'SG'));
-  s += jn(110, 183);
+  s += jn(110, 193);
   s += jsq('tb', 408, 193, '#0f6e56', 'TB');
   s += jsq('tb', 448, 193, '#0f6e56', 'TB');
   s += jp('jl', 492, 193, 13, '#993556', 'JL');
@@ -166,21 +166,21 @@ function jsxLeftSvg() {
   /* Row 4: ZU + SS mounds + Swiss chard east + herb strip */
   s += jband(x0, W, 280, 44, '#639922', 'Squash mounds (ZU × 1, SS × 2) + Swiss chard × 4 + herb strip');
   s += jmound('zu', 120, 303, 26, 18, '#639922', 'ZU');
-  s += jn(170, 292);
+  s += jn(170, 302);
   s += jmound('ss', 230, 303, 26, 18, '#97c459', 'SS');
   s += jmound('ss', 330, 303, 26, 18, '#97c459', 'SS');
-  s += jn(382, 292);
+  s += jn(382, 302);
   /* Swiss chard x4 east of squash mounds, 12" apart */
   s += jp('sc', 470, 303, 11, '#639922', 'SC');
   s += jp('sc', 510, 303, 11, '#639922', 'SC');
   s += jp('sc', 550, 303, 11, '#639922', 'SC');
   s += jp('sc', 590, 303, 11, '#639922', 'SC');
   /* Herb strip — east end: DL, EC, CI, CI, TR */
-  s += jsq('dl', 650, 293, '#97c459', 'DL');
-  s += jp('ec', 690, 293, 11, '#d4537e', 'EC');
-  s += jp('cit', 730, 293, 11, '#7daf3a', 'CI');
-  s += jp('cit', 770, 293, 11, '#7daf3a', 'CI');
-  s += jsq('tr', 810, 293, '#c9a227', 'TR');
+  s += jsq('dl', 650, 302, '#97c459', 'DL');
+  s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
+  s += jp('cit', 730, 302, 11, '#7daf3a', 'CI');
+  s += jp('cit', 770, 302, 11, '#7daf3a', 'CI');
+  s += jsq('tr', 810, 302, '#c9a227', 'TR');
   s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
@@ -189,7 +189,7 @@ function jsxLeftSvg() {
   /* Cucumbers */
   s += jband(x0, W, 376, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
   [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 395, 12, '#185fa5', 'CU'));
-  s += jn(113, 384); s += jn(446, 384); s += jn(726, 384);
+  s += jn(113, 393); s += jn(446, 393); s += jn(726, 393);
 
   /* Path 5 south */
   s += jpath(x0, W, 410, 26, '30″ south access — cuke harvest');
