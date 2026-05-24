@@ -216,7 +216,7 @@ function jsxLeftSvg() {
 function jsxRightSvg() {
   let s = '';
   const ys = { sf:28, pSF:56, A:80, B:108, C:136, D:164, pMid:192, E:222, F:244, G:266, open:298 };
-  const mid = (y, h) => y + h / 2 + 4;
+  const mid = (y, h) => y + h / 2;
   const RB = (y, h, fill, label) => jband(148, 470, y, h, fill, label);
 
   s += `<svg class="jsx-bed-svg" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
@@ -249,7 +249,7 @@ function jsxRightSvg() {
   s += jn(348, ys.C + 8);
 
   s += RB(ys.D, 24, '#1d9e75', `D — broccolini x4 (15″)`);
-  [175, 295, 415, 535].forEach(cx => s += jp('brl', cx, mid(ys.D, 24), 10, '#1d9e75', 'BR'));
+  [175, 295, 415, 535].forEach(cx => s += jp('brl', cx, mid(ys.D, 24), 10, '#1d9e75', 'BRL'));
 
   s += jpath(148, 470, ys.pMid, 28, '24″ harvest path — mid bed');
 
@@ -274,9 +274,9 @@ function jsxRightSvg() {
   const legend = [
     {c:'#0f6e56', l:'BK (4)'},
     {c:'#1d7a3c', l:'KL (4)'}, {c:'#185fa5', l:'GC (4)'},
-    {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR (2)'},
+    {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR · Broccoli (2)'},
     {c:'#534ab7', l:'CF (2)'},
-    {c:'#1d9e75', l:'BR (4)'}, {c:'#a32d2d', l:'RB (4)'},
+    {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB (4)'},
     {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#b96b3e', l:'harvest paths'},
