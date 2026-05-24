@@ -1115,6 +1115,8 @@
     overflow: hidden;
     box-shadow: var(--shadow);
   }
+  .cal-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .cal-table { min-width: 660px; }
   .cal-months {
     display: grid;
     grid-template-columns: 200px repeat(12, 1fr);
@@ -1128,7 +1130,7 @@
     padding: 8px 10px; text-align: center;
     border-right: 1px solid var(--line-soft);
   }
-  .cal-months > div:first-child { text-align: left; }
+  .cal-months > div:first-child { text-align: left; position: sticky; left: 0; z-index: 2; background: var(--paper-2); }
   .cal-months > div:last-child { border-right: 0; }
 
   .cal-rows-wrap {
@@ -1159,12 +1161,8 @@
     text-transform: uppercase; letter-spacing: .18em;
     color: var(--terra-dk);
   }
-  .cal-section > div {
-    padding: 7px 12px;
-  }
-  .cal-section .sec-name {
-    font-style: italic;
-  }
+  .cal-section > div { padding: 7px 12px; }
+  .cal-section .sec-name { font-style: italic; position: sticky; left: 0; z-index: 2; background: var(--paper-2); }
 
   .cal-row {
     display: grid; grid-template-columns: 200px 1fr;
@@ -1179,7 +1177,11 @@
     font-size: 12.5px;
     display: flex; align-items: center; gap: 6px;
     border-right: 1px solid var(--line-soft);
+    position: sticky; left: 0; z-index: 2;
+    background: var(--paper);
   }
+  .cal-row:nth-child(even) .cal-label { background: #f5eedb; }
+  .cal-row:hover .cal-label { background: #faf2df; }
   .cal-row .cal-label .dot {
     width: 8px; height: 8px; border-radius: 50%; flex: none;
     border: 1px solid rgba(0,0,0,.2);
@@ -1228,9 +1230,6 @@
 
   /* small screens */
   @media (max-width: 720px) {
-    .cal-months { grid-template-columns: 110px repeat(12, 1fr); font-size: 9px; }
-    .cal-row { grid-template-columns: 110px 1fr; }
-    .cal-section { grid-template-columns: 110px 1fr; }
     .schem-row { grid-template-columns: 1fr; }
     .row-head { margin-bottom: 6px; }
     .track   { flex-wrap: wrap; }
@@ -2621,6 +2620,7 @@ function renderCalendar(root) {
   root.appendChild(legend);
 
   /* table */
+  const scroll = el('div', { class: 'cal-scroll' });
   const table = el('div', { class: 'cal-table' });
 
   /* months header */
@@ -2670,7 +2670,8 @@ function renderCalendar(root) {
   /* (left column is 110px in mobile media query) — handle via CSS variable */
 
   table.appendChild(rowsWrap);
-  root.appendChild(table);
+  scroll.appendChild(table);
+  root.appendChild(scroll);
 }
 
 function makeFrostNote(label, val) {
