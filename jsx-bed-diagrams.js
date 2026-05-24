@@ -33,7 +33,7 @@ const JSX_CODE_TO_NAME = {
   bn:  'Butternut squash',   de:  'Delicata squash',
   lb:  'Lowbush blueberry',
   ga:  'Garlic',             sl:  'Shallots',
-  ow:  'Overwintering onions', wo: 'Winter-killed oats',
+  ow:  'Overwintering onions', ry: 'Annual rye',
   as:  'Asparagus',   tr:  'French Tarragon',
 };
 
@@ -453,10 +453,10 @@ function jsxRightBedFallSvg() {
   [163,210,257,304,351].forEach(cx => s += jp('sl', cx, mid(ys.B, 24), 9, '#a07d55', 'SL'));
   [415,462,509,556,603].forEach(cx => s += jp('ow', cx, mid(ys.B, 24), 9, '#7d9e6b', 'OW'));
 
-  /* Rows C-D — winter-killed oats after brassicas clear */
-  s += `<g class="jsx-plant" data-code="wo">` +
+  /* Rows C-D — annual rye after brassicas clear */
+  s += `<g class="jsx-plant" data-code="ry">` +
     `<rect x="148" y="${ys.C}" width="470" height="${ys.pMid - ys.C}" rx="3" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.5"/>` +
-    `<text x="383" y="${ys.C + (ys.pMid - ys.C)/2 + 4}" text-anchor="middle" font-size="9" fill="#3d5a2a">Winter-killed oats — rows C–D</text>` +
+    `<text x="383" y="${ys.C + (ys.pMid - ys.C)/2 + 4}" text-anchor="middle" font-size="9" fill="#3d5a2a">Annual rye — rows C–D</text>` +
     `</g>`;
 
   s += jpath(148, 470, ys.pMid, 28, '24″ harvest path');
@@ -479,10 +479,10 @@ function jsxRightBedFallSvg() {
   [160, 206, 252, 298].forEach(cx => s += jp('sn', cx, mid(ys.G, 24), 9, '#5f5e5a', 'SN'));
   [378, 424, 468, 512].forEach(cx => s += jp('lk', cx, mid(ys.G, 24), 9, '#888780', 'LK'));
 
-  /* Open zone — winter-killed oats */
-  s += `<g class="jsx-plant" data-code="wo">` +
+  /* Open zone — annual rye */
+  s += `<g class="jsx-plant" data-code="ry">` +
     `<rect x="148" y="${ys.open}" width="470" height="60" rx="4" fill="#7a9e6b" fill-opacity="0.12" stroke="#7a9e6b" stroke-width="0.7" stroke-dasharray="5 2" stroke-opacity="0.55"/>` +
-    `<text x="383" y="${ys.open + 28}" text-anchor="middle" font-size="9" fill="#3d5a2a" font-weight="600">Winter-killed oats — cover crop</text>` +
+    `<text x="383" y="${ys.open + 28}" text-anchor="middle" font-size="9" fill="#3d5a2a" font-weight="600">Annual rye — cover crop</text>` +
     `<text x="383" y="${ys.open + 44}" text-anchor="middle" font-size="7.5" fill="#3d5a2a" fill-opacity="0.7">Seeded Sept · till under May before planting</text>` +
     `</g>`;
 
@@ -495,7 +495,7 @@ function jsxRightBedFallSvg() {
     {c:'#a32d2d', l:'RB (4)'}, {c:'#ef9f27', l:'YB (4)'},
     {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
-    {c:'#7a9e6b', l:'RY · Winter-killed oats'},
+    {c:'#7a9e6b', l:'RY · Annual rye'},
     {c:'#27500a', l:'AS · Asparagus (~4)'},
     {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
   ];
@@ -513,10 +513,10 @@ function jsxLeftBedFallSvg() {
   s += `<text x="830" y="34" font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
   s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
 
-  /* Winter-killed oats — whole bed */
-  s += `<g class="jsx-plant" data-code="wo">` +
+  /* Annual rye — whole bed */
+  s += `<g class="jsx-plant" data-code="ry">` +
     `<rect x="${x0}" y="30" width="${W}" height="390" rx="6" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="1" stroke-dasharray="7 4" stroke-opacity="0.5"/>` +
-    `<text x="430" y="200" text-anchor="middle" font-size="18" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Winter-killed oats cover crop</text>` +
+    `<text x="430" y="200" text-anchor="middle" font-size="18" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Annual rye cover crop</text>` +
     `<text x="430" y="224" text-anchor="middle" font-size="10" fill="#3d5a2a" fill-opacity="0.4">Seeded after Oct 5 frost · tilled under May before planting</text>` +
     `</g>`;
 
@@ -530,12 +530,12 @@ function jsxLeftBedFallSvg() {
   s += `</svg>`;
 
   const legend = [
-    {c:'#7a9e6b', l:'Winter-killed oats — whole bed'},
+    {c:'#7a9e6b', l:'Annual rye — whole bed'},
     {c:'#d4537e', l:'EC · Echinacea (perennial)'},
     {c:'#c9a227', l:'TR · French tarragon (perennial)', sq:true},
   ];
 
-  return { note: 'Left bed — all summer crops cleared after Oct 5 frost · winter-killed oats cover crop', svg: s, legend };
+  return { note: 'Left bed — all summer crops cleared after Oct 5 frost · annual rye cover crop', svg: s, legend };
 }
 
 /* ── UNFENCED — FALL ──────────────────────────────────────────────── */
@@ -545,10 +545,10 @@ function jsxUnfencedFallSvg() {
   s += `<text x="240" y="13" text-anchor="middle" font-size="10" fill="#94886a">UNFENCED — fall / winter layout</text>`;
   s += `<rect x="26" y="20" width="428" height="368" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
 
-  /* Winter-killed oats — whole area */
-  s += `<g class="jsx-plant" data-code="wo">` +
+  /* Annual rye — whole area */
+  s += `<g class="jsx-plant" data-code="ry">` +
     `<rect x="34" y="26" width="412" height="320" rx="6" fill="#7a9e6b" fill-opacity="0.10" stroke="#7a9e6b" stroke-width="1" stroke-dasharray="7 4" stroke-opacity="0.5"/>` +
-    `<text x="240" y="170" text-anchor="middle" font-size="16" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Winter-killed oats cover crop</text>` +
+    `<text x="240" y="170" text-anchor="middle" font-size="16" fill="#3d5a2a" fill-opacity="0.5" font-style="italic">Annual rye cover crop</text>` +
     `<text x="240" y="192" text-anchor="middle" font-size="9" fill="#3d5a2a" fill-opacity="0.4">Seeded after squash harvest clears · tilled under May</text>` +
     `</g>`;
 
@@ -556,10 +556,10 @@ function jsxUnfencedFallSvg() {
   s += `</svg>`;
 
   const legend = [
-    {c:'#7a9e6b', l:'Winter-killed oats — whole area'},
+    {c:'#7a9e6b', l:'Annual rye — whole area'},
   ];
 
-  return { note: 'Unfenced — squash harvested and cured · winter-killed oats seeded after clearing', svg: s, legend };
+  return { note: 'Unfenced — squash harvested and cured · annual rye seeded after clearing', svg: s, legend };
 }
 
 /* ── DISPATCHER ───────────────────────────────────────────────────── */

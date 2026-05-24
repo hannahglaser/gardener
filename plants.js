@@ -441,7 +441,7 @@ const PLANT_INFO = {
       { with: 'Carrots', benefit: 'mutual: allium scent repels carrot fly; carrot scent deters onion fly' },
     ],
     cal: { plant: [10.0, 11.0], harvest: [5.8, 6.5] } },
-  'Winter-killed oats': { fam: 'cover', code: 'WO', variety: 'Common oats (Avena sativa) — winter-killed',
+  'Annual rye': { fam: 'cover', code: 'WO', variety: 'Common oats (Avena sativa) — winter-killed',
     sun: 'Full sun', water: 'Low — establishes on rainfall', soil: 'Any; suppresses weeds, protects soil structure',
     days: 'Seed Sept–Oct · dies in hard freeze · rake dead mat in spring',
     spacing: 'Broadcast at 2 lbs per 1000 sq ft',
