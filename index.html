@@ -1394,7 +1394,7 @@ const BEDS = {};
   N('Tomatillo', 2, 'tomato row 1 · east');
   N('Sungold', 5, 'tomato row 2');
   N('Juliette', 2, 'tomato row 2 · east');
-  N('Nasturtium', 6, 'left bed · interplanted across rows');
+  N('Nasturtium', 10, 'left bed · interplanted across rows');
   N('Bell pepper', 3, 'pepper block · row 1');
   N('Shishito pepper', 2, 'pepper block · row 2');
   N('Basil', 3, 'pepper block · gap-fill');
@@ -1408,7 +1408,6 @@ const BEDS = {};
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
   N('Cucumber', 8, 'trellised · 18″ apart');
-  N('Asparagus', 4, 'asparagus row · S→N · perennial');
   N('French Tarragon', 1, 'east herb strip · TR');
 
   BEDS.left = {
@@ -1416,8 +1415,8 @@ const BEDS = {};
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Five rows (A–E) running E-W on a 400″ bed: sunflowers at the north edge, tomatoes across row B with a half-height SG + pepper sub-row below, squash mounds and an east herb strip in row D, and cucumbers trellised along the south fence in row E. Five harvest paths — including a 48″ gap between the tomato and squash rows — keep every row reachable from both sides.',
     totals: [
-      { k: 'Plants',  v: '74' },
-      { k: 'Families', v: '7' },
+      { k: 'Plants',  v: '70' },
+      { k: 'Families', v: '8' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
     ],
@@ -1512,6 +1511,10 @@ const BEDS = {};
     {n:'Leek', after: 6},
   ], { centerX: vegCenter }));
 
+  /* Nasturtium × 2 — interplanted in brassica rows B/C as trap crop */
+  plants.push(plantAt('Nasturtium', 148, 108, { zone: 'right bed · brassica row B · trap crop' }));
+  plants.push(plantAt('Nasturtium', 148, 136, { zone: 'right bed · brassica row C · trap crop' }));
+
   /* Blueberry hedge (x=320, 6 bushes ~50" apart) */
   for (let i = 0; i < 6; i++) plants.push(plantAt('Blueberry', 320, 25 + i * 50));
 
@@ -1525,7 +1528,7 @@ const BEDS = {};
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence; explicit 15″ gaps between leafy rows and a 24″ mid-bed path keep everything reachable.',
     totals: [
-      { k: 'Plants', v: '52' },
+      { k: 'Plants', v: '54' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '4 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
@@ -1559,6 +1562,7 @@ const BEDS = {};
       { letter:'G', y:204, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
       { letter:'☘', y:130, label:'Squash strip', dim:'3 mounds · 36″ apart · vines train east', col:'strip' },
+      { letter:'♦', y:175, label:'Asparagus (established)', dim:'perennial · west strip · N-S · count TBD', col:'asparagus' },
     ],
     plants: plants,
   };
@@ -1624,7 +1628,7 @@ const BEDS = {};
   BEDS.middle = {
     title: 'Middle Bed · Berry Patch',
     dims: '400″ E-W × 350″ N-S · 5 rows running N-S',
-    lead: 'Five cane rows running N-S, ordered west → east: red raspberry rows A–C (12 canes each at 24″, spaced 60–70″ apart), then black raspberry row D (10 canes at 30″), then blackberry row E (8 canes at 42″). Black and red raspberries kept adjacent; a 75″ gap separates them from the blackberries.',
+    lead: 'Five cane rows running N-S, ordered west → east: red raspberry rows A–C (12 canes each at 24″, spaced 70″ apart), then black raspberry row D (10 canes at 30″), then blackberry row E (8 canes at 42″). Black and red raspberries kept adjacent; a 75″ gap separates them from the blackberries.',
     totals: [
       { k: 'Rows', v: '5 N-S' },
       { k: 'Red raspberry', v: '3 rows · 36 canes' },
@@ -1634,7 +1638,7 @@ const BEDS = {};
     ewIn: 400, nsIn: 350,
     bands: [],
     rows: [
-      { letter:'A', y:175, label:'Red raspberry · row 1', dim:'12 canes @ 24″ · 60″ from row B', col: 60 },
+      { letter:'A', y:175, label:'Red raspberry · row 1', dim:'12 canes @ 24″ · 70″ from row B', col: 60 },
       { letter:'B', y:175, label:'Red raspberry · row 2', dim:'12 canes @ 24″', col: 130 },
       { letter:'C', y:175, label:'Red raspberry · row 3', dim:'12 canes @ 24″', col: 200 },
       { letter:'D', y:175, label:'Black raspberry',       dim:'10 canes @ 30″ · 75″ row gap', col: 275 },

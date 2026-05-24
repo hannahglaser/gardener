@@ -234,19 +234,18 @@ function jsxRightSvg() {
   s += RB(ys.sf, 26, '#c9bd9f', 'Row 1 (north edge) — open buffer (no sunflowers — all 12 on left bed)');
   s += jpath(148, 470, ys.pSF, 22, '24″ path');
 
-  s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″) + swiss chard x4 (12″)`);
+  s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('bk', cx, mid(ys.A, 24), 10, '#0f6e56', 'BK'));
-  [378, 424, 470, 516].forEach(cx => s += jp('sc', cx, mid(ys.A, 24), 10, '#639922', 'SC'));
 
   s += RB(ys.B, 24, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('kl', cx, mid(ys.B, 24), 10, '#1d7a3c', 'KL'));
   [388, 440, 492, 540].forEach(cx => s += jp('gc', cx, mid(ys.B, 24), 10, '#185fa5', 'GC'));
   s += jn(348, ys.B + 8);
 
-  s += RB(ys.C, 24, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″, ID pending)`);
+  s += RB(ys.C, 24, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('rc', cx, mid(ys.C, 24), 10, '#993556', 'RC'));
-  [378, 428].forEach(cx => s += jp('br', cx, mid(ys.C, 24), 10, '#7080c4', 'B?'));
-  [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'C?'));
+  [378, 428].forEach(cx => s += jp('br', cx, mid(ys.C, 24), 10, '#7080c4', 'BR'));
+  [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'CF'));
   s += jn(348, ys.C + 8);
 
   s += RB(ys.D, 24, '#1d9e75', `D — broccolini x4 (15″)`);
@@ -274,9 +273,9 @@ function jsxRightSvg() {
 
   const legend = [
     {c:'#0f6e56', l:'BK (4)'},
-    {c:'#639922', l:'SC (4)'}, {c:'#1d7a3c', l:'KL (4)'},
-    {c:'#185fa5', l:'GC (4)'}, {c:'#993556', l:'RC (4)'},
-    {c:'#7080c4', l:'B? (2)'}, {c:'#534ab7', l:'C? (2)'},
+    {c:'#1d7a3c', l:'KL (4)'}, {c:'#185fa5', l:'GC (4)'},
+    {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR (2)'},
+    {c:'#534ab7', l:'CF (2)'},
     {c:'#1d9e75', l:'BR (4)'}, {c:'#a32d2d', l:'RB (4)'},
     {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
@@ -341,7 +340,7 @@ function renderJsxBags(schem, bed) {
 
   const note = document.createElement('p');
   note.className = 'jsx-note';
-  note.textContent = 'Grow bags — 10 × 10-gallon · hover any bag for details · check moisture daily in summer';
+  note.textContent = 'Grow bags — 11 × 10-gallon · hover any bag for details · check moisture daily in summer';
   wrap.appendChild(note);
 
   /* Tile look config — keyed off plant name so all spinach tiles share style. */
