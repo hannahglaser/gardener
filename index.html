@@ -1069,6 +1069,18 @@
     text-transform: uppercase; letter-spacing: .1em;
     display: block; line-height: 1;
   }
+  .plant-card .pc-companions {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed var(--line-soft);
+  }
+  .plant-card .pc-comp-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: var(--ink-mute); margin-bottom: 4px;
+  }
+  .plant-card .pc-comp-list { display: flex; flex-direction: column; gap: 3px; }
+  .plant-card .pc-comp-item { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+  .plant-card .pc-comp-item strong { color: var(--moss-dk); font-weight: 600; }
 
   /* ============================================================
    *   CALENDAR VIEW
@@ -1300,6 +1312,7 @@
 </footer>
 
 <script src="jsx-bed-diagrams.js"></script>
+<script src="plants.js"></script>
 
 <script>
 /* ============================================================
@@ -1321,272 +1334,8 @@ const FAM = {
   perennial:{ color: 'var(--c-peren)',  label: 'Perennials' },
 };
 
-/* ============================================================
- *   PLANT INFO  — keyed by plant name
- *   Calendar months are decimals: 5.33 = May 10 (last frost),
- *   10.17 = Oct 5 (first frost) for Greenfield MA zone 5b/6a.
- * ============================================================ */
-const PLANT_INFO = {
-  /* — Flowers — */
-  'Sunflower': { fam: 'flower', code: 'SF', variety: 'Annual, tall heirloom mix',
-    sun: 'Full sun (6-8h)', water: 'Moderate; drought tolerant once established', soil: 'Average, well-drained',
-    days: '60-90 days to bloom', spacing: '18″ apart',
-    care: 'Direct sow after last frost. Tall heads cast shadow — plant on the north edge of beds.',
-    cal: { direct: [5.0, 5.6], bloom: [7.3, 9.5] } },
+/* PLANT_INFO — defined in plants.js */
 
-  /* — Tomatoes — */
-  'Brandywine': { fam: 'tomato', code: 'BW', variety: 'Indeterminate heirloom slicer',
-    sun: 'Full sun (8h+)', water: '1-1.5″ weekly, deep & even', soil: 'Rich, well-drained, pH 6.2-6.8',
-    days: '80-100 days from transplant', spacing: '30″ in-row · 48″ row gap',
-    care: 'Start 6-8 wks before last frost. Cage or stake — vines reach 6-8 ft. Prune suckers below first flower cluster for airflow.',
-    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
-  'San Marzano': { fam: 'tomato', code: 'SM', variety: 'Indeterminate paste',
-    sun: 'Full sun', water: '1-1.5″ weekly, even', soil: 'Rich, well-drained',
-    days: '78-85 days', spacing: '24″ in-row',
-    care: 'Meaty, low-seed — best for sauce and canning. Same indoor-start schedule as other tomatoes.',
-    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
-  'Sungold': { fam: 'tomato', code: 'SG', variety: 'Indeterminate cherry',
-    sun: 'Full sun', water: '1-1.5″ weekly', soil: 'Rich, well-drained',
-    days: '57 days · early',
-    spacing: '24″ in-row',
-    care: 'Heavy producer — needs strong support. Splits if watering is inconsistent.',
-    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [7.5, 9.7] } },
-  'Juliette': { fam: 'tomato', code: 'JU', variety: 'Indeterminate grape',
-    sun: 'Full sun', water: 'Regular', soil: 'Rich, well-drained',
-    days: '60 days', spacing: '24″ in-row',
-    care: 'Crack-resistant grape. Plant east end of tomato row 2.',
-    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [7.5, 9.7] } },
-  'Tomatillo': { fam: 'tomato', code: 'TL', variety: 'Self-incompatible — needs ≥2 plants',
-    sun: 'Full sun', water: 'Regular', soil: 'Average to rich',
-    days: '75-90 days', spacing: '24″ apart',
-    care: 'Sprawling — give space. Plant 2+ for cross-pollination. Harvest when husks split and fruit fills out.',
-    cal: { indoor: [3.7, 4.1], harden: [5.1, 5.4], transplant: [5.55, 5.9], harvest: [8.0, 9.7] } },
-
-  /* — Peppers (nightshades) — */
-  'Bell pepper': { fam: 'pepper', code: 'BP', variety: 'Sweet, large-fruited',
-    sun: 'Full sun', water: '1″ weekly, even', soil: 'Fertile, well-drained',
-    days: '70-85 days from transplant', spacing: '18″ all directions',
-    care: 'Start 8 wks before last frost. Bottom heat (75-80°F) speeds germination. Stake when fruiting.',
-    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.7, 9.5] } },
-  'Shishito pepper': { fam: 'pepper', code: 'SH', variety: 'Japanese, mildly hot',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile',
-    days: '60 days green / 80 red', spacing: '18″ apart',
-    care: '~1 in 10 will be spicy — that\u2019s the fun. Harvest green for blistering.',
-    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.5, 9.5] } },
-  'Jalapeño': { fam: 'pepper', code: 'JL', variety: 'Medium heat',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',
-    days: '70-80 days', spacing: '18″ apart',
-    care: 'Pick green for classic flavor; let some ripen red for sweeter heat.',
-    cal: { indoor: [3.0, 3.7], harden: [5.4, 5.7], transplant: [5.8, 6.05], harvest: [7.7, 9.7] } },
-  'Habanero': { fam: 'pepper', code: 'HB', variety: 'Super hot, long season',
-    sun: 'Full sun (very warm)', water: 'Even moisture', soil: 'Fertile, well-drained',
-    days: '90-100 days', spacing: '24″ apart',
-    care: 'Start 10 wks indoors. Loves heat — slow to start in cool Mass springs. Mulch with black plastic.',
-    cal: { indoor: [2.7, 3.4], harden: [5.4, 5.7], transplant: [5.85, 6.1], harvest: [8.3, 9.8] } },
-  'Eggplant': { fam: 'pepper', code: 'EG', variety: 'Italian classic',
-    sun: 'Full sun', water: '1″ weekly', soil: 'Rich, warm, well-drained',
-    days: '75-90 days from transplant', spacing: '24″ apart',
-    care: 'Wait until soil >65°F. Flea beetles love eggplant — row cover until flowering.',
-    cal: { indoor: [2.7, 3.4], harden: [5.4, 5.7], transplant: [5.85, 6.1], harvest: [8.0, 9.7] } },
-
-  /* — Herbs — */
-  'Basil': { fam: 'herb', code: 'BA', variety: 'Sweet/Genovese',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '60-70 days', spacing: '12″ apart',
-    care: 'Pinch flower buds to keep leaves coming. Sensitive to cold — wait until soil is 60°F+. Classic companion to tomatoes and peppers.',
-    cal: { indoor: [4.0, 4.4], transplant: [5.7, 6.0], harvest: [6.5, 9.5] } },
-  'Thai basil': { fam: 'herb', code: 'TB', variety: 'Anise-flavored',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '60-80 days', spacing: '12″ apart',
-    care: 'More heat-tolerant than sweet basil. Pinch flowers for continual leaves; allow some to bloom for pollinators.',
-    cal: { indoor: [4.0, 4.4], transplant: [5.7, 6.0], harvest: [6.7, 9.7] } },
-  'Dill': { fam: 'herb', code: 'DL', variety: 'Bouquet, leafy',
-    sun: 'Full to part sun', water: 'Moderate', soil: 'Light, well-drained',
-    days: '40-55 days (leaves)', spacing: '12″ apart',
-    care: 'Direct sow — taproots dislike transplanting. Succession every 3 wks. Keep 24″+ from tomatoes (can stunt growth). Hosts swallowtail butterfly larvae.',
-    cal: { direct: [5.1, 6.2], harvest: [6.7, 8.5] } },
-  'Echinacea': { fam: 'flower', code: 'EC', variety: 'Purple coneflower (perennial)',
-    sun: 'Full sun', water: 'Drought-tolerant once established', soil: 'Average, well-drained',
-    days: 'Blooms year 2+', spacing: '18″ apart',
-    care: 'Permanent spot — perennial. Leave seedheads through fall for goldfinches. Attracts native bees.',
-    cal: { bloom: [7.0, 9.5] } },
-  'Citronella': { fam: 'herb', code: 'CI', variety: 'Scented geranium (Pelargonium citrosum)',
-    sun: 'Full sun', water: 'Moderate; let dry between waterings', soil: 'Well-drained, average',
-    days: 'Foliar/aromatic all season', spacing: '12″ apart',
-    care: 'Citrus scent deters insects — beneficial near cucumbers. Tender perennial (NOT hardy zone 5b) — overwinter indoors or treat as annual.',
-    cal: { transplant: [5.8, 6.05], bloom: [6.5, 9.5] } },
-
-  /* — Cucumbers — */
-  'Cucumber': { fam: 'cucumber', code: 'CU', variety: 'Trellised slicing',
-    sun: 'Full sun', water: 'Consistent — 1-2″/wk', soil: 'Fertile, well-drained',
-    days: '50-65 days', spacing: '18″ on trellis',
-    care: 'Trellis for clean fruit and airflow. Pick every 1-2 days once producing — missed fruits go bitter and slow new ones.',
-    cal: { indoor: [4.5, 4.8], harden: [5.55, 5.75], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [7.3, 9.5] } },
-
-  /* — Nasturtium (companion) — */
-  'Nasturtium': { fam: 'flower', code: 'NA', variety: 'Trailing/bush (companion plant)',
-    sun: 'Full sun (part shade OK)', water: 'Moderate', soil: 'Lean soil = more flowers; rich soil = leaves',
-    days: '50-65 days to bloom', spacing: '12″ apart',
-    care: 'Direct sow after last frost. Trap crop for aphids, cucumber beetles, squash bugs, and cabbage moths. Flowers and leaves are edible — peppery.',
-    cal: { direct: [5.2, 6.0], bloom: [6.5, 10.0] } },
-
-  /* — Brassicas (leafy greens grouped here too) — */
-  'Bok choy': { fam: 'brassica', code: 'BC', variety: 'Baby/standard',
-    sun: 'Full sun (part shade in summer)', water: 'Even moisture', soil: 'Fertile, well-drained',
-    days: '40-50 days', spacing: '10″ in-row',
-    care: 'Cool-season — bolts in heat. Spring + fall sowings; skip mid-summer.',
-    cal: { direct: [4.3, 4.8], harvest: [5.7, 6.5], indoor: [7.5, 8.0], transplant: [8.3, 8.7] } },
-  'Swiss chard': { fam: 'brassica', code: 'CH', variety: 'Rainbow / Bright Lights',
-    sun: 'Full to part sun', water: 'Regular', soil: 'Fertile',
-    days: '50-60 days', spacing: '12″ apart',
-    care: 'Cut outer leaves continuously — plant keeps producing all season. Frost-tolerant into November.',
-    cal: { indoor: [3.8, 4.2], transplant: [5.0, 5.3], direct: [5.0, 5.6], harvest: [6.5, 10.5] } },
-  'Kale': { fam: 'brassica', code: 'KL', variety: 'Lacinato / Curly',
-    sun: 'Full sun (light shade in summer)', water: 'Regular', soil: 'Fertile',
-    days: '55-75 days', spacing: '15″ in-row',
-    care: 'Sweetens after frost. Cut outer leaves; let center grow. Watch for cabbage worms — handpick or BT spray.',
-    cal: { indoor: [3.5, 4.0], transplant: [4.7, 5.2], harvest: [6.3, 11.3] } },
-  'Green cabbage': { fam: 'brassica', code: 'GC', variety: 'Early-mid heading',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '70-85 days from transplant', spacing: '18″ apart',
-    care: 'Heavy feeder. Watch for cabbage moths — nasturtiums act as trap crop. Harvest when heads feel firm.',
-    cal: { indoor: [3.0, 3.5], transplant: [4.5, 5.0], harvest: [7.0, 8.5] } },
-  'Red cabbage': { fam: 'brassica', code: 'RC', variety: 'Storage type',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '75-95 days', spacing: '18″ apart',
-    care: 'Slower than green, longer storage. Same care as green cabbage.',
-    cal: { indoor: [3.0, 3.5], transplant: [4.5, 5.0], harvest: [7.5, 9.0] } },
-  'Broccoli': { fam: 'brassica', code: 'BR', variety: 'Heading',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile',
-    days: '60-80 days from transplant', spacing: '18″ apart',
-    care: 'Cut main head with 6″ stem to encourage side shoots. Watch for cabbage worms.',
-    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [6.5, 8.0] } },
-  'Cauliflower': { fam: 'brassica', code: 'CF', variety: 'White heading',
-    sun: 'Full sun', water: 'Even moisture (no checks)', soil: 'Fertile',
-    days: '70-85 days', spacing: '18″ apart',
-    care: 'Blanch white heads by tying outer leaves over them when curd is 2-3″ across.',
-    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [7.0, 8.0] } },
-  'Broccolini': { fam: 'brassica', code: 'BN', variety: 'Sprouting broccoli',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile',
-    days: '60-80 days', spacing: '15″ apart',
-    care: 'Looser smaller heads, longer harvest window than broccoli. Cut-and-come-again side shoots.',
-    cal: { indoor: [3.5, 4.0], transplant: [5.0, 5.5], harvest: [6.7, 9.0] } },
-
-  /* — Roots — */
-  'Red beet': { fam: 'root', code: 'RB', variety: 'Detroit Dark Red',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Loose, stone-free',
-    days: '55-65 days', spacing: '4″ thinned',
-    care: 'Direct sow; thinnings are edible. Succession every 2 wks for steady harvest. Leaves edible like chard.',
-    cal: { direct: [4.7, 5.5], harvest: [6.7, 8.5] } },
-  'Yellow beet': { fam: 'root', code: 'YB', variety: 'Touchstone Gold',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Loose, stone-free',
-    days: '55-65 days', spacing: '4″ thinned',
-    care: 'Won\u2019t bleed like red. Same culture as red — thin to 4″.',
-    cal: { direct: [4.7, 5.5], harvest: [6.7, 8.5] } },
-  'Carrots': { fam: 'root', code: 'CT', variety: 'Nantes / Danvers',
-    sun: 'Full sun', water: 'Even moisture (consistent germ)', soil: 'Loose, deep, stone-free, low N',
-    days: '65-80 days', spacing: '3″ thinned · 6″ between rows',
-    care: 'Sow shallow (¼″), keep moist until germinated (2-3 wks). Thin ruthlessly or roots fork. Adjacent scallions repel carrot fly.',
-    cal: { direct: [4.8, 6.0], harvest: [7.3, 10.0] } },
-
-  /* — Alliums — */
-  'Scallion': { fam: 'allium', code: 'SC', variety: 'Bunching',
-    sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '60-70 days', spacing: '3″ apart',
-    care: 'Hill soil around bases for longer white shanks. Companion to carrots — repels carrot fly.',
-    cal: { direct: [4.5, 5.5], harvest: [6.7, 9.7] } },
-  'Leek': { fam: 'allium', code: 'LK', variety: 'King Richard / American Flag',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, deep',
-    days: '90-120 days', spacing: '6″ apart',
-    care: 'Start 10-12 wks before transplant. Trench plant 6″ deep and hill soil up as they grow — blanches the stem white.',
-    cal: { indoor: [2.5, 3.0], transplant: [5.0, 5.5], harvest: [9.0, 11.0] } },
-
-  /* — Squash — */
-  'Zucchini (bush)': { fam: 'squash', code: 'ZU', variety: 'Bush habit, 24-36″',
-    sun: 'Full sun', water: 'Deep weekly (1-2″)', soil: 'Rich, well-drained',
-    days: '45-55 days', spacing: '36″ mound',
-    care: 'Pick young (6-8″) for best texture. One plant feeds a family. Hand-pollinate if bee activity is low.',
-    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.0], direct: [5.7, 6.1], harvest: [7.0, 9.5] } },
-  'Summer squash (bush)': { fam: 'squash', code: 'SS', variety: 'Yellow crookneck / patty pan',
-    sun: 'Full sun', water: 'Deep weekly', soil: 'Rich, well-drained',
-    days: '50-60 days', spacing: '36″ between mounds',
-    care: 'Plant on west edge of 24″ strip; vines sprawl east. Same as zucchini culture.',
-    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.0], direct: [5.7, 6.1], harvest: [7.0, 9.5] } },
-  'Butternut squash': { fam: 'squash', code: 'BU', variety: 'Long-vining winter squash',
-    sun: 'Full sun', water: 'Deep weekly until fruits size', soil: 'Rich, warm',
-    days: '95-110 days', spacing: '48″ mound · 72″ row gap',
-    care: 'Long season — start indoors. Vines sprawl 8-10 ft. Cure 2 wks in a warm dry spot before storage. Stores into winter.',
-    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [9.0, 10.2] } },
-  'Delicata squash': { fam: 'squash', code: 'DE', variety: 'Compact-vining winter squash',
-    sun: 'Full sun', water: 'Deep weekly', soil: 'Rich, warm',
-    days: '80-100 days', spacing: '48″ between mounds',
-    care: 'Shorter vines than butternut (4-6 ft). Skin is edible — no peeling. Best within 2 months of harvest.',
-    cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [8.7, 9.8] } },
-
-  /* — Berries — */
-  'Blueberry': { fam: 'berry', code: 'BB', variety: 'Highbush (perennial)',
-    sun: 'Full to part sun', water: 'Even moisture, 1-2″/wk', soil: 'Acidic (pH 4.5-5.5), high organic matter',
-    days: 'Bears year 2-3, full crop year 4+', spacing: '4-5 ft between plants',
-    care: 'Acidify with peat or pine-needle mulch. Prune oldest canes (≥4 yr) in late winter to renew. Net against birds late June onward.',
-    cal: { bloom: [4.8, 5.6], harvest: [7.0, 8.5] } },
-
-  /* — Brambles (raspberries) — */
-  'Red raspberry': { fam: 'cane', code: 'RR', variety: 'Summer or fall-bearing (perennial)',
-    sun: 'Full sun (6-8h)', water: '1-2″/wk', soil: 'Well-drained, slightly acidic (pH 5.6-6.5), rich in organic matter',
-    days: 'Year 2 bears', spacing: '18-24″ apart in-row · 60″ between rows',
-    care: 'Mulch heavily. Train to a 2-wire trellis. Fall-bearers: cut all canes to ground in late winter. Summer-bearers: prune fruited canes after harvest, keep new green canes for next year.',
-    cal: { bloom: [5.5, 6.2], harvest: [7.0, 9.5] } },
-  'Black raspberry': { fam: 'cane', code: 'BKR', variety: 'Summer-bearing (perennial)',
-    sun: 'Full sun', water: '1-2″/wk', soil: 'Well-drained, slightly acidic, rich',
-    days: 'Year 2 bears', spacing: '24-36″ in-row · 72″ between rows',
-    care: 'Tip-prune new canes at 24-30″ in early summer to encourage side branching. Remove fruited canes after harvest. Keep 25 ft+ from red raspberries to avoid disease cross-over.',
-    cal: { bloom: [5.5, 6.0], harvest: [7.0, 8.0] } },
-  'Blackberry': { fam: 'cane', code: 'BK', variety: 'Erect / semi-erect thornless (perennial)',
-    sun: 'Full sun (6-8h)', water: '1-2″/wk', soil: 'Well-drained, slightly acidic (pH 5.5-6.5), rich',
-    days: 'Year 2 bears, full crop year 3+', spacing: '36-48″ in-row · 72-96″ between rows',
-    care: 'Train to a 2-wire trellis. Tip-prune primocanes at 36-42″ in early summer. Remove fruited floricanes immediately after harvest. Mulch heavily; ripe berries are fragile, pick every 2-3 days.',
-    cal: { bloom: [5.7, 6.3], harvest: [7.3, 8.7] } },
-
-  /* — Perennials — */
-  'Asparagus': { fam: 'perennial', code: 'AS', variety: 'Purple crowns — variety unconfirmed · likely Purple Passion or similar',
-    sun: 'Full sun (8h+)', water: '1-2″/wk; deep infrequent', soil: 'Deep, well-drained, pH 6.5-7.0 · amend with compost before planting',
-    days: 'Year 1: no harvest · Year 2: harvest lightly · Year 3+: full harvest · 20+ year producer',
-    spacing: '12-18″ in-row · 4-5 ft between rows · crowns 6-8″ deep · row runs S→N',
-    care: 'Do not harvest year 1 — let ferns establish roots. Year 2 take only a few spears. Cut spears at 6-8″ before tips open. Purple turns green when cooked; eat raw or quick-sauté to keep color. Top-dress with compost each spring. Cut ferns to ground after first frost.',
-    cal: { harvest: [4.5, 6.5] } },
-  'French Tarragon': { fam: 'perennial', code: 'TR', variety: 'French (sterile — propagate by division, not seed)',
-    sun: 'Full sun to part shade', water: 'Moderate; well-drained — dislikes wet feet', soil: 'Sandy to loamy, well-drained, not too rich',
-    days: 'Harvest throughout season once established',
-    spacing: '18-24″ apart · grows 18-24″ tall',
-    care: 'True French tarragon is sterile — buy as a division or transplant, never from seed (that is Russian tarragon, far less flavorful). Cut back by half in midsummer to prevent woody stems and encourage fresh growth. Divide every 2-3 years to maintain vigor. Mulch heavily over winter in Zone 5b.',
-    cal: { harvest: [5.5, 10.0] } },
-
-  /* — Leafy greens (grow bag) — */
-  'Spinach': { fam: 'brassica', code: 'SP', variety: 'Smooth-leaf, cool-season',
-    sun: 'Full sun (cool) / part shade (summer)', water: 'Regular, even', soil: 'Rich, well-drained, slightly alkaline',
-    days: '40-50 days', spacing: '2 plants per 10-gal bag',
-    care: 'Bolts above 70°F — move bag to shade in summer. Succession sow every 2 wks while temps are cool. Cut outer leaves continuously.',
-    cal: { direct: [3.7, 4.5], harvest: [5.3, 6.5], indoor: [7.7, 8.3], transplant: [8.3, 8.7] } },
-  'Romaine': { fam: 'brassica', code: 'RM', variety: 'Cos lettuce — heat tolerant',
-    sun: 'Full sun (spring) / afternoon shade (summer)', water: 'Regular', soil: 'Fertile, well-drained',
-    days: '55-70 days', spacing: '2 plants per 10-gal bag',
-    care: 'More heat-tolerant than other lettuces but still bolts in July heat. Move bag to afternoon shade in mid-summer. Cut outer leaves or harvest whole head.',
-    cal: { direct: [4.0, 4.8], harvest: [5.7, 7.0], indoor: [7.7, 8.3], transplant: [8.3, 8.7] } },
-
-  /* — Legumes (grow bag) — */
-  'Pole bean': { fam: 'legume', code: 'PB', variety: 'Climbing — needs pergola/trellis',
-    sun: 'Full sun', water: '1″/wk, consistent', soil: 'Average — DO NOT over-fertilize (fixes own nitrogen)',
-    days: '55-70 days', spacing: 'Sow 3-4 seeds/bag, thin to 2 strongest',
-    care: 'Direct sow after last frost when soil is 60°F+. Climbs and fixes nitrogen. Pick frequently for continued production — let pods mature too long and the plant slows down.',
-    cal: { direct: [5.4, 6.1], harvest: [7.3, 9.5] } },
-
-  /* — Mystery (grow bag) — */
-  'Mystery cuke/cantaloupe': { fam: 'cucumber', code: 'MY', variety: 'Unknown until fruiting',
-    sun: 'Full sun', water: 'Even moisture', soil: 'Fertile, well-drained',
-    days: '60-80 days', spacing: '1 plant per 10-gal bag',
-    care: 'Keep bags mobile until ID\u2019d. If cucumber: trellis the bag. If cantaloupe: isolate from cukes (cross-pollination ruins flavor), move to absolute warmest spot, support developing fruits with slings.',
-    cal: { indoor: [4.5, 4.9], transplant: [5.85, 6.1], harvest: [7.5, 9.5] } },
-};
 
 /* ============================================================
  *   BED LAYOUT DATA
@@ -2583,6 +2332,18 @@ function plantCard(name, info) {
   if (info.care) {
     const notes = el('div', { class: 'pc-notes' }, info.care);
     card.appendChild(notes);
+  }
+  if (info.companions && info.companions.length) {
+    const sec = el('div', { class: 'pc-companions' });
+    sec.appendChild(el('div', { class: 'pc-comp-label' }, 'Companion plants'));
+    const list = el('div', { class: 'pc-comp-list' });
+    info.companions.forEach(c => {
+      const item = el('div', { class: 'pc-comp-item' });
+      item.innerHTML = `<strong>${c.with}</strong> — ${c.benefit}`;
+      list.appendChild(item);
+    });
+    sec.appendChild(list);
+    card.appendChild(sec);
   }
   return card;
 }

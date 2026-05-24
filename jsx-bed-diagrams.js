@@ -106,12 +106,12 @@ function jnote(text) { return `<p class="jsx-note">${text}</p>`; }
 function jsxLeftSvg() {
   const W = 780, x0 = 40;
   let s = '';
-  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 412" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
-  s += `<rect x="30" y="20" width="800" height="380" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 860 434" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="20" width="800" height="402" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
   s += `<text x="430" y="13" text-anchor="middle" font-size="10" fill="#94886a">LEFT BED — north at top | hover any plant for details</text>`;
-  s += `<text x="18"  y="210" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,210)">WEST</text>`;
-  s += `<text x="842" y="210" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,210)">EAST</text>`;
-  s += `<text x="430" y="408" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
+  s += `<text x="18"  y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,222)">WEST</text>`;
+  s += `<text x="842" y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,842,222)">EAST</text>`;
+  s += `<text x="430" y="430" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
   s += `<text x="830" y="34"  font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
   s += `<polygon points="830,38 827,50 830,48 833,50" fill="#b96b3e" opacity="0.55"/>`;
 
@@ -183,18 +183,18 @@ function jsxLeftSvg() {
   s += jsq('tr', 810, 263, '#c9a227', 'TR');
   s += `<text x="730" y="293" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
-  /* Path: row 4 to cucumbers */
-  s += jpath(x0, W, 298, 26, 'harvest path');
+  /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
+  s += jpath(x0, W, 298, 48, 'harvest path + nasturtiums (cucurbit pest deterrent)');
+  s += jn(110, 322); s += jn(300, 322); s += jn(500, 322); s += jn(700, 322);
 
   /* Cucumbers */
-  s += jband(x0, W, 324, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
-  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 343, 12, '#185fa5', 'CU'));
-  s += jn(335, 332);
-  s += jn(636, 332);
+  s += jband(x0, W, 346, 34, '#185fa5', `Cucumbers x8 trellised (18″ apart)`);
+  [58, 169, 280, 391, 501, 590, 682, 770].forEach(cx => s += jp('cu', cx, 365, 12, '#185fa5', 'CU'));
+  s += jn(180, 354); s += jn(450, 354); s += jn(680, 354);
 
   /* Path 5 south */
-  s += jpath(x0, W, 358, 26, '30″ south access — cuke harvest');
-  s += `<text x="430" y="396" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">spare — south end of bed</text>`;
+  s += jpath(x0, W, 380, 26, '30″ south access — cuke harvest');
+  s += `<text x="430" y="422" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">spare — south end of bed</text>`;
   s += `</svg>`;
 
   const legend = [
