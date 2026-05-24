@@ -1515,6 +1515,9 @@ const BEDS = {};
   plants.push(plantAt('Nasturtium', 148, 108, { zone: 'right bed · brassica row B · trap crop' }));
   plants.push(plantAt('Nasturtium', 148, 136, { zone: 'right bed · brassica row C · trap crop' }));
 
+  /* Asparagus — established perennial west strip (~4 crowns, count unconfirmed) */
+  for (let i = 0; i < 4; i++) plants.push(plantAt('Asparagus', 89, 60 + i * 70, { zone: 'right bed · west strip · established perennial' }));
+
   /* Blueberry hedge (x=320, 6 bushes ~50" apart) */
   for (let i = 0; i < 6; i++) plants.push(plantAt('Blueberry', 320, 25 + i * 50));
 
@@ -1528,7 +1531,7 @@ const BEDS = {};
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Squash vines train east up the fence; explicit 15″ gaps between leafy rows and a 24″ mid-bed path keep everything reachable.',
     totals: [
-      { k: 'Plants', v: '54' },
+      { k: 'Plants', v: '58' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '4 harvest paths' },
       { k: 'Hedge', v: '6 × Blueberry' },
@@ -1562,7 +1565,7 @@ const BEDS = {};
       { letter:'G', y:204, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
       { letter:'☘', y:130, label:'Squash strip', dim:'3 mounds · 36″ apart · vines train east', col:'strip' },
-      { letter:'♦', y:175, label:'Asparagus (established)', dim:'perennial · west strip · N-S · count TBD', col:'asparagus' },
+      { letter:'♦', y:175, label:'Asparagus (established)', dim:'~4 crowns · perennial · west strip · N-S', col:'asparagus' },
     ],
     plants: plants,
   };
