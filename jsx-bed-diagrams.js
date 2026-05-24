@@ -131,9 +131,9 @@ function jsxLeftSvg() {
   s += jp('sm', 536, 107, 13, '#d85a30', 'SM');
   s += jp('ju', 594, 107, 13, '#d4537e', 'JU');
   s += jp('sg', 648, 107, 13, '#ef9f27', 'SG');
-  s += jn(326, 107);
+  s += jn(326, 97);
   s += jp('tl', 718, 107, 11, '#854f0b', 'TL');
-  s += jn(738, 107);
+  s += jn(738, 90);
   s += jp('tl', 758, 107, 11, '#854f0b', 'TL');
   s += jpath(x0, W, 124, 48, 'harvest path · breathing room for tomatoes');
 
