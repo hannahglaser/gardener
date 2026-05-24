@@ -210,7 +210,7 @@ function jsxLeftSvg() {
     {c:'#97c459', l:'SS mound x2'}, {c:'#b96b3e', l:'harvest paths'},
   ];
 
-  return { note: 'Left bed — 400″ E-W × 350″ N-S · 318″ used incl. harvest paths · 32″ spare', svg: s, legend };
+  return { note: 'Left bed — 400″ E-W × 350″ N-S', svg: s, legend };
 }
 
 /* ── RIGHT BED ────────────────────────────────────────────────────── */
