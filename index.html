@@ -1090,6 +1090,7 @@
     padding-top: 2px;
   }
   .plant-card .pc-row .v { color: var(--ink); }
+  .water-dots { font-size: 10px; color: #2e7fb8; letter-spacing: 1px; margin-left: 5px; vertical-align: middle; }
   .plant-card .pc-notes {
     margin-top: 8px; padding-top: 8px;
     border-top: 1px dashed var(--line-soft);
@@ -1931,6 +1932,14 @@ let plantSearchQ = '';
  * ============================================================ */
 const $ = (s, root) => (root || document).querySelector(s);
 
+function waterLevel(s) {
+  if (!s) return 2;
+  const t = s.toLowerCase();
+  if (/drought|low|dry between|minimal/.test(t)) return 1;
+  if (/1[–\-]1\.5|1[–\-]2|1\.5|deep.even|even moist|consistent|daily/.test(t)) return 3;
+  return 2;
+}
+
 function el(tag, attrs, children) {
   const e = document.createElement(tag);
   if (attrs) for (const k in attrs) {
@@ -2596,7 +2605,14 @@ function plantCard(name, info) {
   rowDef.forEach(([k,v]) => {
     if (!v) return;
     const r = el('div', { class: 'pc-row' });
-    r.innerHTML = `<div class="k">${k}</div><div class="v">${v}</div>`;
+    if (k === 'Water') {
+      const lvl = waterLevel(v);
+      const dots = ['●','●','●'].map((d,i) => `<span style="opacity:${i < lvl ? '1' : '0.18'}">${d}</span>`).join('');
+      const lbl = ['Low','Medium','High'][lvl - 1];
+      r.innerHTML = `<div class="k">Water</div><div class="v">${v} <span class="water-dots" title="${lbl} water need">${dots}</span></div>`;
+    } else {
+      r.innerHTML = `<div class="k">${k}</div><div class="v">${v}</div>`;
+    }
     card.appendChild(r);
   });
 
@@ -2818,9 +2834,11 @@ async function fetchWeather() {
   const foreP = precip.slice(7);
   const histE = et0.slice(0, 7);
   const rain7    = histP.reduce((a, b) => a + (b || 0), 0);
+  const rain3    = histP.slice(-3).reduce((a, b) => a + (b || 0), 0); /* last 3 days */
   const et0_7    = histE.reduce((a, b) => a + (b || 0), 0);
+  const et0_3    = histE.slice(-3).reduce((a, b) => a + (b || 0), 0);
   const forecast = foreP.reduce((a, b) => a + (b || 0), 0);
-  weatherCache = { rain7, et0_7, forecast };
+  weatherCache = { rain7, rain3, et0_7, et0_3, forecast };
   return weatherCache;
 }
 
@@ -2832,8 +2850,9 @@ function renderWeatherWidget() {
   widget.appendChild(el('span', { class: 'weather-loading' }, ['Checking weather…']));
   bar.appendChild(widget);
 
-  fetchWeather().then(({ rain7, et0_7, forecast }) => {
-    const rawDeficit = Math.max(0, et0_7 - rain7);
+  fetchWeather().then(({ rain7, rain3, et0_7, et0_3, forecast }) => {
+    /* Use 3-day window for bed recommendation — more relevant than 7-day */
+    const rawDeficit = Math.max(0, et0_3 - rain3);
     const netDeficit = Math.max(0, rawDeficit - forecast);
     const mm2in = mm => (mm / 25.4).toFixed(1) + '″';
 
@@ -2841,18 +2860,18 @@ function renderWeatherWidget() {
     if (forecast >= rawDeficit * 0.8 || netDeficit < 6) {
       statusClass = 'ok';
       rec = forecast > 5
-        ? `${mm2in(forecast)} rain coming — hold off on watering`
-        : 'Garden is well watered — skip irrigation';
+        ? `${mm2in(forecast)} rain coming — beds OK, check bags`
+        : 'Beds OK — check grow bags daily';
     } else if (netDeficit < 18) {
       statusClass = 'mild';
       rec = forecast > 5
-        ? `${mm2in(forecast)} rain forecast; still need ~${mm2in(netDeficit)} more`
-        : `Water ~${mm2in(netDeficit)}`;
+        ? `${mm2in(forecast)} forecast; beds need ~${mm2in(netDeficit)} · check bags`
+        : `Beds need ~${mm2in(netDeficit)} · check bags`;
     } else {
       statusClass = 'dry';
       rec = forecast > 5
-        ? `${mm2in(forecast)} rain coming, but still short ~${mm2in(netDeficit)}`
-        : `Water ~${mm2in(netDeficit)} — garden is thirsty`;
+        ? `${mm2in(forecast)} coming but short ~${mm2in(netDeficit)} · water bags now`
+        : `Water beds ~${mm2in(netDeficit)} · bags need water now`;
     }
 
     widget.className = 'weather-widget weather-' + statusClass;
@@ -2862,9 +2881,9 @@ function renderWeatherWidget() {
       sp.innerHTML = `<span class="wk">${k}</span><span class="wv">${v}</span>`;
       return sp;
     };
-    widget.appendChild(s('7-day rain', mm2in(rain7)));
+    widget.appendChild(s('3-day rain', mm2in(rain3)));
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
-    widget.appendChild(s('ET₀ demand', mm2in(et0_7)));
+    widget.appendChild(s('3-day ET₀', mm2in(et0_3)));
     if (forecast > 1) {
       widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
       widget.appendChild(s('3-day forecast', mm2in(forecast)));
