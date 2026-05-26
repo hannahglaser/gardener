@@ -1094,6 +1094,8 @@
   .thirsty-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; }
   .thirsty-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #2e7fb8; }
   .thirsty-chip { font-size: 11px; color: #2e7fb8; background: rgba(46,127,184,.1); border: 1px solid rgba(46,127,184,.3); border-radius: 20px; padding: 2px 8px; }
+  .thirsty-strip.is-ok { opacity: .4; }
+  .thirsty-strip.is-ok .thirsty-label::after { content: ' · beds OK'; font-weight: 400; text-transform: none; letter-spacing: 0; }
   .plant-card .pc-notes {
     margin-top: 8px; padding-top: 8px;
     border-top: 1px dashed var(--line-soft);
@@ -2835,6 +2837,7 @@ function hideCalTip() { getCalTip().classList.remove('visible'); }
  *   Greenfield MA: 42.587°N 72.601°W
  * ============================================================ */
 let weatherCache = null;
+let weatherStatus = null; /* 'ok' | 'mild' | 'dry' | null (loading) */
 
 async function fetchWeather() {
   if (weatherCache) return weatherCache;
@@ -2858,6 +2861,12 @@ async function fetchWeather() {
   const forecast = foreP.reduce((a, b) => a + (b || 0), 0);
   weatherCache = { rain7, rain3, et0_7, et0_3, forecast };
   return weatherCache;
+}
+
+function updateThirstyStrip() {
+  document.querySelectorAll('.thirsty-strip').forEach(strip => {
+    strip.classList.toggle('is-ok', weatherStatus === 'ok');
+  });
 }
 
 function renderWeatherWidget() {
@@ -2891,6 +2900,9 @@ function renderWeatherWidget() {
         ? `${mm2in(forecast)} coming but short ~${mm2in(netDeficit)} · water bags now`
         : `Water beds ~${mm2in(netDeficit)} · bags need water now`;
     }
+
+    weatherStatus = statusClass;
+    updateThirstyStrip();
 
     widget.className = 'weather-widget weather-' + statusClass;
     widget.innerHTML = '';
