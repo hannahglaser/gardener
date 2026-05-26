@@ -2081,9 +2081,8 @@ function renderMap(root) {
   frame.appendChild(el('span', { class: 'ew-tick e' }, 'E'));
 
   const schem = el('div', { class: 'schem' });
-  if (activeBed === 'bags')           renderJsxBags(schem, bed);
-  else if (activeBed === 'middle')    renderBedSVG(schem, bed);
-  else                                renderJsxBed(schem, bed, activeBed, gardenSeason);
+  if (activeBed === 'bags') renderJsxBags(schem, bed);
+  else                      renderJsxBed(schem, bed, activeBed, gardenSeason);
 
   frame.appendChild(schem);
   card.appendChild(frame);

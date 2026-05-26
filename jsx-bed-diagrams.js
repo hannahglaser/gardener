@@ -23,6 +23,7 @@ const JSX_CODE_TO_NAME = {
   dl:  'Dill',               ec:  'Echinacea',
   cu:  'Cucumber',
   cit: 'Citronella',
+  rr:  'Red raspberry',  bkr: 'Black raspberry',  bkb: 'Blackberry',
   bk:  'Bok choy',           sc:  'Swiss chard',
   kl:  'Kale',               gc:  'Green cabbage',
   rc:  'Red cabbage',        br:  'Broccoli',
@@ -176,12 +177,12 @@ function jsxLeftSvg() {
   s += jn(375, 302);
   s += jmound('zu', 430, 303, 26, 18, '#639922', 'ZU');
   /* Herb strip — east end: DL, EC, TR, CI, CI */
-  s += jsq('dl', 650, 302, '#97c459', 'DL');
-  s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
-  s += jsq('tr', 730, 302, '#c9a227', 'TR');
-  s += jp('cit', 770, 302, 11, '#7daf3a', 'CI');
-  s += jp('cit', 810, 302, 11, '#7daf3a', 'CI');
-  s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
+  s += jsq('dl', 620, 302, '#97c459', 'DL');
+  s += jp('ec', 660, 302, 11, '#d4537e', 'EC');
+  s += jsq('tr', 700, 302, '#c9a227', 'TR');
+  s += jp('cit', 740, 302, 11, '#7daf3a', 'CI');
+  s += jp('cit', 780, 302, 11, '#7daf3a', 'CI');
+  s += `<text x="700" y="323" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
   s += jpath(x0, W, 328, 48, 'harvest path · wider for squash leaf clearance + cucurbit pest separation');
@@ -365,34 +366,35 @@ function renderJsxBags(schem, bed) {
   note.textContent = 'Grow bags — 11 × 10-gallon · hover any bag for details · check moisture daily in summer';
   wrap.appendChild(note);
 
-  /* Tile look config — keyed off plant name so all spinach tiles share style. */
   const tileFor = {
-    'Eggplant':                 { color: '#5C1A7A', emoji: '🍆', l1: 'Eggplant',  l2: 'x1',     note: 'hottest spot' },
-    'Spinach':                  { color: '#1D9E75', emoji: '🥬', l1: 'Spinach',   l2: 'x2/bag', note: 'shade @ 70°F' },
-    'Romaine':                  { color: '#0F6E56', emoji: '🥗', l1: 'Romaine',   l2: 'x2/bag', note: 'shade in July' },
-    'Mystery cuke/cantaloupe':  { color: '#185FA5', emoji: '❓', l1: 'Mystery',   l2: 'x1/bag', note: 'ID first!' },
-    'Pole bean':                { color: '#639922', emoji: '🌿', l1: 'Pole bean', l2: 'pergola',note: 'sow 3–4, thin 2' },
+    'Eggplant':                { color: '#7a3d9c', code: 'EG', l1: 'Eggplant',  l2: '× 1',     sub: 'hottest spot' },
+    'Spinach':                 { color: '#1D9E75', code: 'SP', l1: 'Spinach',   l2: '× 2 / bag', sub: 'shade @ 70°F' },
+    'Romaine':                 { color: '#0F6E56', code: 'RO', l1: 'Romaine',   l2: '× 2 / bag', sub: 'shade in July' },
+    'Mystery cuke/cantaloupe': { color: '#185FA5', code: 'MY', l1: 'Mystery',   l2: '× 1 / bag', sub: 'ID first' },
+    'Pole bean':               { color: '#639922', code: 'PB', l1: 'Pole bean', l2: '× 2 / bag', sub: 'pergola' },
   };
 
-  const cols = 6, bw = 84, bh = 96, gx = 96, gy = 110, x0 = 14, y0 = 28;
-  const rows = Math.ceil(bed.bags.length / cols);
-  const vbH = y0 + rows * gy + 8;
+  const cols = 6, bw = 84, bh = 98, gx = 96, gy = 112, x0 = 14, y0 = 28;
+  const numRows = Math.ceil(bed.bags.length / cols);
+  const vbH = y0 + numRows * gy + 8;
 
   let svg = `<svg class="jsx-bed-svg" viewBox="0 0 600 ${vbH}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
-  svg += `<text x="300" y="14" text-anchor="middle" font-size="10" fill="#94886a">GROW BAGS — ${bed.bags.length} × 10 gal</text>`;
+  svg += `<text x="300" y="14" text-anchor="middle" font-size="10" fill="#94886a">GROW BAGS — ${bed.bags.length} × 10 gal · hover for care notes</text>`;
 
   bed.bags.forEach((bag, i) => {
-    const tile = tileFor[bag.plant.name] || { color:'#5F5E5A', emoji:'🪴', l1: bag.plant.name, l2:'', note:'' };
+    const tile = tileFor[bag.plant.name] || { color: '#6b5e4a', code: '?', l1: bag.plant.name, l2: '', sub: '' };
     const col = i % cols, row = Math.floor(i / cols);
     const x = x0 + col * gx, y = y0 + row * gy;
+    const cx = x + bw / 2;
     svg += (
       `<g class="jsx-plant" data-pid="${bag.plant.id}">` +
-        `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="9" fill="${tile.color}" fill-opacity="0.1" stroke="${tile.color}" stroke-width="1.1" stroke-dasharray="5 2"/>` +
-        `<text x="${x + bw/2}" y="${y + 22}" text-anchor="middle" font-size="18">${tile.emoji}</text>` +
-        `<text x="${x + bw/2}" y="${y + 42}" text-anchor="middle" font-size="9" fill="${tile.color}" font-weight="700">${tile.l1}</text>` +
-        `<text x="${x + bw/2}" y="${y + 56}" text-anchor="middle" font-size="8.5" fill="${tile.color}">${tile.l2}</text>` +
-        `<text x="${x + bw/2}" y="${y + 71}" text-anchor="middle" font-size="7.5" fill="${tile.color}" fill-opacity="0.75">${tile.note}</text>` +
-        `<text x="${x + bw/2}" y="${y + 86}" text-anchor="middle" font-size="7" fill="#94886a">${bag.id} · 10 gal</text>` +
+        `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="9" fill="${tile.color}" fill-opacity="0.08" stroke="${tile.color}" stroke-width="1"/>` +
+        `<circle cx="${cx}" cy="${y + 22}" r="13" fill="${tile.color}" fill-opacity="0.22" stroke="${tile.color}" stroke-width="0.8"/>` +
+        `<text x="${cx}" y="${y + 26}" text-anchor="middle" font-size="9" fill="${tile.color}" font-weight="700">${tile.code}</text>` +
+        `<text x="${cx}" y="${y + 45}" text-anchor="middle" font-size="9" fill="${tile.color}" font-weight="600">${tile.l1}</text>` +
+        `<text x="${cx}" y="${y + 57}" text-anchor="middle" font-size="8" fill="${tile.color}" fill-opacity="0.85">${tile.l2}</text>` +
+        `<text x="${cx}" y="${y + 70}" text-anchor="middle" font-size="7.5" fill="${tile.color}" fill-opacity="0.65">${tile.sub}</text>` +
+        `<text x="${cx}" y="${y + 86}" text-anchor="middle" font-size="7" fill="#94886a">${bag.id} · 10 gal</text>` +
       `</g>`
     );
   });
@@ -404,7 +406,6 @@ function renderJsxBags(schem, bed) {
   wrap.appendChild(svgWrap);
   schem.appendChild(wrap);
 
-  /* wire each tile to the bag's real plant id */
   wrap.querySelectorAll('[data-pid]').forEach(g => {
     const pid = g.getAttribute('data-pid');
     g.addEventListener('mouseenter', () => setActivePlant(pid));
@@ -521,11 +522,11 @@ function jsxLeftBedFallSvg() {
     `</g>`;
 
   /* Perennials — stay in ground */
-  s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
-  s += `<text x="690" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC</text>`;
-  s += jsq('tr', 730, 302, '#c9a227', 'TR');
-  s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#c9a227" opacity="0.6" font-style="italic">TR</text>`;
-  s += `<text x="710" y="340" text-anchor="middle" font-size="7.5" fill="#94886a" font-style="italic">perennials — mulch after ground freezes</text>`;
+  s += jp('ec', 660, 302, 11, '#d4537e', 'EC');
+  s += `<text x="660" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC</text>`;
+  s += jsq('tr', 700, 302, '#c9a227', 'TR');
+  s += `<text x="700" y="323" text-anchor="middle" font-size="7.5" fill="#c9a227" opacity="0.6" font-style="italic">TR</text>`;
+  s += `<text x="680" y="340" text-anchor="middle" font-size="7.5" fill="#94886a" font-style="italic">perennials — mulch after ground freezes</text>`;
 
   s += `</svg>`;
 
@@ -562,6 +563,55 @@ function jsxUnfencedFallSvg() {
   return { note: 'Unfenced — squash harvested and cured · annual rye seeded after clearing', svg: s, legend };
 }
 
+/* ── MIDDLE BED ───────────────────────────────────────────────────── */
+function jsxMiddleSvg() {
+  let s = '';
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 520 430" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="20" width="460" height="400" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<text x="260" y="13" text-anchor="middle" font-size="10" fill="#94886a">MIDDLE BED · BERRY PATCH — north at top | hover any cane for details</text>`;
+  s += `<text x="500" y="34" font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
+  s += `<polygon points="500,38 497,50 500,48 503,50" fill="#b96b3e" opacity="0.55"/>`;
+  s += `<text x="18" y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(-90,18,222)">WEST</text>`;
+  s += `<text x="510" y="222" text-anchor="middle" font-size="9" fill="#c9bd9f" transform="rotate(90,510,222)">EAST</text>`;
+  s += `<text x="260" y="427" text-anchor="middle" font-size="9" fill="#c9bd9f">SOUTH</text>`;
+
+  const RED  = '#a13e6e';
+  const BLK  = '#6a2e8e';
+  const BKB  = '#312080';
+
+  /* Red raspberry — columns A, B, C at x=80, 160, 240 */
+  [80, 160, 240].forEach((cx, ri) => {
+    s += `<rect x="${cx - 14}" y="28" width="28" height="388" rx="5" fill="${RED}" fill-opacity="0.05" stroke="${RED}" stroke-width="0.5" stroke-opacity="0.3"/>`;
+    s += `<text x="${cx}" y="408" text-anchor="middle" font-size="9" fill="${RED}" fill-opacity="0.65" font-style="italic">${['A','B','C'][ri]}</text>`;
+    for (let i = 0; i < 12; i++) s += jp('rr', cx, 40 + i * 29, 9, RED, 'RR');
+  });
+  s += `<text x="160" y="424" text-anchor="middle" font-size="8" fill="${RED}" fill-opacity="0.55">Red raspberry · 12 canes @ 24″</text>`;
+
+  /* 70″ row gap labels */
+  s += `<text x="120" y="35" text-anchor="middle" font-size="7" fill="${RED}" fill-opacity="0.5" font-style="italic">70″</text>`;
+  s += `<text x="200" y="35" text-anchor="middle" font-size="7" fill="${RED}" fill-opacity="0.5" font-style="italic">70″</text>`;
+
+  /* Black raspberry — column D at x=330 */
+  s += `<rect x="316" y="28" width="28" height="388" rx="5" fill="${BLK}" fill-opacity="0.05" stroke="${BLK}" stroke-width="0.5" stroke-opacity="0.3"/>`;
+  for (let i = 0; i < 10; i++) s += jp('bkr', 330, 44 + i * 34, 9, BLK, 'BR');
+  s += `<text x="330" y="408" text-anchor="middle" font-size="9" fill="${BLK}" fill-opacity="0.65" font-style="italic">D</text>`;
+  s += `<text x="285" y="35" text-anchor="middle" font-size="7" fill="#94886a" font-style="italic">75″</text>`;
+
+  /* Blackberry — column E at x=420 */
+  s += `<rect x="406" y="28" width="28" height="388" rx="5" fill="${BKB}" fill-opacity="0.05" stroke="${BKB}" stroke-width="0.5" stroke-opacity="0.3"/>`;
+  for (let i = 0; i < 8; i++) s += jp('bkb', 420, 44 + i * 44, 10, BKB, 'BK');
+  s += `<text x="420" y="408" text-anchor="middle" font-size="9" fill="${BKB}" fill-opacity="0.65" font-style="italic">E</text>`;
+  s += `<text x="375" y="35" text-anchor="middle" font-size="7" fill="#94886a" font-style="italic">75″</text>`;
+
+  s += `</svg>`;
+  const legend = [
+    { c: RED, l: 'Red raspberry (rows A–C · 36 canes)' },
+    { c: BLK, l: 'Black raspberry (row D · 10 canes)' },
+    { c: BKB, l: 'Blackberry (row E · 8 canes)' },
+  ];
+  return { note: 'All rows run N–S · floricane pruning: red/black in Aug, blackberry in Oct', svg: s, legend };
+}
+
 /* ── DISPATCHER ───────────────────────────────────────────────────── */
 function renderJsxBed(schem, bed, bedKey, season) {
   schem.innerHTML = '';
@@ -573,6 +623,7 @@ function renderJsxBed(schem, bed, bedKey, season) {
     bedKey === 'left'     ? jsxLeftSvg :
     bedKey === 'right'    ? jsxRightSvg :
     bedKey === 'unfenced' ? jsxUnfencedSvg :
+    bedKey === 'middle'   ? jsxMiddleSvg :
     null;
   if (!draw) { schem.textContent = 'No diagram for ' + bedKey; return; }
 
