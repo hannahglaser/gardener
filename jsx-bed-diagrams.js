@@ -175,12 +175,12 @@ function jsxLeftSvg() {
   s += jmound('ss', 320, 303, 26, 18, '#97c459', 'SS');
   s += jn(375, 302);
   s += jmound('zu', 430, 303, 26, 18, '#639922', 'ZU');
-  /* Herb strip — east end: DL, EC, CI, CI, TR */
+  /* Herb strip — east end: DL, EC, TR, CI, CI */
   s += jsq('dl', 650, 302, '#97c459', 'DL');
   s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
-  s += jp('cit', 730, 302, 11, '#7daf3a', 'CI');
+  s += jsq('tr', 730, 302, '#c9a227', 'TR');
   s += jp('cit', 770, 302, 11, '#7daf3a', 'CI');
-  s += jsq('tr', 810, 302, '#c9a227', 'TR');
+  s += jp('cit', 810, 302, 11, '#7daf3a', 'CI');
   s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#1d9e75" opacity="0.6" font-style="italic">herb strip (east)</text>`;
 
   /* Path: row 4 to cucumbers — nasturtiums here deter cucumber beetles + squash pests */
@@ -523,9 +523,9 @@ function jsxLeftBedFallSvg() {
   /* Perennials — stay in ground */
   s += jp('ec', 690, 302, 11, '#d4537e', 'EC');
   s += `<text x="690" y="323" text-anchor="middle" font-size="7.5" fill="#d4537e" opacity="0.6" font-style="italic">EC</text>`;
-  s += jsq('tr', 810, 302, '#c9a227', 'TR');
-  s += `<text x="810" y="323" text-anchor="middle" font-size="7.5" fill="#c9a227" opacity="0.6" font-style="italic">TR</text>`;
-  s += `<text x="750" y="340" text-anchor="middle" font-size="7.5" fill="#94886a" font-style="italic">perennials — mulch after ground freezes</text>`;
+  s += jsq('tr', 730, 302, '#c9a227', 'TR');
+  s += `<text x="730" y="323" text-anchor="middle" font-size="7.5" fill="#c9a227" opacity="0.6" font-style="italic">TR</text>`;
+  s += `<text x="710" y="340" text-anchor="middle" font-size="7.5" fill="#94886a" font-style="italic">perennials — mulch after ground freezes</text>`;
 
   s += `</svg>`;
 
