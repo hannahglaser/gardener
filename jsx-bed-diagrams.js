@@ -245,7 +245,7 @@ function jsxRightSvg() {
 
   s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″) + swiss chard x4 (12″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('bk', cx, mid(ys.A, 24), 10, '#0f6e56', 'BK'));
-  [370, 410, 450, 490].forEach(cx => s += jp('ch', cx, mid(ys.A, 24), 10, '#d4793a', 'CH'));
+  [370, 410, 450, 490].forEach(cx => s += jp('sc', cx, mid(ys.A, 24), 10, '#d4793a', 'SC'));
   s += jn(335, mid(ys.A, 24)); s += jn(545, mid(ys.A, 24));
 
   s += RB(ys.B, 24, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
@@ -369,7 +369,7 @@ function renderJsxBags(schem, bed) {
   const tileFor = {
     'Eggplant':                { color: '#7a3d9c', code: 'EG', l1: 'Eggplant',  l2: '× 1',     sub: 'hottest spot' },
     'Spinach':                 { color: '#1D9E75', code: 'SP', l1: 'Spinach',   l2: '× 2 / bag', sub: 'shade @ 70°F' },
-    'Romaine':                 { color: '#0F6E56', code: 'RO', l1: 'Romaine',   l2: '× 2 / bag', sub: 'shade in July' },
+    'Romaine':                 { color: '#0F6E56', code: 'RM', l1: 'Romaine',   l2: '× 2 / bag', sub: 'shade in July' },
     'Mystery cuke/cantaloupe': { color: '#185FA5', code: 'MY', l1: 'Mystery',   l2: '× 1 / bag', sub: 'ID first' },
     'Pole bean':               { color: '#639922', code: 'PB', l1: 'Pole bean', l2: '× 2 / bag', sub: 'pergola' },
   };

@@ -1097,6 +1097,7 @@
   .thirsty-strip.is-loading { opacity: .45; }
   .thirsty-strip.is-ok { opacity: .35; }
   .thirsty-strip.is-ok .thirsty-label::after { content: ' · beds OK'; font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .thirsty-strip.bags-strip.is-ok .thirsty-label::after { content: ' · bags OK'; }
   .plant-card .pc-notes {
     margin-top: 8px; padding-top: 8px;
     border-top: 1px dashed var(--line-soft);
@@ -2102,9 +2103,10 @@ function renderMap(root) {
     })
   )];
   if (thirstyPlants.length) {
-    const stripClass = weatherStatus === null ? 'thirsty-strip is-loading'
+    const bagsCls = isBags ? ' bags-strip' : '';
+    const stripClass = (weatherStatus === null ? 'thirsty-strip is-loading'
                      : weatherStatus === 'ok'  ? 'thirsty-strip is-ok'
-                     : 'thirsty-strip';
+                     : 'thirsty-strip') + bagsCls;
     const strip = el('div', { class: stripClass });
     strip.innerHTML =
       `<span class="thirsty-label">Thirsty today</span>` +
@@ -2710,7 +2712,7 @@ function renderCalendar(root) {
   const rowsWrap = el('div', { class: 'cal-rows-wrap' });
 
   /* group plants by family for section dividers */
-  const order = ['tomato','pepper','cucumber','squash','brassica','root','allium','herb','flower','berry'];
+  const order = ['tomato','pepper','cucumber','squash','brassica','root','allium','herb','flower','berry','cane','legume','cover'];
   const grouped = {};
   Object.entries(PLANT_INFO).forEach(([name, info]) => {
     (grouped[info.fam] = grouped[info.fam] || []).push([name, info]);
@@ -2931,7 +2933,7 @@ function renderWeatherWidget() {
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
     widget.appendChild(el('span', { class: 'weather-rec' }, [rec]));
     widget.appendChild(el('span', { class: 'weather-src' }, ['Open-Meteo']));
-  }).catch(() => widget.remove());
+  }).catch(() => { widget.remove(); weatherStatus = 'dry'; updateThirstyStrip(); });
 }
 
 /* ============================================================
