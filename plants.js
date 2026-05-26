@@ -322,7 +322,7 @@ const PLANT_INFO = {
     ],
     cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.0], direct: [5.7, 6.1], harvest: [7.0, 9.5] } },
   'Butternut squash': { fam: 'squash', code: 'BU', variety: 'Long-vining winter squash',
-    sun: 'Full sun', water: 'Deep weekly until fruits size', soil: 'Rich, warm',
+    sun: 'Full sun', water: 'Even moisture; 1-2″/wk, deep until fruits size', soil: 'Rich, warm',
     days: '95-110 days', spacing: '48″ mound · 72″ row gap',
     care: 'Long season — start indoors. Vines sprawl 8-10 ft. Cure 2 wks in a warm dry spot before storage. Stores into winter.',
     companions: [
@@ -330,7 +330,7 @@ const PLANT_INFO = {
     ],
     cal: { indoor: [4.8, 5.2], harden: [5.6, 5.8], transplant: [5.8, 6.05], direct: [5.7, 6.1], harvest: [9.0, 10.2] } },
   'Delicata squash': { fam: 'squash', code: 'DE', variety: 'Compact-vining winter squash',
-    sun: 'Full sun', water: 'Deep weekly', soil: 'Rich, warm',
+    sun: 'Full sun', water: 'Even moisture; 1-2″/wk, deep', soil: 'Rich, warm',
     days: '80-100 days', spacing: '48″ between mounds',
     care: 'Shorter vines than butternut (4-6 ft). Skin is edible — no peeling. Best within 2 months of harvest.',
     companions: [
