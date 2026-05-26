@@ -2096,7 +2096,7 @@ function renderMap(root) {
     })
   )];
   if (thirstyPlants.length) {
-    const strip = el('div', { class: 'thirsty-strip' });
+    const strip = el('div', { class: 'thirsty-strip' + (weatherStatus === 'ok' ? ' is-ok' : '') });
     strip.innerHTML =
       `<span class="thirsty-label">Thirsty today</span>` +
       thirstyPlants.map(n => `<span class="thirsty-chip">${n}</span>`).join('');
