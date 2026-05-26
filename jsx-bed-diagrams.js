@@ -386,13 +386,25 @@ function renderJsxBags(schem, bed) {
     const col = i % cols, row = Math.floor(i / cols);
     const x = x0 + col * gx, y = y0 + row * gy;
     const cx = x + bw / 2;
+    const n = bag.n || 1;
+
+    /* dot positions: 1 = centered; 2 = side by side; 3+ = row */
+    const dotOffsets = n === 1 ? [0]
+      : n === 2 ? [-15, 15]
+      : Array.from({length: n}, (_, k) => (k - (n-1)/2) * 14);
+
+    let dots = '';
+    dotOffsets.forEach(dx => {
+      dots += `<circle cx="${cx + dx}" cy="${y + 22}" r="${n > 1 ? 11 : 13}" fill="${tile.color}" fill-opacity="0.22" stroke="${tile.color}" stroke-width="0.8"/>`;
+      dots += `<text x="${cx + dx}" y="${y + 26}" text-anchor="middle" font-size="${n > 1 ? 8 : 9}" fill="${tile.color}" font-weight="700">${tile.code}</text>`;
+    });
+
     svg += (
       `<g class="jsx-plant" data-pid="${bag.plant.id}">` +
         `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="9" fill="${tile.color}" fill-opacity="0.08" stroke="${tile.color}" stroke-width="1"/>` +
-        `<circle cx="${cx}" cy="${y + 22}" r="13" fill="${tile.color}" fill-opacity="0.22" stroke="${tile.color}" stroke-width="0.8"/>` +
-        `<text x="${cx}" y="${y + 26}" text-anchor="middle" font-size="9" fill="${tile.color}" font-weight="700">${tile.code}</text>` +
+        dots +
         `<text x="${cx}" y="${y + 45}" text-anchor="middle" font-size="9" fill="${tile.color}" font-weight="600">${tile.l1}</text>` +
-        `<text x="${cx}" y="${y + 57}" text-anchor="middle" font-size="8" fill="${tile.color}" fill-opacity="0.85">${tile.l2}</text>` +
+        `<text x="${cx}" y="${y + 57}" text-anchor="middle" font-size="8" fill="${tile.color}" fill-opacity="0.85">× ${n}</text>` +
         `<text x="${cx}" y="${y + 70}" text-anchor="middle" font-size="7.5" fill="${tile.color}" fill-opacity="0.65">${tile.sub}</text>` +
         `<text x="${cx}" y="${y + 86}" text-anchor="middle" font-size="7" fill="#94886a">${bag.id} · 10 gal</text>` +
       `</g>`
