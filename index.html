@@ -1091,6 +1091,9 @@
   }
   .plant-card .pc-row .v { color: var(--ink); }
   .water-dots { font-size: 10px; color: #2e7fb8; letter-spacing: 1px; margin-left: 5px; vertical-align: middle; }
+  .thirsty-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .thirsty-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #2e7fb8; }
+  .thirsty-chip { font-size: 11px; color: #2e7fb8; background: rgba(46,127,184,.1); border: 1px solid rgba(46,127,184,.3); border-radius: 20px; padding: 2px 8px; }
   .plant-card .pc-notes {
     margin-top: 8px; padding-top: 8px;
     border-top: 1px dashed var(--line-soft);
@@ -2082,6 +2085,21 @@ function renderMap(root) {
     totals.appendChild(d);
   });
   mainCol.appendChild(totals);
+
+  /* thirsty today strip */
+  const thirstyPlants = [...new Set(
+    (bed.plants || []).map(pl => pl.name).filter(n => {
+      const info = PLANT_INFO[n];
+      return info && waterLevel(info.water) === 3;
+    })
+  )];
+  if (thirstyPlants.length) {
+    const strip = el('div', { class: 'thirsty-strip' });
+    strip.innerHTML =
+      `<span class="thirsty-label">Thirsty today</span>` +
+      thirstyPlants.map(n => `<span class="thirsty-chip">${n}</span>`).join('');
+    mainCol.appendChild(strip);
+  }
 
   /* schematic */
   const card = el('div', { class: 'diagram-card' });
