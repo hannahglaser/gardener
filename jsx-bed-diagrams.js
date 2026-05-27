@@ -259,15 +259,17 @@ function jsxRightSvg() {
   [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'CF'));
   s += jn(344, mid(ys.C, 24)); s += jn(580, mid(ys.C, 24));
 
-  s += RB(ys.D, 36, '#1d9e75', `D — broccolini ×4 (18″) · red beet ×6 (5″) inline · yellow beet ×6 sub-row`);
-  /* Broccolini — centered, 18″ apart */
-  [340, 369, 397, 426].forEach(cx => s += jp('brl', cx, ys.D + 10, 9, '#1d9e75', 'BRL'));
-  /* Red beets — 18″ gap east of last broccolini, 5″ spacing, top sub-row */
-  [454, 462, 470, 478, 486, 494].forEach(cx => s += jp('rb', cx, ys.D + 10, 7, '#a32d2d', 'RB'));
-  /* Yellow beets — 6″ south sub-row */
-  [454, 462, 470, 478, 486, 494].forEach(cx => s += jp('yb', cx, ys.D + 26, 7, '#ef9f27', 'YB'));
+  s += RB(ys.D, 38, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)`);
+  /* Broccolini — spread left portion (visual, not inch-scale) */
+  [170, 255, 340, 425].forEach(cx => s += jp('brl', cx, ys.D + 12, 9, '#1d9e75', 'BRL'));
+  /* Small divider tick */
+  s += `<line x1="453" y1="${ys.D + 4}" x2="453" y2="${ys.D + 34}" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="2 2"/>`;
+  /* Red beets — compact cluster, top sub-row */
+  [463, 476, 489, 502, 515, 528].forEach(cx => s += jp('rb', cx, ys.D + 12, 8, '#a32d2d', 'RB'));
+  /* Yellow beets — 6″ south sub-row, same x positions */
+  [463, 476, 489, 502, 515, 528].forEach(cx => s += jp('yb', cx, ys.D + 28, 8, '#ef9f27', 'YB'));
 
-  s += jpath(148, 470, ys.D + 36, 28, '24″ harvest path — mid bed');
+  s += jpath(148, 470, ys.D + 38, 28, '24″ harvest path — mid bed');
 
   /* Carrot band: hover-able rect */
   s += `<g class="jsx-plant" data-code="ca">` +
