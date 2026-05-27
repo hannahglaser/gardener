@@ -1321,15 +1321,19 @@
   }
 
   /* ── Expert launch tab ──────────────────────────────── */
-  .expert-launch { display:flex; justify-content:center; padding:60px 20px; }
-  .expert-launch-card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:36px 40px; max-width:480px; width:100%; box-shadow:var(--shadow); }
-  .expert-launch-card h2 { margin:0 0 10px; font-size:22px; }
-  .expert-launch-desc { color:var(--ink-soft); font-size:14.5px; line-height:1.6; margin:0 0 28px; }
+  .expert-launch { display:flex; justify-content:center; padding:40px 20px; }
+  .expert-launch-card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:36px 40px; max-width:560px; width:100%; box-shadow:var(--shadow); }
+  .expert-launch-card h2 { margin:0 0 6px; font-size:22px; }
+  .expert-launch-desc { color:var(--ink-soft); font-size:14px; line-height:1.6; margin:0 0 20px; }
+  .expert-q-label { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin-bottom:6px; }
+  .expert-q-input { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font:inherit; font-size:14px; line-height:1.5; resize:vertical; min-height:80px; color:var(--ink); background:var(--paper); margin-bottom:16px; }
+  .expert-q-input:focus { outline:none; border-color:var(--moss); }
   .expert-launch-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .expert-launch-btn { display:inline-block; padding:11px 22px; background:var(--moss); color:#fff; border-radius:8px; font-size:15px; font-weight:500; text-decoration:none; transition:background .15s; }
+  .expert-launch-btn { display:inline-block; padding:11px 22px; background:var(--moss); color:#fff; border-radius:8px; font-size:15px; font-weight:500; text-decoration:none; transition:background .15s; cursor:pointer; border:none; font-family:inherit; }
   .expert-launch-btn:hover { background:var(--moss-dk); }
   .expert-copy-btn { padding:10px 16px; background:transparent; border:1px solid var(--line); border-radius:8px; font:inherit; font-size:14px; color:var(--ink-soft); cursor:pointer; transition:all .15s; }
   .expert-copy-btn:hover { border-color:var(--ink-soft); color:var(--ink); }
+  .expert-context-hint { font-size:12px; color:var(--ink-soft); margin-top:14px; line-height:1.5; }
 
   /* ── Garden Tasks (Tab V) ───────────────────────────────── */
   .tasks-view { max-width: 780px; margin: 0 auto; padding: 28px 20px 60px; display: flex; flex-direction: column; gap: 20px; }
@@ -2939,59 +2943,102 @@ function renderWeatherWidget() {
 /* ============================================================
  *   RENDER: GARDEN EXPERT
  * ============================================================ */
-function buildGardenContext() {
+function buildGardenContext(question) {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
   const lines = [
-    'I need gardening help. Here is my full garden context so you can answer specifically:',
-    '',
-    'Location: Greenfield, Massachusetts · Zone 5b/6a · Last frost ~May 10 · First frost ~Oct 5',
+    'You are an expert horticulturist and garden planner.',
+    `Today is ${dateStr}. Garden: Greenfield, Massachusetts · Zone 5b/6a · Last frost May 10 · First frost Oct 5.`,
     '',
   ];
-  for (const bedKey in BEDS) {
+
+  const SKIP_FALL = key => key.endsWith('Fall');
+  for (const bedKey of Object.keys(BEDS).filter(k => !SKIP_FALL(k))) {
     const bed = BEDS[bedKey];
-    lines.push(`${bed.title} — ${bed.dims}`);
+    lines.push(`=== ${bed.title.toUpperCase()} ===`);
+    lines.push(`Size: ${bed.dims}`);
     lines.push(bed.lead);
+
+    if (bed.rows && bed.rows.length) {
+      lines.push('Row layout: ' + bed.rows.map(r => `Row ${r.letter} — ${r.label}${r.dim ? ' (' + r.dim + ')' : ''}`).join('; '));
+    }
+
     if (bed.plants) {
       const counts = {};
       bed.plants.forEach(pl => { counts[pl.name] = (counts[pl.name] || 0) + 1; });
-      lines.push('Plants: ' + Object.entries(counts).map(([n, c]) => c > 1 ? `${n} ×${c}` : n).join(', '));
+      lines.push('Plants:');
+      Object.entries(counts).forEach(([name, count]) => {
+        const info = PLANT_INFO[name];
+        const parts = [`${name} ×${count}`];
+        if (info) {
+          if (info.spacing) parts.push(`spacing: ${info.spacing}`);
+          if (info.water)   parts.push(`water: ${info.water}`);
+          if (info.care)    parts.push(`care: ${info.care}`);
+          if (info.companions && info.companions.length)
+            parts.push(`companions: ${info.companions.map(c => c.with).join(', ')}`);
+        }
+        lines.push('  · ' + parts.join(' | '));
+      });
     }
+
     if (bed.bags) {
-      lines.push('Bags: ' + bed.bags.map(b => `${b.plant.name} ×${b.n}`).join(', '));
+      lines.push('Bags:');
+      bed.bags.forEach(b => {
+        const info = PLANT_INFO[b.plant.name];
+        const parts = [`${b.id}: ${b.plant.name} ×${b.n}`];
+        if (info) {
+          if (info.water) parts.push(`water: ${info.water}`);
+          if (info.care)  parts.push(`care: ${info.care}`);
+        }
+        if (b.note) parts.push(`note: ${b.note}`);
+        lines.push('  · ' + parts.join(' | '));
+      });
     }
     lines.push('');
   }
-  lines.push('What should I be doing in the garden right now?');
+
+  if (weatherStatus) {
+    const label = { ok: 'beds OK — recent rain covers needs', mild: 'mild deficit — beds could use water soon', dry: 'dry — beds need water' };
+    lines.push(`Current weather status: ${label[weatherStatus] || weatherStatus}`);
+    lines.push('');
+  }
+
+  lines.push('=== QUESTION ===');
+  lines.push(question && question.trim() ? question.trim() : `What should I be doing in the garden today, ${dateStr}?`);
   return lines.join('\n');
 }
 
 function renderExpert(root) {
   const wrap = el('div', { class: 'expert-launch' });
-
   const card = el('div', { class: 'expert-launch-card' });
 
   card.appendChild(el('h2', { class: 'serif' }, ['Garden Expert']));
   card.appendChild(el('p', { class: 'expert-launch-desc' }, [
-    'Opens Claude with your full garden context — all beds, plants, and location — pre-loaded as the first message.'
+    'Opens Claude with your full garden loaded — all beds, plant care details, row layouts, and current weather. Type your question below or leave blank for a general check-in.'
   ]));
+
+  card.appendChild(el('div', { class: 'expert-q-label' }, ['Your question']));
+  const textarea = el('textarea', {
+    class: 'expert-q-input',
+    placeholder: 'e.g. Do I need to water today? Which tomatoes need staking? When should I harvest the garlic?',
+  });
+  card.appendChild(textarea);
+
+  const getCtx = () => buildGardenContext(textarea.value);
 
   const btn = el('a', {
     class: 'expert-launch-btn',
     target: '_blank',
     rel: 'noopener',
-  }, ['Open in Claude →']);
+  }, ['Ask Claude →']);
 
-  /* Build URL lazily on click so it always reflects current data */
-  btn.addEventListener('click', () => {
-    btn.href = 'https://claude.ai/new?q=' + encodeURIComponent(buildGardenContext());
-  });
-  /* Also set href on mousedown so middle-click / right-click → open in new tab works */
-  btn.addEventListener('mousedown', () => {
-    btn.href = 'https://claude.ai/new?q=' + encodeURIComponent(buildGardenContext());
-  });
+  const setHref = () => { btn.href = 'https://claude.ai/new?q=' + encodeURIComponent(getCtx()); };
+  btn.addEventListener('click', setHref);
+  btn.addEventListener('mousedown', setHref);
 
   const copyBtn = el('button', { class: 'expert-copy-btn' }, ['Copy context']);
   copyBtn.onclick = () => {
-    navigator.clipboard.writeText(buildGardenContext()).then(() => {
+    navigator.clipboard.writeText(getCtx()).then(() => {
       copyBtn.textContent = 'Copied!';
       setTimeout(() => { copyBtn.textContent = 'Copy context'; }, 2000);
     });
@@ -3001,6 +3048,10 @@ function renderExpert(root) {
   actions.appendChild(btn);
   actions.appendChild(copyBtn);
   card.appendChild(actions);
+
+  card.appendChild(el('p', { class: 'expert-context-hint' }, [
+    'Context includes: all 5 beds · plant care & spacing · row layouts · companions · today\'s weather status'
+  ]));
 
   wrap.appendChild(card);
   root.appendChild(wrap);
