@@ -1606,6 +1606,8 @@ const BEDS = {};
     {n:'Yellow beet', after: 5},
     {n:'Yellow beet', after: 5},
   ], { startX: 193 }));
+  /* Chinese mustard — perennial, south of broccolini, spreads ~18-24″ wide */
+  plants.push(plantAt('Chinese mustard', 148, 155, { zone: 'right bed · established perennial · south of broccolini' }));
 
   /* G · Row F — Carrots (direct-sow band spanning full veg width, y=192) */
   plants.push(plantAt('Carrots', vegCenter, 192, { isBand: true, bandW: 280, bandH: 10 }));
@@ -1672,7 +1674,7 @@ const BEDS = {};
       { letter:'A', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BK × 4 @ 10″ · CH × 4 @ 12″ · 66″ EW' },
       { letter:'B', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
       { letter:'C', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
-      { letter:'D', y:143, label:'Row D · Broccolini + Beets', dim:'BRL × 4 @ 18″ · RB × 6 @ 5″ inline · YB × 6 sub-row 6″ south' },
+      { letter:'D', y:143, label:'Row D · Broccolini + Beets', dim:'BRL × 4 @ 18″ · RB × 6 @ 5″ inline · YB × 6 sub-row 6″ south · CM perennial below' },
       { letter:'F', y:204, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
       { letter:'G', y:228, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },

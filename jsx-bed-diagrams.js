@@ -24,7 +24,7 @@ const JSX_CODE_TO_NAME = {
   cu:  'Cucumber',
   cit: 'Citronella',
   rr:  'Red raspberry',  bkr: 'Black raspberry',  bkb: 'Blackberry',
-  bk:  'Bok choy',           sc:  'Swiss chard',
+  bk:  'Bok choy',           sc:  'Swiss chard',    cm:  'Chinese mustard',
   kl:  'Kale',               gc:  'Green cabbage',
   rc:  'Red cabbage',        br:  'Broccoli',
   cf:  'Cauliflower',        brl: 'Broccolini',
@@ -259,17 +259,22 @@ function jsxRightSvg() {
   [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'CF'));
   s += jn(344, mid(ys.C, 24)); s += jn(580, mid(ys.C, 24));
 
-  s += RB(ys.D, 38, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)`);
-  /* Broccolini — spread left portion (visual, not inch-scale) */
+  s += RB(ys.D, 46, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)  ·  CM perennial`);
+  /* Broccolini — spread left portion */
   [170, 255, 340, 425].forEach(cx => s += jp('brl', cx, ys.D + 12, 9, '#1d9e75', 'BRL'));
-  /* Small divider tick */
-  s += `<line x1="453" y1="${ys.D + 4}" x2="453" y2="${ys.D + 34}" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="2 2"/>`;
-  /* Red beets — compact cluster, top sub-row */
-  [463, 476, 489, 502, 515, 528].forEach(cx => s += jp('rb', cx, ys.D + 12, 8, '#a32d2d', 'RB'));
-  /* Yellow beets — 6″ south sub-row, same x positions */
-  [463, 476, 489, 502, 515, 528].forEach(cx => s += jp('yb', cx, ys.D + 28, 8, '#ef9f27', 'YB'));
+  /* Chinese mustard — perennial mound, spans ~3/4 of broccolini width, south sub-row left */
+  s += `<g class="jsx-plant" data-code="cm">` +
+    `<ellipse cx="270" cy="${ys.D + 34}" rx="110" ry="7" fill="#4a7a28" fill-opacity="0.22" stroke="#4a7a28" stroke-width="0.8" stroke-dasharray="3 2"/>` +
+    `<text x="270" y="${ys.D + 37}" text-anchor="middle" font-size="7.5" fill="#2a4d14" font-weight="600">CM · Chinese mustard (perennial)</text>` +
+    `</g>`;
+  /* Divider tick between broccolini zone and beet zone */
+  s += `<line x1="453" y1="${ys.D + 4}" x2="453" y2="${ys.D + 42}" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="2 2"/>`;
+  /* Red beets — 16px spacing, r=7 (no overlap) */
+  [463, 479, 495, 511, 527, 543].forEach(cx => s += jp('rb', cx, ys.D + 12, 7, '#a32d2d', 'RB'));
+  /* Yellow beets — 6″ south sub-row */
+  [463, 479, 495, 511, 527, 543].forEach(cx => s += jp('yb', cx, ys.D + 30, 7, '#ef9f27', 'YB'));
 
-  s += jpath(148, 470, ys.D + 38, 28, '24″ harvest path — mid bed');
+  s += jpath(148, 470, ys.D + 46, 28, '24″ harvest path — mid bed');
 
   /* Carrot band: hover-able rect */
   s += `<g class="jsx-plant" data-code="ca">` +
@@ -293,7 +298,8 @@ function jsxRightSvg() {
     {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR · Broccoli (2)'},
     {c:'#534ab7', l:'CF (2)'},
     {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB · Red beet (6)'},
-    {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#d85a30', l:'Carrots band'},
+    {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#4a7a28', l:'CM · Chinese mustard (perennial)'},
+    {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
     {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
