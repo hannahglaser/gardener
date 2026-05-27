@@ -259,17 +259,15 @@ function jsxRightSvg() {
   [476, 540].forEach(cx => s += jp('cf', cx, mid(ys.C, 24), 10, '#534ab7', 'CF'));
   s += jn(344, mid(ys.C, 24)); s += jn(580, mid(ys.C, 24));
 
-  s += RB(ys.D, 24, '#1d9e75', `D — broccolini x4 (15″)`);
-  [175, 295, 415, 535].forEach(cx => s += jp('brl', cx, mid(ys.D, 24), 10, '#1d9e75', 'BRL'));
-  s += jn(235, mid(ys.D, 24)); s += jn(355, mid(ys.D, 24));
+  s += RB(ys.D, 36, '#1d9e75', `D — broccolini ×4 (18″) · red beet ×6 (5″) inline · yellow beet ×6 sub-row`);
+  /* Broccolini — centered, 18″ apart */
+  [340, 369, 397, 426].forEach(cx => s += jp('brl', cx, ys.D + 10, 9, '#1d9e75', 'BRL'));
+  /* Red beets — 18″ gap east of last broccolini, 5″ spacing, top sub-row */
+  [454, 462, 470, 478, 486, 494].forEach(cx => s += jp('rb', cx, ys.D + 10, 7, '#a32d2d', 'RB'));
+  /* Yellow beets — 6″ south sub-row */
+  [454, 462, 470, 478, 486, 494].forEach(cx => s += jp('yb', cx, ys.D + 26, 7, '#ef9f27', 'YB'));
 
-  s += jpath(148, 470, ys.pMid, 28, '24″ harvest path — mid bed');
-
-  s += RB(ys.E, 22, '#a32d2d', `E — red beet x4 + yellow beet x4 (direct sow, thin to 4″)`);
-  [160, 204, 248, 292].forEach(cx => s += jp('rb', cx, mid(ys.E, 22), 9, '#a32d2d', 'RB'));
-  [378, 422, 466, 510].forEach(cx => s += jp('yb', cx, mid(ys.E, 22), 9, '#ef9f27', 'YB'));
-
-  s += jpath(148, 470, ys.pEF, 14, '12″ path');
+  s += jpath(148, 470, ys.D + 36, 28, '24″ harvest path — mid bed');
 
   /* Carrot band: hover-able rect */
   s += `<g class="jsx-plant" data-code="ca">` +
@@ -292,8 +290,8 @@ function jsxRightSvg() {
     {c:'#1d7a3c', l:'KL (4)'}, {c:'#185fa5', l:'GC (4)'},
     {c:'#993556', l:'RC (4)'}, {c:'#7080c4', l:'BR · Broccoli (2)'},
     {c:'#534ab7', l:'CF (2)'},
-    {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB (4)'},
-    {c:'#ef9f27', l:'YB (4)'}, {c:'#d85a30', l:'Carrots band'},
+    {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB · Red beet (6)'},
+    {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#d85a30', l:'Carrots band'},
     {c:'#5f5e5a', l:'SN (4)'}, {c:'#888780', l:'LK (4)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
     {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},

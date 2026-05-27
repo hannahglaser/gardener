@@ -1581,25 +1581,31 @@ const BEDS = {};
     {n:'Nasturtium', after: 18, opts:{zone:'right bed brassica · trap crop (east)'}},
   ], { centerX: vegCenter }));
 
-  /* E · Row D — Broccolini × 4 (y=143) */
+  /* E · Row D — Broccolini × 4 @ 18″ (centered) + Red beet × 6 @ 5″ inline (y=143) */
   plants.push(...line(143, [
     {n:'Broccolini'},
-    {n:'Broccolini', after: 15},
-    {n:'Broccolini', after: 15},
-    {n:'Broccolini', after: 15},
+    {n:'Broccolini', after: 18},
+    {n:'Broccolini', after: 18},
+    {n:'Broccolini', after: 18},
   ], { centerX: vegCenter }));
-
-  /* F · Row E — Red beet × 4 + Yellow beet × 4 (y=180, 4" thinned, sm size) */
-  plants.push(...line(180, [
+  /* Red beets start 18″ east of last broccolini (last brl at ~175″, rb starts at 193″) */
+  plants.push(...line(143, [
     {n:'Red beet'},
-    {n:'Red beet', after: 4},
-    {n:'Red beet', after: 4},
-    {n:'Red beet', after: 4},
-    {n:'Yellow beet', after: 6},
-    {n:'Yellow beet', after: 4},
-    {n:'Yellow beet', after: 4},
-    {n:'Yellow beet', after: 4},
-  ], { centerX: vegCenter }));
+    {n:'Red beet', after: 5},
+    {n:'Red beet', after: 5},
+    {n:'Red beet', after: 5},
+    {n:'Red beet', after: 5},
+    {n:'Red beet', after: 5},
+  ], { startX: 193 }));
+  /* Yellow beet sub-row — 6″ south of red beets (y=149) */
+  plants.push(...line(149, [
+    {n:'Yellow beet'},
+    {n:'Yellow beet', after: 5},
+    {n:'Yellow beet', after: 5},
+    {n:'Yellow beet', after: 5},
+    {n:'Yellow beet', after: 5},
+    {n:'Yellow beet', after: 5},
+  ], { startX: 193 }));
 
   /* G · Row F — Carrots (direct-sow band spanning full veg width, y=192) */
   plants.push(plantAt('Carrots', vegCenter, 192, { isBand: true, bandW: 280, bandH: 10 }));
@@ -1654,7 +1660,7 @@ const BEDS = {};
       { kind:'path', y0:87,  y1:102, xRange:[0,296], label:'15″ cross-path · leafy greens ↔ brassicas' },
       { kind:'path', y0:120, y1:135, xRange:[0,296], label:'15″ cross-path · brassicas ↔ broccolini' },
       { kind:'path', y0:150, y1:174, xRange:[0,296], label:'24″ mid-bed harvest path · greens ↔ roots' },
-      { kind:'path', y0:192, y1:204, xRange:[0,296], label:'12″ path · beets ↔ carrots' },
+      { kind:'path', y0:192, y1:204, xRange:[0,296], label:'12″ path · mid-bed ↔ carrots' },
       { kind:'path', y0:216, y1:228, xRange:[0,296], label:'12″ path · carrots ↔ scallions/leeks' },
       { kind:'path', y0:240, y1:300, xRange:[0,296], label:'60″ south buffer · succession-plant zone · enter from S' },
       { kind:'gap',  y0:0,   y1:36,  xRange:[344,368], label:'' },
@@ -1666,8 +1672,7 @@ const BEDS = {};
       { letter:'A', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BK × 4 @ 10″ · CH × 4 @ 12″ · 66″ EW' },
       { letter:'B', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
       { letter:'C', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
-      { letter:'D', y:143, label:'Row D · Broccolini', dim:'4 × 15″ · 45″ EW' },
-      { letter:'E', y:180, label:'Row E · Beets', dim:'RB × 4 · YB × 4 · transplant from starts · thin to 4″' },
+      { letter:'D', y:143, label:'Row D · Broccolini + Beets', dim:'BRL × 4 @ 18″ · RB × 6 @ 5″ inline · YB × 6 sub-row 6″ south' },
       { letter:'F', y:204, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
       { letter:'G', y:228, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
@@ -1823,7 +1828,7 @@ BEDS.bags = {
       ...fa('Garlic', 12),
       ...fa('Shallots', 5),
       ...fa('Overwintering onions', 5),
-      ...fa('Red beet', 4), ...fa('Yellow beet', 4),
+      ...fa('Red beet', 6), ...fa('Yellow beet', 6),
       p('Carrots'),
       ...fa('Scallion', 4), ...fa('Leek', 4),
       p('Annual rye'),
