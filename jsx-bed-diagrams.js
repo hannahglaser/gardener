@@ -246,12 +246,12 @@ function jsxRightSvg() {
   s += RB(ys.A, 24, '#0f6e56', `A — bok choy x4 (10″) + swiss chard x4 (12″)`);
   [160, 206, 252, 298].forEach(cx => s += jp('bk', cx, mid(ys.A, 24), 10, '#0f6e56', 'BK'));
   [370, 410, 450, 490].forEach(cx => s += jp('sc', cx, mid(ys.A, 24), 10, '#d4793a', 'SC'));
-  s += jn(335, mid(ys.A, 24)); s += jn(545, mid(ys.A, 24));
+  s += jn(320, mid(ys.A, 24)); s += jn(525, mid(ys.A, 24));
 
   s += RB(ys.B, 24, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('kl', cx, mid(ys.B, 24), 10, '#1d7a3c', 'KL'));
   [388, 440, 492, 540].forEach(cx => s += jp('gc', cx, mid(ys.B, 24), 10, '#185fa5', 'GC'));
-  s += jn(349, mid(ys.B, 24)); s += jn(580, mid(ys.B, 24));
+  s += jn(332, mid(ys.B, 24)); s += jn(568, mid(ys.B, 24));
 
   s += RB(ys.C, 24, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″)`);
   [160, 210, 260, 310].forEach(cx => s += jp('rc', cx, mid(ys.C, 24), 10, '#993556', 'RC'));
@@ -262,6 +262,8 @@ function jsxRightSvg() {
   s += RB(ys.D, 46, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)  ·  CM perennial`);
   /* Broccolini — spread left portion */
   [170, 255, 340, 425].forEach(cx => s += jp('brl', cx, ys.D + 12, 9, '#1d9e75', 'BRL'));
+  /* Interior nasturtiums — between broccolini plants 1+2 and 3+4 */
+  s += jn(213, ys.D + 12); s += jn(383, ys.D + 12);
   /* Chinese mustard — perennial mound, spans ~3/4 of broccolini width, south sub-row left */
   s += `<g class="jsx-plant" data-code="cm">` +
     `<ellipse cx="270" cy="${ys.D + 34}" rx="110" ry="7" fill="#4a7a28" fill-opacity="0.22" stroke="#4a7a28" stroke-width="0.8" stroke-dasharray="3 2"/>` +

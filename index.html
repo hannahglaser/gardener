@@ -1624,11 +1624,15 @@ const BEDS = {};
     {n:'Leek', after: 6},
   ], { centerX: vegCenter }));
 
-  /* Nasturtium × 8 — flanking rows A–D (west + east ends) as trap crop */
-  [92, 120, 148, 176].forEach(y => {
-    plants.push(plantAt('Nasturtium', 155, y, { zone: 'right bed · brassica rows A-D · trap crop' }));
-    plants.push(plantAt('Nasturtium', 600, y, { zone: 'right bed · brassica rows A-D · trap crop' }));
-  });
+  /* Nasturtium — rows A+B west+east flanking; rows C+D interior between plants */
+  plants.push(plantAt('Nasturtium', 95,  48,  { zone: 'right bed · row A west flank' }));
+  plants.push(plantAt('Nasturtium', 195, 48,  { zone: 'right bed · row A east flank' }));
+  plants.push(plantAt('Nasturtium', 90,  78,  { zone: 'right bed · row B west flank' }));
+  plants.push(plantAt('Nasturtium', 205, 78,  { zone: 'right bed · row B east flank' }));
+  /* Row C east+west already covered by inline nasturtiums in the line() call above */
+  /* Row D interior — between broccolini plants (x≈130″ and x≈166″) */
+  plants.push(plantAt('Nasturtium', 130, 143, { zone: 'right bed · row D interior · between broccolini 1+2' }));
+  plants.push(plantAt('Nasturtium', 166, 143, { zone: 'right bed · row D interior · between broccolini 3+4' }));
 
   /* Asparagus — established perennial west strip (~4 crowns, count unconfirmed) */
   for (let i = 0; i < 4; i++) plants.push(plantAt('Asparagus', 89, 60 + i * 70, { zone: 'right bed · west strip · established perennial' }));
