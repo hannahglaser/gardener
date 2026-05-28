@@ -1497,7 +1497,7 @@ const BEDS = {};
   N('Tomatillo', 2, 'tomato row 1 · east');
   N('Sungold', 5, 'tomato row 2');
   N('Juliette', 2, 'tomato row 2 · east');
-  N('Nasturtium', 10, 'left bed · interplanted across rows');
+  N('Nasturtium', 12, 'left bed · interplanted across rows');
   N('Bell pepper', 3, 'pepper block · row 1');
   N('Shishito pepper', 2, 'pepper block · row 2');
   N('Basil', 3, 'pepper block · gap-fill');
@@ -1509,7 +1509,7 @@ const BEDS = {};
   N('Dill', 1, 'herb border · east strip');
   N('Echinacea', 1, 'herb border · perennial');
   N('Citronella', 2, 'herb strip · east end · tender perennial');
-  N('Cucumber', 8, 'trellised · 18″ apart');
+  N('Cucumber', 12, 'trellised · 18″ apart');
   N('French Tarragon', 1, 'east herb strip · TR');
 
   BEDS.left = {
@@ -1517,7 +1517,7 @@ const BEDS = {};
     dims: '400″ E-W × 350″ N-S · 318″ used · 32″ spare',
     lead: 'Five rows (A–E) running E-W on a 400″ bed: sunflowers at the north edge, tomatoes across row B with a half-height SG + pepper sub-row below, squash mounds and an east herb strip in row D, and cucumbers trellised along the south fence in row E. Five harvest paths — including a 48″ gap between the tomato and squash rows — keep every row reachable from both sides.',
     totals: [
-      { k: 'Plants',  v: '67' },
+      { k: 'Plants',  v: '73' },
       { k: 'Families', v: '7' },
       { k: 'N-S Used', v: '318″ / 350″' },
       { k: 'Paths',   v: '5 harvest paths' },
@@ -1530,7 +1530,7 @@ const BEDS = {};
       { letter:'C', y:132, label:'SG + peppers (sub-row)', dim:'SG × 4 · TB × 2 · JL · HB · BP B BP B SH · sub-row BP SH B' },
       { letter:'D', y:192, label:'Squash + Swiss chard + herb strip',
         dim:'ZU × 2 + SS × 2 mounds · east herb strip DL · EC · CI × 2 · TR' },
-      { letter:'E', y:279, label:'Cucumbers', dim:'8 × 18″ on trellis · NA interplanted' },
+      { letter:'E', y:279, label:'Cucumbers', dim:'12 × 18″ on trellis · NA interplanted' },
     ],
     plants: plants,
   };
@@ -1606,22 +1606,24 @@ const BEDS = {};
     {n:'Yellow beet', after: 5},
     {n:'Yellow beet', after: 5},
   ], { startX: 193 }));
+  /* Red cabbage — 1 plant, east of beet sub-rows @ 18″ from last beet (x≈236, y=143) */
+  plants.push(plantAt('Red cabbage', 236, 143, { zone: 'right bed · row D · east of beet sub-rows' }));
   /* Chinese mustard — perennial, south of broccolini, spreads ~18-24″ wide */
   plants.push(plantAt('Chinese mustard', 148, 155, { zone: 'right bed · established perennial · south of broccolini' }));
 
   /* G · Row F — Carrots (direct-sow band spanning full veg width, y=192) */
   plants.push(plantAt('Carrots', vegCenter, 192, { isBand: true, bandW: 280, bandH: 10 }));
 
-  /* H · Row G — Scallion × 4 + Leek × 4 (y=204) */
+  /* H · Row G — Leek × 4 (west) + Scallion × 4 (east) — swapped per 2026 layout */
   plants.push(...line(204, [
-    {n:'Scallion'},
-    {n:'Scallion', after: 3},
-    {n:'Scallion', after: 3},
-    {n:'Scallion', after: 3},
-    {n:'Leek', after: 15},
+    {n:'Leek'},
     {n:'Leek', after: 6},
     {n:'Leek', after: 6},
     {n:'Leek', after: 6},
+    {n:'Scallion', after: 15},
+    {n:'Scallion', after: 3},
+    {n:'Scallion', after: 3},
+    {n:'Scallion', after: 3},
   ], { centerX: vegCenter }));
 
   /* Nasturtium — rows A+B west+east flanking; rows C+D interior between plants */
@@ -1641,14 +1643,15 @@ const BEDS = {};
   for (let i = 0; i < 2; i++) plants.push(plantAt('Lowbush blueberry', 320, 25 + i * 50));
   for (let i = 2; i < 6; i++) plants.push(plantAt('Blueberry', 320, 25 + i * 50));
 
-  /* East strip — open */
+  /* East strip — bee balm (perennial) in NE corner */
+  plants.push(plantAt('Bee balm', 356, 15, { zone: 'right bed · NE corner · east strip · perennial' }));
 
   BEDS.right = {
     title: 'Right Bed',
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
     lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Row A mixes bok choy and swiss chard; rows B–D carry brassicas with nasturtium trap crops. A 24″ mid-bed path separates leafy greens from roots and alliums (rows E–G); 12″ paths between E/F and F/G allow reach from both ends.',
     totals: [
-      { k: 'Plants', v: '70' },
+      { k: 'Plants', v: '72' },
       { k: 'Veg rows', v: 'A → G' },
       { k: 'Paths', v: '6 harvest paths' },
       { k: 'Hedge', v: '6 Blueberry (2 low · 4 high)' },
@@ -1678,9 +1681,9 @@ const BEDS = {};
       { letter:'A', y:48,  label:'Row A · Bok choy + Swiss chard', dim:'BK × 4 @ 10″ · CH × 4 @ 12″ · 66″ EW' },
       { letter:'B', y:78,  label:'Row B · Kale + Green cabbage', dim:'KL × 4 @ 15″ · GC × 4 @ 18″ · 99″ EW' },
       { letter:'C', y:111, label:'Row C · Red cabbage + Broccoli/Cauliflower', dim:'RC × 4 · BR × 2 · CF × 2 · all @ 18″ · 126″ EW' },
-      { letter:'D', y:143, label:'Row D · Broccolini + Beets', dim:'BRL × 4 @ 18″ · RB × 6 @ 5″ inline · YB × 6 sub-row 6″ south · CM perennial below' },
+      { letter:'D', y:143, label:'Row D · Broccolini + Beets + Red cabbage', dim:'BRL × 4 @ 18″ · RB × 6 @ 5″ inline · YB × 6 sub-row 6″ south · RC × 1 east · CM perennial below' },
       { letter:'F', y:204, label:'Row F · Carrots (full row)', dim:'Direct sow 296″ EW · thin to 3″' },
-      { letter:'G', y:228, label:'Row G · Scallion + Leek', dim:'SC × 4 @ 3″ · LK × 4 @ 6″' },
+      { letter:'G', y:228, label:'Row G · Leek + Scallion', dim:'LK × 4 @ 6″ (west) · SC × 4 @ 3″ (east)' },
       { letter:'★', y:150, label:'Blueberry hedge', dim:'6 bushes · ~50″ apart · perennial', col:'hedge' },
       { letter:'☘', y:130, label:'East strip', dim:'24″ · open', col:'strip' },
       { letter:'♦', y:175, label:'Asparagus (established)', dim:'~4 crowns · perennial · west strip · N-S', col:'asparagus' },
@@ -1694,46 +1697,47 @@ const BEDS = {};
  * ==================================================================== */
 {
   const plants = [];
-  /* Row 1 · BN × 3 @ 48" (y=60) */
-  plants.push(...line(60, [
-    {n:'Butternut squash'},
-    {n:'Butternut squash', after: 48},
-    {n:'Butternut squash', after: 48},
-  ], { centerX: 63 }));
-  /* Row 2 · BN × 2 (W) · 24" buffer · DE × 2 (E) (y=180) — 120" span centered at x=63 */
-  plants.push(plantAt('Butternut squash', 3,   180));
-  plants.push(plantAt('Butternut squash', 51,  180));
-  plants.push(plantAt('Delicata squash',  75,  180));
-  plants.push(plantAt('Delicata squash',  123, 180));
+  /* Two N-S columns: left (x≈31) = BN × 4; right (x≈95) = BN × 1 then DE × 3 */
+  const LX = 31, RX = 95, rowYs = [40, 100, 160, 220];
+  plants.push(plantAt('Butternut squash', LX, rowYs[0]));
+  plants.push(plantAt('Butternut squash', RX, rowYs[0]));
+  plants.push(plantAt('Butternut squash', LX, rowYs[1]));
+  plants.push(plantAt('Delicata squash',  RX, rowYs[1]));
+  plants.push(plantAt('Butternut squash', LX, rowYs[2]));
+  plants.push(plantAt('Delicata squash',  RX, rowYs[2]));
+  plants.push(plantAt('Butternut squash', LX, rowYs[3]));
+  plants.push(plantAt('Delicata squash',  RX, rowYs[3]));
+  /* Final row · Zucchini centered */
+  plants.push(plantAt('Zucchini (bush)', 63, 252));
 
-  /* Nasturtium × 5 — between squash mounds as trap crop */
-  plants.push(plantAt('Nasturtium',  39,  60,  { zone: 'unfenced · row 1 · between mounds' }));
-  plants.push(plantAt('Nasturtium',  87,  60,  { zone: 'unfenced · row 1 · between mounds' }));
-  plants.push(plantAt('Nasturtium',  27,  180, { zone: 'unfenced · row 2 · between BN mounds' }));
-  plants.push(plantAt('Nasturtium',  63,  180, { zone: 'unfenced · row 2 · buffer zone' }));
-  plants.push(plantAt('Nasturtium',  99,  180, { zone: 'unfenced · row 2 · between DE mounds' }));
+  /* Nasturtium × 5 — between mounds as trap crop */
+  plants.push(plantAt('Nasturtium', 63, rowYs[0], { zone: 'unfenced · row 1 · between columns' }));
+  plants.push(plantAt('Nasturtium', 63, rowYs[1], { zone: 'unfenced · row 2 · between columns' }));
+  plants.push(plantAt('Nasturtium', 63, rowYs[2], { zone: 'unfenced · row 3 · between columns' }));
+  plants.push(plantAt('Nasturtium', 63, rowYs[3], { zone: 'unfenced · row 4 · between columns' }));
+  plants.push(plantAt('Nasturtium', 31, 252,       { zone: 'unfenced · final row · west of zucchini' }));
 
   BEDS.unfenced = {
     title: 'Unfenced Area',
-    dims: '126″ E-W × 264″ N-S · 246″ used · 18″ spare',
-    lead: 'Winter squash patch, long axis running N-S: row A is Butternut × 3 mounds spaced 48″ across the north; row B splits the width — Butternut × 2 on the west, a 24″ buffer, then Delicata × 2 on the east. A 72″ vine-clearance zone between the rows doubles as the harvest path; south Butternut vines sprawl off the bed into the spare.',
+    dims: '126″ E-W × 264″ N-S',
+    lead: 'Two N-S columns of squash: left (west) column is Butternut × 4; right (east) column is Butternut × 1 (north) then Delicata × 3 (south). Nasturtiums between each pair of mounds as squash-bug trap crop. A centered Zucchini anchors the final (southernmost) row.',
     totals: [
-      { k: 'Mounds', v: '7' },
-      { k: 'Rows', v: '2 N→S' },
-      { k: 'N-S Used', v: '246″ / 264″' },
+      { k: 'Mounds', v: '9' },
+      { k: 'Layout', v: '2 columns + ZU row' },
+      { k: 'Butternut', v: '5 (4 left + 1 right)' },
+      { k: 'Delicata', v: '3 (right col S)' },
+      { k: 'Zucchini', v: '1 · center south' },
       { k: 'Nasturtiums', v: '5 · trap crop' },
     ],
     ewIn: 126, nsIn: 264,
     bands: [
-      { kind:'path', y0:0,   y1:36,  label:'36″ north access buffer' },
-      { kind:'path', y0:84,  y1:156, label:'72″ vine clearance · also harvest path for row 1' },
-      { kind:'path', y0:204, y1:240, label:'36″ south vine sprawl + harvest' },
-      { kind:'gap',  y0:240, y1:264, label:'18″ spare · vines extend south' },
+      { kind:'path', y0:0,  y1:36,  label:'36″ north access buffer' },
+      { kind:'path', y0:228, y1:264, label:'36″ south vine buffer + spare' },
     ],
     rows: [
-      { letter:'A', y:60,  label:'Butternut row 1', dim:'3 mounds @ 48″ · 96″ EW' },
-      { letter:'B', y:180, label:'Row 2 · Butternut + Delicata',
-        dim:'BN × 2 (W) + 24″ buffer + DE × 2 (E) · 120″ EW' },
+      { letter:'L', y:40,  label:'Left col · Butternut × 4', dim:'BN × 4 running N→S · west column' },
+      { letter:'R', y:40,  label:'Right col · BN × 1 + DE × 3', dim:'BN (north) + DE × 3 (south) · east column' },
+      { letter:'Z', y:252, label:'Final row · Zucchini', dim:'ZU × 1 centered' },
     ],
     plants: plants,
   };
@@ -1749,6 +1753,8 @@ const BEDS = {};
   for (let r = 0; r < 3; r++) {
     for (let i = 0; i < 12; i++) plants.push(plantAt('Red raspberry', colX[r], 30 + i * 26));
   }
+  /* Between C–D · Rhubarb · 8 crowns @ 36" N-S */
+  for (let i = 0; i < 8; i++) plants.push(plantAt('Rhubarb', 237, 30 + i * 36, { zone: 'middle bed · between rows C and D · perennial' }));
   /* Row D · Black raspberry · 10 canes @ 30" */
   for (let i = 0; i < 10; i++) plants.push(plantAt('Black raspberry', colX[3], 30 + i * 32));
   /* Row E · Blackberry · 8 canes @ 42" */
@@ -1756,11 +1762,12 @@ const BEDS = {};
 
   BEDS.middle = {
     title: 'Middle Bed · Berry Patch',
-    dims: '400″ E-W × 350″ N-S · 5 rows running N-S',
-    lead: 'Five cane rows running N-S, ordered west → east: red raspberry rows A–C (12 canes each at 24″, spaced 70″ apart), then black raspberry row D (10 canes at 30″), then blackberry row E (8 canes at 42″). Black and red raspberries kept adjacent; a 75″ gap separates them from the blackberries.',
+    dims: '400″ E-W × 350″ N-S · 6 rows running N-S',
+    lead: 'Six N-S rows, ordered west → east: red raspberry rows A–C (12 canes each at 24″), rhubarb between C and D (8 crowns at 36″), black raspberry row D (10 canes at 30″), blackberry row E (8 canes at 42″).',
     totals: [
-      { k: 'Rows', v: '5 N-S' },
+      { k: 'Rows', v: '6 N-S' },
       { k: 'Red raspberry', v: '3 rows · 36 canes' },
+      { k: 'Rhubarb', v: '8 crowns @ 36″ (perennial)' },
       { k: 'Black raspberry', v: '1 row · 10 canes' },
       { k: 'Blackberry', v: '1 row · 8 canes' },
     ],
@@ -1770,8 +1777,9 @@ const BEDS = {};
       { letter:'A', y:175, label:'Red raspberry · row 1', dim:'12 canes @ 24″ · 70″ from row B', col: 60 },
       { letter:'B', y:175, label:'Red raspberry · row 2', dim:'12 canes @ 24″', col: 130 },
       { letter:'C', y:175, label:'Red raspberry · row 3', dim:'12 canes @ 24″', col: 200 },
-      { letter:'D', y:175, label:'Black raspberry',       dim:'10 canes @ 30″ · 75″ row gap', col: 275 },
-      { letter:'E', y:175, label:'Blackberry',            dim:'8 canes @ 42″ · 75″ row gap', col: 350 },
+      { letter:'D', y:175, label:'Rhubarb (perennial)',   dim:'8 crowns @ 36″', col: 237 },
+      { letter:'E', y:175, label:'Black raspberry',       dim:'10 canes @ 30″', col: 275 },
+      { letter:'F', y:175, label:'Blackberry',            dim:'8 canes @ 42″', col: 350 },
     ],
     plants: plants,
   };
@@ -1782,35 +1790,28 @@ const BEDS = {};
  * ==================================================================== */
 BEDS.bags = {
   title: 'Grow Bags',
-  dims: '11 × 10-gallon bags · mobile',
-  lead: 'Eleven 10-gallon bags split between heat-lovers and cool-season greens: eggplant (B1) moves to the warmest south-facing pavement, pole beans (B10–B11) climb the pergola, mystery seedlings (B6–B9) stay mobile until identified. Spinach and romaine bags drag to afternoon shade once temps pass 70°F.',
+  dims: '7 × 10-gallon bags · mobile',
+  lead: 'Seven 10-gallon bags: eggplant (B1) at the warmest south-facing spot, spinach (B2–B3) and romaine (B4–B5) at 3 plants each moved to afternoon shade once temps pass 70°F, pole beans (B6) climbing the pergola. Cantaloupe in-ground at property corner.',
   totals: [
-    { k: 'Bags', v: '11 × 10-gal' },
+    { k: 'Bags', v: '7 × 10-gal' },
     { k: 'Strategy', v: 'Mobile' },
-    { k: 'Sun', v: 'B1 · B6–B11 · follow the heat' },
+    { k: 'Sun', v: 'B1 · B6 · follow the heat' },
     { k: 'Shade', v: 'B2–B5 · afternoon shade once 70°F+' },
   ],
   bags: [
     { id: 'B1', plant: p('Eggplant'),
       note: 'Move to absolute warmest spot (south-facing wall, dark pavement). Bag beats in-ground for heat.',
       n: 1 },
-    { id: 'B2', plant: p('Spinach'), n: 2,
-      note: 'Bag 1 of 2 — 2 plants per bag. Move to afternoon shade once temps reach 70°F to delay bolting.' },
-    { id: 'B3', plant: p('Spinach'), n: 2,
-      note: 'Bag 2 of 2 — 2 plants per bag. Succession with bag 1.' },
-    { id: 'B4', plant: p('Romaine'), n: 2,
-      note: 'Bag 1 of 2 — 2 plants per bag. Move to afternoon shade in July.' },
-    { id: 'B5', plant: p('Romaine'), n: 2,
-      note: 'Bag 2 of 2 — 2 plants per bag.' },
-    { id: 'B6', plant: p('Mystery cuke/cantaloupe'), n: 1,
-      note: 'Bag 1 of 4. Keep mobile until ID\u2019d. If cucumber → trellis; if cantaloupe → isolate from cukes, warmest spot.' },
-    { id: 'B7', plant: p('Mystery cuke/cantaloupe'), n: 1, note: 'Bag 2 of 4.' },
-    { id: 'B8', plant: p('Mystery cuke/cantaloupe'), n: 1, note: 'Bag 3 of 4.' },
-    { id: 'B9', plant: p('Mystery cuke/cantaloupe'), n: 1, note: 'Bag 4 of 4.' },
-    { id: 'B10', plant: p('Pole bean'), n: 2,
-      note: 'Bag 1 of 2 — climb the pergola. Direct sow 3-4 seeds, thin to 2 strongest. Don\u2019t over-fertilize.' },
-    { id: 'B11', plant: p('Pole bean'), n: 2,
-      note: 'Bag 2 of 2 — pergola partner.' },
+    { id: 'B2', plant: p('Spinach'), n: 3,
+      note: 'Bag 1 of 2 — 3 plants per bag. Move to afternoon shade once temps reach 70°F to delay bolting.' },
+    { id: 'B3', plant: p('Spinach'), n: 3,
+      note: 'Bag 2 of 2 — 3 plants per bag. Succession with bag 1.' },
+    { id: 'B4', plant: p('Romaine'), n: 3,
+      note: 'Bag 1 of 2 — 3 plants per bag. Move to afternoon shade in July.' },
+    { id: 'B5', plant: p('Romaine'), n: 3,
+      note: 'Bag 2 of 2 — 3 plants per bag.' },
+    { id: 'B6', plant: p('Pole bean'), n: 2,
+      note: 'Climb the pergola. Direct sow 3-4 seeds, thin to 2 strongest.' },
   ],
 };
 
@@ -1869,47 +1870,39 @@ BEDS.bags = {
  *   GARDEN TASKS  ·  Zone 5b/6a · Greenfield MA · May–Oct
  * ============================================================ */
 const GARDEN_TASKS = [
-  /* ── May ─────────────────────────────────────────────────── */
-  { month:5, cat:'maintain', text:'Till under annual rye cover crop (left bed + unfenced + right bed rows C–D)',  detail:'Left bed + unfenced + right bed rows C–D · Mow or cut down first, then turn in · wait 3-4 weeks before planting to let it decompose · nutrients release back into soil' },
-  { month:5, cat:'build',    text:'Set up tomato cages (16)',                          detail:'One per plant at transplant time — wire cages 5 ft+' },
-  { month:5, cat:'build',    text:'Set up cucumber trellis',                           detail:'8 plants @ 18″ · 12 ft single run or 4 × 3 ft sections · 6 ft tall' },
-  { month:5, cat:'plant',    text:'Transplant tomatoes & tomatillos',                  detail:'After last frost (May 10) · Brandywine × 4, San Marzano × 3, Sungold × 5, Juliette × 2, Tomatillo × 2 · water in daily first week' },
-  { month:5, cat:'plant',    text:'Transplant peppers & eggplant',                     detail:'Soil 65°F+ · peppers in left bed · eggplant bag to warmest south-facing spot' },
-  { month:5, cat:'plant',    text:'Transplant cucumbers to trellis',                   detail:'8 plants @ 18″ · left bed row E south fence' },
-  { month:5, cat:'plant',    text:'Transplant beet starts (row E); direct sow carrots (row F)', detail:'Beet starts: thin to 4″ after established · Carrots: full row direct sow, thin to 3″ · 3 weeks to thin' },
-  { month:5, cat:'plant',    text:'Direct sow scallions (right bed row G)',            detail:'3″ apart · sow in batches every 2–3 weeks for succession' },
-  { month:5, cat:'plant',    text:'Sow pole beans (bags B10–B11)',                     detail:'3–4 seeds per bag, thin to 2 strongest · don\'t over-fertilize' },
-  { month:5, cat:'watch',    text:'Identify mystery seedlings (bags B6–B9)',           detail:'Cucumber → trellis · cantaloupe → isolate from cukes, warmest spot' },
-  { month:5, cat:'maintain', text:'Move spinach & romaine bags to afternoon shade once temps reach 70°F', detail:'Bags B2–B5 · delays bolting into June' },
+  /* ── Late May (now — everything is in the ground as of May 28) ── */
+  { month:5, cat:'plant',    text:'Carrots seeded today — thin to 3″ in ~3 weeks',    detail:'Right bed row F · direct sow full row · thinnings are edible · May 28 2026' },
+  { month:5, cat:'maintain', text:'Move spinach & romaine bags to afternoon shade once temps hit 70°F', detail:'Bags B2–B5 · delays bolting into June' },
+  { month:5, cat:'maintain', text:'Water in new transplants daily this first week',    detail:'Tomatoes, peppers, cucumbers, brassicas — all just went in · check soil 2″ down before watering' },
+  { month:5, cat:'build',    text:'Tie cucumber vines to trellis as they reach it',   detail:'12 plants @ 18″ · left bed row E south fence · weave or clip loosely' },
 
   /* ── June ────────────────────────────────────────────────── */
   { month:6, cat:'maintain', text:'Prune tomato suckers below first flower cluster',   detail:'Especially Brandywine — single-stem improves airflow and fruit size · weekly from here' },
-  { month:6, cat:'maintain', text:'Thin beets to 4″, carrots to 3″',                  detail:'Right bed rows E–F · thinnings are edible greens' },
+  { month:6, cat:'maintain', text:'Thin carrots to 3″ (right bed row F)',             detail:'~3 weeks after May 28 seeding · thinnings are edible' },
   { month:6, cat:'watch',    text:'Check for cucumber beetles on cucumbers & squash',  detail:'Nasturtiums are trap crop — beetles hit those first · yellow-striped or spotted' },
   { month:6, cat:'watch',    text:'Check brassicas for cabbage worm',                  detail:'White butterflies laying eggs = check leaf undersides · handpick or Bt spray' },
   { month:6, cat:'harvest',  text:'First harvest: spinach, romaine, bok choy, scallions', detail:'Pull outer leaves — leave center to keep producing' },
   { month:6, cat:'maintain', text:'Net blueberries before berries begin to color',     detail:'Right bed hedge · birds move fast once they ripen' },
-  { month:6, cat:'plant',    text:'Succession sow scallions (row G)',                  detail:'Every 2–3 weeks for continuous harvest through fall' },
+  { month:6, cat:'plant',    text:'Succession sow scallions (right bed row G)',        detail:'Every 2–3 weeks for continuous harvest through fall' },
 
   /* ── July ────────────────────────────────────────────────── */
-  { month:7, cat:'harvest',  text:'Harvest cucumbers every 1–2 days once producing',  detail:'Missed fruits go bitter and halt new production · left bed row E' },
+  { month:7, cat:'harvest',  text:'Harvest cucumbers every 1–2 days once producing',  detail:'Missed fruits go bitter and halt new production · left bed row E · 12 plants' },
   { month:7, cat:'harvest',  text:'First tomatoes: Sungold & Juliette, then Brandywine & San Marzano', detail:'Sungold ~70 days from transplant · taste-test daily near color change' },
-  { month:7, cat:'harvest',  text:'Harvest Jalafuego & other peppers once full size',  detail:'Pick green for heat · let some go red for sweetness' },
-  { month:7, cat:'harvest',  text:'Red & black raspberry peak harvest',                detail:'Middle bed rows A–D · pick every 2 days — overripe berries mold fast' },
-  { month:7, cat:'watch',    text:'Watch for squash vine borer on ZU, SS, butternut, delicata', detail:'Moth lays eggs at stem base July–Aug · sudden wilting = check stem immediately' },
+  { month:7, cat:'harvest',  text:'Harvest peppers once full size',                    detail:'Pick green for heat · let some go red for sweetness' },
+  { month:7, cat:'harvest',  text:'Red & black raspberry peak harvest',                detail:'Middle bed rows A–E · pick every 2 days — overripe berries mold fast' },
+  { month:7, cat:'watch',    text:'Watch for squash vine borer on zucchini, butternut & delicata', detail:'Moth lays eggs at stem base July–Aug · sudden wilting = check stem immediately' },
   { month:7, cat:'maintain', text:'Continue pruning tomato suckers weekly',            detail:'Keep single main stem on Brandywine and San Marzano' },
   { month:7, cat:'feed',     text:'Side-dress tomatoes and squash with compost',       detail:'Heavy feeders in peak production · scratch in around drip line' },
   { month:7, cat:'maintain', text:'Pull bolted spinach & romaine',                     detail:'Once they flower they turn bitter — compost the plants, reuse bags' },
-  { month:7, cat:'plant',    text:'Succession sow beets in right bed open zone (rows E–F area)', detail:'Fall beets for Oct harvest before first frost' },
+  { month:7, cat:'plant',    text:'Succession sow beets in right bed open zone',       detail:'Fall beets for Oct harvest before first frost' },
 
   /* ── August ──────────────────────────────────────────────── */
-  { month:8, cat:'harvest',  text:'Peak harvest: tomatoes, cucumbers, peppers, zucchini & summer squash', detail:'Check zucchini daily — they double overnight' },
-  { month:8, cat:'harvest',  text:'Harvest pole beans before pods dry on vine',        detail:'Bags B10–B11 · pick regularly to keep producing' },
-  { month:8, cat:'harvest',  text:'Blackberry harvest (middle bed row E)',             detail:'Fully black and slightly soft · 8 canes — pick every 2–3 days' },
+  { month:8, cat:'harvest',  text:'Peak harvest: tomatoes, cucumbers, peppers, zucchini', detail:'Check zucchini daily — they double overnight' },
+  { month:8, cat:'harvest',  text:'Harvest pole beans (bag B6)',                       detail:'Pick regularly to keep producing — let pods dry and the plant stops' },
+  { month:8, cat:'harvest',  text:'Blackberry harvest (middle bed row F)',             detail:'Fully black and slightly soft · 8 canes — pick every 2–3 days' },
   { month:8, cat:'watch',    text:'Check butternut & delicata skin — harvest when thumbnail can\'t scratch it', detail:'Stem should be dry and corky · 80–100 days from transplant' },
-  { month:8, cat:'maintain', text:'Remove spent brassica plants from right bed rows A–D', detail:'Check for disease before composting · clear space for fall succession' },
-  { month:8, cat:'maintain', text:'Clear rows A–D as brassicas finish; prep beds for fall alliums', detail:'Pull plants, amend with compost, rake smooth · garlic and onions go in rows A–B in October' },
-  { month:8, cat:'maintain', text:'Cut red & black raspberry floricanes to ground',   detail:'Second-year canes are done — remove cleanly · leave first-year canes' },
+  { month:8, cat:'maintain', text:'Clear brassica rows A–D as plants finish; prep for fall alliums', detail:'Pull plants, amend with compost, rake smooth · garlic and onions go in rows A–B in October' },
+  { month:8, cat:'maintain', text:'Cut red & black raspberry floricanes to ground',    detail:'Second-year canes are done — remove cleanly · leave first-year canes' },
 
   /* ── September ───────────────────────────────────────────── */
   { month:9, cat:'harvest',  text:'Harvest winter squash before frost',                detail:'Butternut & delicata · cure butternut 10 days at 80°F · delicata stores best at 55°F' },
@@ -1917,22 +1910,23 @@ const GARDEN_TASKS = [
   { month:9, cat:'harvest',  text:'Harvest leeks — they sweeten after light frost',   detail:'Right bed row G' },
   { month:9, cat:'maintain', text:'Pull spent cucumber vines after production drops',  detail:'Clean trellis for storage · left bed row E' },
   { month:9, cat:'watch',    text:'Watch frost forecast from Sept 20 onward',          detail:'First frost Oct 5 · have row cover ready for tomatoes & peppers' },
+  { month:9, cat:'plant',    text:'Seed annual rye in cleared beds',                   detail:'Left bed + unfenced area + right bed open zone + right bed rows A–D (after brassicas clear) · 2 lbs per 1000 sq ft' },
 
   /* ── October ─────────────────────────────────────────────── */
   { month:10, cat:'harvest',  text:'Harvest all remaining tomatoes & peppers before hard frost', detail:'Green tomatoes ripen fine on the counter — never refrigerate' },
   { month:10, cat:'maintain', text:'Pull all frost-killed plants after Oct 5',         detail:'Diseased material in trash · healthy plants to compost' },
   { month:10, cat:'maintain', text:'Mulch asparagus bed after ground cools',           detail:'Right bed west strip · 3–4″ straw after first hard freeze' },
-  { month:10, cat:'maintain', text:'Cut blackberry floricanes to ground',              detail:'Middle bed row E · leave first-year primocanes for next year\'s fruit' },
-  { month:10, cat:'maintain', text:'Clean & store grow bags indoors',                  detail:'Empty soil into beds · rinse bags dry · store for 2027' },
+  { month:10, cat:'maintain', text:'Cut blackberry floricanes to ground',              detail:'Middle bed row F · leave first-year primocanes for next year\'s fruit' },
+  { month:10, cat:'maintain', text:'Clean & store grow bags',                          detail:'Empty soil into beds · rinse bags dry · store for 2027' },
   { month:10, cat:'maintain', text:'Log what worked — sketch 2027 crop rotation',     detail:'Rotate tomato/pepper family and brassica family to different beds' },
-  { month:10, cat:'plant',   text:'Plant garlic in right bed row A (49 cloves)',      detail:'6 heads hardneck seed garlic · 6″ apart · 2-3″ deep · pointed end up · firm soil after planting' },
-  { month:10, cat:'plant',   text:'Plant shallots (row B west) + overwintering onion sets (row B east)', detail:'~25 shallots @ 6-8″ · ~25 onion sets @ 4-6″ · just below soil surface · pointed end up' },
-  { month:9,  cat:'plant',   text:'Seed annual rye in cleared beds',                  detail:'Left bed + unfenced area + right bed open zone + right bed rows C–D (after brassicas clear) · broadcast 2 lbs per 1000 sq ft · germinates above 34°F' },
+  { month:10, cat:'plant',    text:'Plant garlic in right bed row A (49 cloves)',      detail:'6 heads hardneck seed garlic · 6″ apart · 2-3″ deep · pointed end up · firm soil after planting' },
+  { month:10, cat:'plant',    text:'Plant shallots (row B west) + overwintering onion sets (row B east)', detail:'~25 shallots @ 6-8″ · ~25 onion sets @ 4-6″ · just below soil surface · pointed end up' },
 
   /* ── November ─────────────────────────────────────────────── */
   { month:11, cat:'maintain', text:'Mulch garlic, shallots, echinacea & French tarragon after ground freezes', detail:'Right bed rows A–B (garlic/shallots) + left bed herb strip (EC/TR) · 4-6″ straw after first hard freeze · typically mid-Nov' },
   { month:11, cat:'maintain', text:'Cut asparagus ferns to ground',                   detail:'Right bed west strip · after first hard freeze · top-dress with compost' },
   { month:11, cat:'maintain', text:'Prune red & black raspberry new canes to 5 ft',   detail:'Middle bed · tip-prune only — these are next year\'s fruit canes · don\'t remove' },
+  { month:11, cat:'maintain', text:'Mulch rhubarb crowns with straw after ground freezes', detail:'Middle bed row D · 3-4″ straw · hardy but benefits from insulation in Zone 5b' },
 ];
 
 /* ============================================================
