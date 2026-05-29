@@ -1555,7 +1555,7 @@ const BEDS = {};
     {n:'Swiss chard', after: 12},
   ], { centerX: vegCenter }));
 
-  /* C · Row B — Kale × 4 + Green cabbage × 4 (y=78) */
+  /* C · Row B — Kale × 4 + Green cabbage × 4 + Cilantro × 1 (y=78) */
   plants.push(...line(78, [
     {n:'Kale'},
     {n:'Kale', after: 15},
@@ -1565,9 +1565,10 @@ const BEDS = {};
     {n:'Green cabbage', after: 18},
     {n:'Green cabbage', after: 18},
     {n:'Green cabbage', after: 18},
+    {n:'Cilantro', after: 18, opts:{zone:'right bed · row B · east of last GC'}},
   ], { centerX: vegCenter }));
 
-  /* D · Row C — Red cabbage × 4 + [N] + Broccoli × 2 + Cauliflower × 2 + [N] (y=111) */
+  /* D · Row C — Red cabbage × 4 + [N] + Broccoli × 2 + Cauliflower × 2 + Cilantro × 1 (y=111) */
   plants.push(...line(111, [
     {n:'Red cabbage'},
     {n:'Red cabbage', after: 18},
@@ -1578,7 +1579,7 @@ const BEDS = {};
     {n:'Broccoli', after: 18},
     {n:'Cauliflower', after: 18},
     {n:'Cauliflower', after: 18},
-    {n:'Nasturtium', after: 18, opts:{zone:'right bed brassica · trap crop (east)'}},
+    {n:'Cilantro', after: 18, opts:{zone:'right bed · row C · east of last CF'}},
   ], { centerX: vegCenter }));
 
   /* E · Row D — Broccolini × 4 @ 18″ (centered) + Red beet × 6 @ 5″ inline (y=143) */
@@ -1626,13 +1627,13 @@ const BEDS = {};
     {n:'Scallion', after: 3},
   ], { centerX: vegCenter }));
 
-  /* Nasturtium — rows A+B west+east flanking; rows C+D interior between plants */
+  /* Nasturtium — row A flanking; row B between kale plants; row C west trap crop; row D interior */
   plants.push(plantAt('Nasturtium', 95,  48,  { zone: 'right bed · row A west flank' }));
   plants.push(plantAt('Nasturtium', 195, 48,  { zone: 'right bed · row A east flank' }));
-  plants.push(plantAt('Nasturtium', 90,  78,  { zone: 'right bed · row B west flank' }));
-  plants.push(plantAt('Nasturtium', 205, 78,  { zone: 'right bed · row B east flank' }));
-  /* Row C east+west already covered by inline nasturtiums in the line() call above */
-  /* Row D interior — between broccolini plants (x≈130″ and x≈166″) */
+  plants.push(plantAt('Nasturtium', 205, 78,  { zone: 'right bed · row B · between kale 1+2' }));
+  plants.push(plantAt('Nasturtium', 305, 78,  { zone: 'right bed · row B · between kale 3+4' }));
+  /* Row C: west trap crop (inline in line() call); east replaced by cilantro */
+  /* Row D interior — between broccolini plants */
   plants.push(plantAt('Nasturtium', 130, 143, { zone: 'right bed · row D interior · between broccolini 1+2' }));
   plants.push(plantAt('Nasturtium', 166, 143, { zone: 'right bed · row D interior · between broccolini 3+4' }));
 
@@ -1649,7 +1650,7 @@ const BEDS = {};
   BEDS.right = {
     title: 'Right Bed',
     dims: '296″ veg  +  48″ blueberry  +  24″ squash strip  =  368″ E-W × 300″ N-S',
-    lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Row A mixes bok choy and swiss chard; rows B–D carry brassicas with nasturtium trap crops. A 24″ mid-bed path separates leafy greens from roots and alliums (rows E–G); 12″ paths between E/F and F/G allow reach from both ends.',
+    lead: 'Three zones running N-S: vegetable rows (A–G) on the west, a blueberry hedge in the middle, and a fenced 24″ bush-squash strip on the east. Row A mixes bok choy and swiss chard; rows B–D carry brassicas with nasturtium trap crops. A 40″ mid-bed harvest path separates brassicas from roots and alliums (rows E–G). 10″ harvest paths between all rows. Cilantro planted east of the last GC (row B) and last CF (row C).',
     totals: [
       { k: 'Plants', v: '72' },
       { k: 'Veg rows', v: 'A → G' },
@@ -1735,7 +1736,6 @@ const BEDS = {};
     ],
     ewIn: 126, nsIn: 264,
     bands: [
-      { kind:'path', y0:0,  y1:36,  label:'36″ north access buffer' },
       { kind:'path', y0:228, y1:264, label:'36″ south vine buffer + spare' },
     ],
     rows: [
@@ -1795,27 +1795,27 @@ const BEDS = {};
 BEDS.bags = {
   title: 'Grow Bags',
   dims: '7 × 10-gallon bags · mobile',
-  lead: 'Seven 10-gallon bags: eggplant (B1) at the warmest south-facing spot, spinach (B2–B3) and romaine (B4–B5) at 3 plants each moved to afternoon shade once temps pass 70°F, pole beans (B6) climbing the pergola. Cantaloupe in-ground at property corner.',
+  lead: 'Six 10-gallon bags in three spots: eggplant (B1) on the pavement in full sun, spinach (B2–B3) and romaine (B4–B5) already in the shade, pole beans (B6) next to the pergola for climbing.',
   totals: [
-    { k: 'Bags', v: '7 × 10-gal' },
-    { k: 'Strategy', v: 'Mobile' },
-    { k: 'Sun', v: 'B1 · B6 · follow the heat' },
-    { k: 'Shade', v: 'B2–B5 · afternoon shade once 70°F+' },
+    { k: 'Bags', v: '6 × 10-gal' },
+    { k: 'Eggplant', v: 'B1 · pavement · full sun' },
+    { k: 'Spinach/Romaine', v: 'B2–B5 · in shade' },
+    { k: 'Pole beans', v: 'B6 · next to pergola' },
   ],
   bags: [
     { id: 'B1', plant: p('Eggplant'),
-      note: 'Move to absolute warmest spot (south-facing wall, dark pavement). Bag beats in-ground for heat.',
+      note: 'On pavement in full sun — heat from pavement boosts soil temp. Watch for flea beetles until flowering.',
       n: 1 },
     { id: 'B2', plant: p('Spinach'), n: 3,
-      note: 'Bag 1 of 2 — 3 plants per bag. Move to afternoon shade once temps reach 70°F to delay bolting.' },
+      note: 'Bag 1 of 2 — 3 plants per bag. Already in shade — good. Harvest outer leaves continuously.' },
     { id: 'B3', plant: p('Spinach'), n: 3,
-      note: 'Bag 2 of 2 — 3 plants per bag. Succession with bag 1.' },
+      note: 'Bag 2 of 2 — 3 plants per bag. Already in shade.' },
     { id: 'B4', plant: p('Romaine'), n: 3,
-      note: 'Bag 1 of 2 — 3 plants per bag. Move to afternoon shade in July.' },
+      note: 'Bag 1 of 2 — 3 plants per bag. Already in shade — will extend the season significantly.' },
     { id: 'B5', plant: p('Romaine'), n: 3,
-      note: 'Bag 2 of 2 — 3 plants per bag.' },
+      note: 'Bag 2 of 2 — 3 plants per bag. Already in shade.' },
     { id: 'B6', plant: p('Pole bean'), n: 2,
-      note: 'Climb the pergola. Direct sow 3-4 seeds, thin to 2 strongest.' },
+      note: 'Next to pergola — let them climb. Direct sow 3-4 seeds, thin to 2 strongest. Pick frequently.' },
   ],
 };
 
@@ -2725,7 +2725,7 @@ function renderCalendar(root) {
   const rowsWrap = el('div', { class: 'cal-rows-wrap' });
 
   /* group plants by family for section dividers */
-  const order = ['tomato','pepper','cucumber','squash','brassica','root','allium','herb','flower','berry','cane','legume','cover'];
+  const order = ['tomato','pepper','cucumber','squash','brassica','root','allium','herb','flower','berry','cane','legume','perennial','cover'];
   const grouped = {};
   Object.entries(PLANT_INFO).forEach(([name, info]) => {
     (grouped[info.fam] = grouped[info.fam] || []).push([name, info]);

@@ -36,7 +36,7 @@ const JSX_CODE_TO_NAME = {
   ga:  'Garlic',             sl:  'Shallots',
   ow:  'Overwintering onions', ry: 'Annual rye',
   as:  'Asparagus',   tr:  'French Tarragon',
-  bm:  'Bee balm',   rh:  'Rhubarb',   pc: 'Reliance peach',
+  bm:  'Bee balm',   rh:  'Rhubarb',   pc: 'Reliance peach',  cn: 'Cilantro',
 };
 
 /* Build a code → queue<plant-id> map from a bed's plant list, so each
@@ -238,9 +238,9 @@ function jsxRightSvg() {
   /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
   [75, 108, 355, 388].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
 
-  /* Blueberry hedge — 2 lowbush (N) + 4 highbush (S) */
-  [79, 129].forEach(cy => s += jp('lb', 657, cy, 9, '#6a7ec2', 'LB'));
-  [179, 229, 279, 329].forEach(cy => s += jp('bb', 657, cy, 11, '#3c3489', 'BB'));
+  /* Blueberry hedge — 2 lowbush (N) + 4 highbush (S) — spread N→S */
+  [58, 106].forEach(cy => s += jp('lb', 657, cy, 12, '#6a7ec2', 'LB'));
+  [165, 235, 305, 375].forEach(cy => s += jp('bb', 657, cy, 14, '#3c3489', 'BB'));
 
   /* Bee balm — NE corner of east strip */
   s += jp('bm', 709, 65, 10, '#c03a6e', 'BM');
@@ -254,16 +254,18 @@ function jsxRightSvg() {
   [390, 430, 470, 510].forEach(cx => s += jp('sc', cx, pc(ys.A), 10, '#d4793a', 'SC'));
   s += jn(340, pc(ys.A)); s += jn(545, pc(ys.A));
 
-  s += RB(ys.B, ROW_H, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″)`);
-  [180, 230, 280, 330].forEach(cx => s += jp('kl', cx, pc(ys.B), 10, '#1d7a3c', 'KL'));
-  [408, 460, 512, 560].forEach(cx => s += jp('gc', cx, pc(ys.B), 10, '#185fa5', 'GC'));
-  s += jn(352, pc(ys.B)); s += jn(588, pc(ys.B));
+  s += RB(ys.B, ROW_H, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″) + cilantro x1`);
+  [172, 216, 260, 304].forEach(cx => s += jp('kl', cx, pc(ys.B), 10, '#1d7a3c', 'KL'));
+  [362, 408, 454, 500].forEach(cx => s += jp('gc', cx, pc(ys.B), 10, '#185fa5', 'GC'));
+  s += jn(194, pc(ys.B)); s += jn(282, pc(ys.B));  /* nasturtiums between kale */
+  s += jp('cn', 548, pc(ys.B), 8, '#7a9e3a', 'CN');
 
-  s += RB(ys.C, ROW_H, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″)`);
-  [180, 230, 280, 330].forEach(cx => s += jp('rc', cx, pc(ys.C), 10, '#993556', 'RC'));
-  [398, 448].forEach(cx => s += jp('br', cx, pc(ys.C), 10, '#7080c4', 'BR'));
-  [496, 560].forEach(cx => s += jp('cf', cx, pc(ys.C), 10, '#534ab7', 'CF'));
-  s += jn(364, pc(ys.C)); s += jn(600, pc(ys.C));
+  s += RB(ys.C, ROW_H, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″) + cilantro x1`);
+  [172, 216, 260, 304].forEach(cx => s += jp('rc', cx, pc(ys.C), 10, '#993556', 'RC'));
+  [382, 430].forEach(cx => s += jp('br', cx, pc(ys.C), 10, '#7080c4', 'BR'));
+  [478, 526].forEach(cx => s += jp('cf', cx, pc(ys.C), 10, '#534ab7', 'CF'));
+  s += jn(342, pc(ys.C));
+  s += jp('cn', 572, pc(ys.C), 8, '#7a9e3a', 'CN');
 
   s += RB(ys.D, 50, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)`);
   [193, 268, 328, 403].forEach(cx => s += jp('brl', cx, pc(ys.D), 10, '#1d9e75', 'BRL'));
@@ -310,6 +312,7 @@ function jsxRightSvg() {
     {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB · Red beet (6)'},
     {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#4a7a28', l:'CM · Chinese mustard (perennial)'},
     {c:'#d85a30', l:'Carrots band'},
+    {c:'#7a9e3a', l:'CN · Cilantro (×2 — east of GC/CF)'},
     {c:'#888780', l:'LK (4 west)'}, {c:'#5f5e5a', l:'SN (4 east)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
     {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
@@ -325,8 +328,8 @@ function jsxUnfencedSvg() {
   let s = '';
   /* Two N-S columns: LX=left(BN×4), RX=right(BN+DE×3), CX=center(ZU+nasturtiums) */
   const LX = 145, RX = 335, CX = 240;
-  const rowY = [82, 164, 246, 328];
-  const zuY = 374;
+  const rowY = [54, 136, 218, 300];
+  const zuY = 346;
 
   s += `<svg class="jsx-bed-svg" viewBox="0 -55 480 475" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
   s += `<text x="240" y="13" text-anchor="middle" font-size="10" fill="#94886a">UNFENCED — north at top, vines sprawl south</text>`;
@@ -334,8 +337,6 @@ function jsxUnfencedSvg() {
   s += `<text x="14"  y="215" text-anchor="middle" font-size="8" fill="#c9bd9f" transform="rotate(-90,14,215)">WEST (fence)</text>`;
   s += `<text x="466" y="215" text-anchor="middle" font-size="8" fill="#c9bd9f" transform="rotate(90,466,215)">EAST (compost)</text>`;
   s += `<text x="240" y="416" text-anchor="middle" font-size="8" fill="#c9bd9f">SOUTH</text>`;
-
-  s += jpath(34, 412, 28, 26, '36″ north access buffer');
 
   /* Reliance peach tree — NE corner, north of bed boundary */
   s += `<g class="jsx-plant" data-code="pc">` +
@@ -346,9 +347,9 @@ function jsxUnfencedSvg() {
     `</g>`;
 
   /* Left col guide line */
-  s += `<line x1="${LX}" y1="70" x2="${LX}" y2="${zuY - 22}" stroke="#854f0b" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.25"/>`;
+  s += `<line x1="${LX}" y1="28" x2="${LX}" y2="${zuY - 22}" stroke="#854f0b" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.25"/>`;
   /* Right col guide line */
-  s += `<line x1="${RX}" y1="70" x2="${RX}" y2="${rowY[3] + 20}" stroke="#ba7517" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.25"/>`;
+  s += `<line x1="${RX}" y1="28" x2="${RX}" y2="${rowY[3] + 20}" stroke="#ba7517" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.25"/>`;
 
   /* Row 1 — BN left, BN right */
   s += jmound('bn', LX, rowY[0], 30, 19, '#854f0b', 'BN');
@@ -374,7 +375,7 @@ function jsxUnfencedSvg() {
   s += jmound('zu', CX, zuY, 28, 18, '#639922', 'ZU');
   s += jn(CX - 60, zuY);
 
-  s += jpath(34, 412, zuY + 22, 14, '36″ south vine buffer');
+  s += jpath(34, 412, zuY + 22, 46, '36″ south vine buffer + access');
   s += `</svg>`;
 
   const legend = [

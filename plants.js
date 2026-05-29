@@ -116,6 +116,16 @@ const PLANT_INFO = {
     cal: { indoor: [2.7, 3.4], harden: [5.4, 5.7], transplant: [5.85, 6.1], harvest: [8.0, 9.7] } },
 
   /* — Herbs — */
+  'Cilantro': { fam: 'herb', code: 'CN', variety: 'Coriander leaf',
+    sun: 'Full sun (cool) / part shade (summer)', water: 'Regular, even moisture', soil: 'Well-drained, fertile',
+    days: '40-60 days to leaves · bolt-prone above 75°F',
+    spacing: '6-8″ apart · thin to 4-6″',
+    care: 'Cool-season herb — sow in spring and fall. Let some bolt for coriander seed; the flowers attract beneficial insects. Succession sow every 2 weeks for continuous harvest. Self-seeds readily — allow a few plants to go to seed in place.',
+    companions: [
+      { with: 'Brassicas', benefit: 'attracts parasitic wasps that prey on aphids and cabbage worms' },
+      { with: 'Spinach', benefit: 'light shade as it bolts; beneficial insect habitat' },
+    ],
+    cal: { direct: [4.5, 5.8], harvest: [5.5, 7.5] } },
   'Basil': { fam: 'herb', code: 'BA', variety: 'Sweet/Genovese',
     sun: 'Full sun', water: 'Regular', soil: 'Fertile, well-drained',
     days: '60-70 days', spacing: '12″ apart',
