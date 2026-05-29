@@ -218,22 +218,22 @@ function jsxLeftSvg() {
 function jsxRightSvg() {
   let s = '';
   /* ys: A–D rows h=34; D h=50 (2 beet sub-rows); E=CM perennial h=22; then path→F→G→open */
-  const ys = { sf:28, pSF:56, A:80, B:118, C:156, D:194, E:244, F:312, pFG:340, G:356, open:392 };
+  const ys = { sf:28, pSF:56, A:80, B:124, C:168, D:212, E:272, F:340, pFG:368, G:384, open:420 };
   const ROW_H = 34;
   const pc = (y) => y + 22;   /* circle center: text at y+9, circles r=10 y+12→y+32 ≤ y+34 */
   const RB = (y, h, fill, label) => jband(148, 470, y, h, fill, label);
 
-  s += `<svg class="jsx-bed-svg" viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
-  s += `<rect x="30" y="18" width="700" height="412" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
+  s += `<svg class="jsx-bed-svg" viewBox="0 0 760 462" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<rect x="30" y="18" width="700" height="432" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
   s += `<text x="380" y="11" text-anchor="middle" font-size="10" fill="#94886a">RIGHT BED — north at top</text>`;
   s += `<text x="718" y="30" font-size="10" fill="#b96b3e" text-anchor="middle" font-weight="700">N</text>`;
   s += `<polygon points="718,34 715,46 718,44 721,46" fill="#b96b3e" opacity="0.55"/>`;
-  s += `<rect x="38"  y="26" width="102" height="404" rx="4" fill="#3b6d11" fill-opacity="0.09" stroke="#3b6d11" stroke-width="0.6" stroke-opacity="0.35"/>`;
-  s += `<text x="89"  y="228" text-anchor="middle" font-size="8.5" fill="#27500a" opacity="0.75" transform="rotate(-90,89,228)" font-style="italic">Asparagus (established N-S)</text>`;
-  s += `<rect x="622" y="26" width="70"  height="404" rx="4" fill="#3c3489" fill-opacity="0.09" stroke="#3c3489" stroke-width="0.6" stroke-opacity="0.35"/>`;
-  s += `<text x="657" y="228" text-anchor="middle" font-size="8.5" fill="#26215c" opacity="0.75" transform="rotate(90,657,228)" font-style="italic">Blueberries 4ft</text>`;
-  s += `<rect x="694" y="26" width="30"  height="404" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
-  s += `<text x="709" y="228" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,228)" font-style="italic">24″ strip (open)</text>`;
+  s += `<rect x="38"  y="26" width="102" height="424" rx="4" fill="#3b6d11" fill-opacity="0.09" stroke="#3b6d11" stroke-width="0.6" stroke-opacity="0.35"/>`;
+  s += `<text x="89"  y="238" text-anchor="middle" font-size="8.5" fill="#27500a" opacity="0.75" transform="rotate(-90,89,238)" font-style="italic">Asparagus (established N-S)</text>`;
+  s += `<rect x="622" y="26" width="70"  height="424" rx="4" fill="#3c3489" fill-opacity="0.09" stroke="#3c3489" stroke-width="0.6" stroke-opacity="0.35"/>`;
+  s += `<text x="657" y="238" text-anchor="middle" font-size="8.5" fill="#26215c" opacity="0.75" transform="rotate(90,657,238)" font-style="italic">Blueberries 4ft</text>`;
+  s += `<rect x="694" y="26" width="30"  height="424" rx="3" fill="#97c459" fill-opacity="0.08" stroke="#97c459" stroke-width="0.5" stroke-opacity="0.35"/>`;
+  s += `<text x="709" y="238" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,238)" font-style="italic">24″ strip (open)</text>`;
 
   /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
   [75, 148, 315, 388].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
@@ -254,11 +254,15 @@ function jsxRightSvg() {
   [390, 430, 470, 510].forEach(cx => s += jp('sc', cx, pc(ys.A), 10, '#d4793a', 'SC'));
   s += jn(340, pc(ys.A)); s += jn(545, pc(ys.A));
 
+  s += jpath(148, 470, ys.A + ROW_H, 10, '10″');
+
   s += RB(ys.B, ROW_H, '#185fa5', `B — kale x4 (15″) + green cabbage x4 (18″) + cilantro x1`);
   [172, 216, 260, 304].forEach(cx => s += jp('kl', cx, pc(ys.B), 10, '#1d7a3c', 'KL'));
   [362, 408, 454, 500].forEach(cx => s += jp('gc', cx, pc(ys.B), 10, '#185fa5', 'GC'));
   s += jn(194, pc(ys.B)); s += jn(282, pc(ys.B));  /* nasturtiums between kale */
   s += jp('cn', 548, pc(ys.B), 8, '#7a9e3a', 'CN');
+
+  s += jpath(148, 470, ys.B + ROW_H, 10, '10″');
 
   s += RB(ys.C, ROW_H, '#993556', `C — red cab x4 + broccoli x2 + cauli x2 (18″) + cilantro x1`);
   [172, 216, 260, 304].forEach(cx => s += jp('rc', cx, pc(ys.C), 10, '#993556', 'RC'));
@@ -266,6 +270,8 @@ function jsxRightSvg() {
   [478, 526].forEach(cx => s += jp('cf', cx, pc(ys.C), 10, '#534ab7', 'CF'));
   s += jn(342, pc(ys.C));
   s += jp('cn', 572, pc(ys.C), 8, '#7a9e3a', 'CN');
+
+  s += jpath(148, 470, ys.C + ROW_H, 10, '10″');
 
   s += RB(ys.D, 50, '#1d9e75', `D — broccolini ×4 (18″)  ·  red beet ×6 / yellow beet ×6 sub-row (5″)`);
   [193, 268, 328, 403].forEach(cx => s += jp('brl', cx, pc(ys.D), 10, '#1d9e75', 'BRL'));
@@ -278,6 +284,8 @@ function jsxRightSvg() {
   [463, 479, 495, 511, 527, 543].forEach(cx => s += jp('yb', cx, ys.D + 40, 7, '#ef9f27', 'YB'));
   /* Red cabbage — 1 plant east of beet sub-rows */
   s += jp('rc', 575, ys.D + 31, 10, '#993556', 'RC');
+
+  s += jpath(148, 470, ys.D + 50, 10, '10″');
 
   /* Row E — Chinese mustard perennial (h=26, centered) */
   s += `<rect x="148" y="${ys.E}" width="470" height="26" rx="4" fill="#4a7a28" fill-opacity="0.07" stroke="#4a7a28" stroke-width="0.5" stroke-opacity="0.3"/>`;
