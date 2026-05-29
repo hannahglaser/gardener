@@ -236,7 +236,7 @@ function jsxRightSvg() {
   s += `<text x="709" y="228" text-anchor="middle" font-size="7.5" fill="#27500a" opacity="0.6" transform="rotate(90,709,228)" font-style="italic">24″ strip (open)</text>`;
 
   /* Asparagus — ~4 established crowns: 2 clustered N, 2 clustered S (cx=89) */
-  [100, 130, 305, 335].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
+  [75, 108, 355, 388].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
 
   /* Blueberry hedge — 2 lowbush (N) + 4 highbush (S) */
   [79, 129].forEach(cy => s += jp('lb', 657, cy, 9, '#6a7ec2', 'LB'));
@@ -468,7 +468,7 @@ function jsxRightBedFallSvg() {
   /* Asparagus zone */
   s += `<rect x="38" y="26" width="102" height="356" rx="4" fill="#3b6d11" fill-opacity="0.09" stroke="#3b6d11" stroke-width="0.6" stroke-opacity="0.35"/>`;
   s += `<text x="89" y="205" text-anchor="middle" font-size="8.5" fill="#27500a" opacity="0.75" transform="rotate(-90,89,205)" font-style="italic">Asparagus (established N-S)</text>`;
-  [100, 130, 305, 335].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
+  [75, 108, 355, 388].forEach(cy => s += jp('as', 89, cy, 14, '#27500a', 'AS'));
 
   /* Blueberry hedge */
   s += `<rect x="622" y="26" width="70" height="356" rx="4" fill="#3c3489" fill-opacity="0.09" stroke="#3c3489" stroke-width="0.6" stroke-opacity="0.35"/>`;
