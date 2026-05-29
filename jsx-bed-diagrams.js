@@ -351,7 +351,7 @@ function jsxUnfencedSvg() {
     `<circle cx="420" cy="-20" r="26" fill="#e8832a" fill-opacity="0.15" stroke="#e8832a" stroke-width="1.2" stroke-dasharray="4 2"/>` +
     `<circle cx="420" cy="-20" r="12" fill="#e8832a" fill-opacity="0.5" stroke="none"/>` +
     `<text x="420" y="-16" text-anchor="middle" font-size="7.5" fill="#8b4513" font-weight="700">PC</text>` +
-    `<text x="420" y="8" text-anchor="middle" font-size="7" fill="#8b4513" fill-opacity="0.75">Reliance peach</text>` +
+    `<text x="420" y="-50" text-anchor="middle" font-size="7" fill="#8b4513" fill-opacity="0.75">Reliance peach</text>` +
     `</g>`;
 
   /* Left col guide line */
