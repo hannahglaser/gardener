@@ -1717,10 +1717,13 @@ const BEDS = {};
   plants.push(plantAt('Nasturtium', 63, rowYs[3], { zone: 'unfenced · row 4 · between columns' }));
   plants.push(plantAt('Nasturtium', 31, 252,       { zone: 'unfenced · final row · west of zucchini' }));
 
+  /* Reliance peach — established tree, NE corner */
+  plants.push(plantAt('Reliance peach', 120, 10, { zone: 'unfenced · NE corner · established perennial tree' }));
+
   BEDS.unfenced = {
     title: 'Unfenced Area',
     dims: '126″ E-W × 264″ N-S',
-    lead: 'Two N-S columns of squash: left (west) column is Butternut × 4; right (east) column is Butternut × 1 (north) then Delicata × 3 (south). Nasturtiums between each pair of mounds as squash-bug trap crop. A centered Zucchini anchors the final (southernmost) row.',
+    lead: 'Two N-S columns of squash: left (west) column is Butternut × 4; right (east) column is Butternut × 1 (north) then Delicata × 3 (south). Nasturtiums between each pair of mounds as squash-bug trap crop. A centered Zucchini anchors the final (southernmost) row. A Reliance peach tree grows in the NE corner.',
     totals: [
       { k: 'Mounds', v: '9' },
       { k: 'Layout', v: '2 columns + ZU row' },
@@ -1728,6 +1731,7 @@ const BEDS = {};
       { k: 'Delicata', v: '3 (right col S)' },
       { k: 'Zucchini', v: '1 · center south' },
       { k: 'Nasturtiums', v: '5 · trap crop' },
+      { k: 'Peach tree', v: 'Reliance · NE corner · perennial' },
     ],
     ewIn: 126, nsIn: 264,
     bands: [

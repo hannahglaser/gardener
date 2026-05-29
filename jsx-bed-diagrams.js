@@ -36,7 +36,7 @@ const JSX_CODE_TO_NAME = {
   ga:  'Garlic',             sl:  'Shallots',
   ow:  'Overwintering onions', ry: 'Annual rye',
   as:  'Asparagus',   tr:  'French Tarragon',
-  bm:  'Bee balm',   rh:  'Rhubarb',
+  bm:  'Bee balm',   rh:  'Rhubarb',   pc: 'Reliance peach',
 };
 
 /* Build a code → queue<plant-id> map from a bed's plant list, so each
@@ -328,7 +328,7 @@ function jsxUnfencedSvg() {
   const rowY = [82, 164, 246, 328];
   const zuY = 374;
 
-  s += `<svg class="jsx-bed-svg" viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+  s += `<svg class="jsx-bed-svg" viewBox="0 -55 480 475" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
   s += `<text x="240" y="13" text-anchor="middle" font-size="10" fill="#94886a">UNFENCED — north at top, vines sprawl south</text>`;
   s += `<rect x="26" y="20" width="428" height="390" rx="6" fill="none" stroke="#c9bd9f" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>`;
   s += `<text x="14"  y="215" text-anchor="middle" font-size="8" fill="#c9bd9f" transform="rotate(-90,14,215)">WEST (fence)</text>`;
@@ -336,6 +336,14 @@ function jsxUnfencedSvg() {
   s += `<text x="240" y="416" text-anchor="middle" font-size="8" fill="#c9bd9f">SOUTH</text>`;
 
   s += jpath(34, 412, 28, 26, '36″ north access buffer');
+
+  /* Reliance peach tree — NE corner, north of bed boundary */
+  s += `<g class="jsx-plant" data-code="pc">` +
+    `<circle cx="420" cy="-20" r="26" fill="#e8832a" fill-opacity="0.15" stroke="#e8832a" stroke-width="1.2" stroke-dasharray="4 2"/>` +
+    `<circle cx="420" cy="-20" r="12" fill="#e8832a" fill-opacity="0.5" stroke="none"/>` +
+    `<text x="420" y="-16" text-anchor="middle" font-size="7.5" fill="#8b4513" font-weight="700">PC</text>` +
+    `<text x="420" y="8" text-anchor="middle" font-size="7" fill="#8b4513" fill-opacity="0.75">Reliance peach</text>` +
+    `</g>`;
 
   /* Left col guide line */
   s += `<line x1="${LX}" y1="70" x2="${LX}" y2="${zuY - 22}" stroke="#854f0b" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.25"/>`;
@@ -374,6 +382,7 @@ function jsxUnfencedSvg() {
     {c:'#ba7517', l:'DE · Delicata squash (3)'},
     {c:'#639922', l:'ZU · Zucchini (1)'},
     {c:'#5a9e1e', l:'N · Nasturtium (5)'},
+    {c:'#e8832a', l:'PC · Reliance peach (NE corner · perennial)'},
     {c:'#b96b3e', l:'harvest paths'},
   ];
 
