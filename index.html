@@ -1359,6 +1359,111 @@
   .tasks-month.is-past { opacity: .45; }
   .tasks-month.is-past .task-text { text-decoration: line-through; color: var(--ink-mute); }
 
+  /* ── Photos tab (Tab VI) ───────────────────────────── */
+  .photos-month-divider {
+    column-span: all;
+    padding: 6px 0 2px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .photos-month-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .photos-month-label {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 15px; font-style: italic; color: var(--terra-dk);
+    white-space: nowrap;
+  }
+  .photos-header { margin-bottom: 22px; }
+  .photos-header h2 { font-size: 24px; margin: 0 0 4px; }
+  .photos-header p { color: var(--ink-soft); font-size: 13px; margin: 0; }
+  .photos-collage {
+    columns: 3; column-gap: 14px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) { .photos-collage { columns: 2; } }
+  @media (max-width: 560px) { .photos-collage { columns: 1; } }
+  .photo-card {
+    break-inside: avoid;
+    margin-bottom: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: box-shadow .2s, transform .15s;
+    display: block;
+  }
+  .photo-card:hover {
+    box-shadow: 0 4px 18px -6px rgba(80,55,15,.32);
+    transform: translateY(-2px);
+  }
+  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; transform: translateZ(0); }
+  .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; }
+  .photo-card:hover img { transform: scale(1.06); }
+  .photo-num-badge {
+    position: absolute; top: 8px; left: 9px;
+    background: rgba(42,36,24,.72); backdrop-filter: blur(4px);
+    color: #f5efe1; font-size: 11px; font-weight: 700;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: ui-monospace, monospace; letter-spacing: 0;
+  }
+  .photo-date-badge {
+    position: absolute; bottom: 8px; left: 9px;
+    background: rgba(42,36,24,.58); backdrop-filter: blur(4px);
+    color: #f5efe1; font-size: 10.5px; font-weight: 500;
+    padding: 2px 8px; border-radius: 20px;
+    letter-spacing: .03em; font-family: ui-monospace, monospace;
+  }
+  .photo-caption {
+    padding: 8px 12px 10px;
+    font-size: 12.5px; color: var(--ink-soft); line-height: 1.4;
+  }
+  /* Lightbox */
+  .photo-lightbox {
+    position: fixed; inset: 0;
+    background: rgba(20,16,8,.88); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9000; padding: 20px;
+    opacity: 0; transition: opacity .2s;
+    pointer-events: none;
+  }
+  .photo-lightbox.open { opacity: 1; pointer-events: all; }
+  .photo-lightbox-inner {
+    max-width: min(90vw, 900px); width: 100%;
+    background: var(--paper); border-radius: 12px;
+    overflow: hidden; box-shadow: 0 24px 64px -16px rgba(0,0,0,.6);
+    display: flex; flex-direction: column;
+    transform: scale(.96); transition: transform .2s;
+  }
+  .photo-lightbox.open .photo-lightbox-inner { transform: scale(1); }
+  .photo-lightbox img { max-width: 100%; max-height: 75vh; width: auto; height: auto; display: block; margin: 0 auto; background: var(--bg-2); transition: transform .25s ease; transform-origin: center center; cursor: zoom-in; }
+  .photo-lightbox img.lb-zoomed { transform: scale(2.5); cursor: zoom-out; }
+  .photo-lightbox-footer {
+    padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .photo-lightbox-caption { font-size: 14px; color: var(--ink); }
+  .photo-lightbox-date { font-size: 12px; color: var(--ink-mute); font-family: ui-monospace, monospace; }
+  .photo-lightbox-close {
+    appearance: none; background: transparent; border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 14px; font: inherit; font-size: 13px;
+    color: var(--ink-soft); cursor: pointer; flex-shrink: 0;
+    transition: all .15s;
+  }
+  .photo-lightbox-close:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .photo-lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(42,36,24,.55); backdrop-filter: blur(4px);
+    color: #f5efe1; border: none; cursor: pointer;
+    width: 44px; height: 44px; border-radius: 50%; font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s; z-index: 1;
+  }
+  .photo-lb-nav:hover { background: rgba(42,36,24,.82); }
+  .photo-lb-prev { left: 14px; }
+  .photo-lb-next { right: 14px; }
+
   /* ── Weather widget ─────────────────────────────────── */
   #weather-bar { max-width: 1240px; margin: 0 auto; padding: 10px 24px 0; }
   .weather-widget { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:8px; font-size:13px; background:var(--paper); border:1px solid var(--line); flex-wrap:wrap; }
@@ -1398,10 +1503,11 @@
 
   <nav class="toptabs" role="tablist" id="toptabs">
     <button data-view="map"      role="tab"><span class="tt-num">I.</span><span class="tt-name">Garden Map</span><span class="tt-count">5 spaces</span></button>
-    <button data-view="plants"   role="tab"><span class="tt-num">II.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
-    <button data-view="calendar" role="tab"><span class="tt-num">III.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
-    <button data-view="expert"   role="tab"><span class="tt-num">IV.</span><span class="tt-name">Garden Expert</span><span class="tt-count">Ask Claude</span></button>
+    <button data-view="photos"   role="tab"><span class="tt-num">II.</span><span class="tt-name">Photos</span><span class="tt-count" id="photoCount">—</span></button>
+    <button data-view="plants"   role="tab"><span class="tt-num">III.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
+    <button data-view="calendar" role="tab"><span class="tt-num">IV.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
     <button data-view="tasks"    role="tab"><span class="tt-num">V.</span><span class="tt-name">Garden Tasks</span><span class="tt-count">May–Nov</span></button>
+    <button data-view="expert"   role="tab"><span class="tt-num">VI.</span><span class="tt-name">Garden Expert</span><span class="tt-count">Ask Claude</span></button>
   </nav>
 </header>
 
@@ -1936,7 +2042,7 @@ const GARDEN_TASKS = [
 /* ============================================================
  *   STATE
  * ============================================================ */
-const VALID_VIEWS = ['map','plants','calendar','expert','tasks'];
+const VALID_VIEWS = ['map','photos','plants','calendar','tasks','expert'];
 const VALID_BEDS  = ['left','middle','right','unfenced','bags'];
 let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1)
                : (localStorage.getItem('activeView') || 'map');
@@ -2043,6 +2149,7 @@ function renderAll() {
   else if (activeView === 'calendar') renderCalendar(view);
   else if (activeView === 'expert') renderExpert(view);
   else if (activeView === 'tasks') renderTasks(view);
+  else if (activeView === 'photos') renderPhotos(view);
 }
 
 /* ============================================================
@@ -3113,6 +3220,156 @@ function renderTasks(root) {
 }
 
 /* ============================================================
+ *   PHOTOS DATA
+ * ============================================================ */
+const PHOTOS = [
+  /* ── col 1: veggie beds ── */
+  { file: 'IMG_1228.jpg',         date: '2026-05-28', month: 'Spring 2026', caption: 'Right Bed — looking north, brassicas, beets, bok choi, swiss chard, cilantro' },
+  { file: 'IMG_1232.jpg',         date: '2026-05-28', caption: 'Unfenced Bed — winter squash just in the ground' },
+  { file: 'pergola-dusk.jpg',     date: '2026-05-26', caption: 'Pergola and house at dusk — moon over the garden' },
+  { file: 'IMG_1239.jpg',         date: '2026-05-28', caption: 'Middle Bed — between the red raspberry rows' },
+  { file: 'IMG_1267.jpg',         date: '2026-05-28', caption: 'First harvest — purple asparagus spears' },
+  { file: 'azalea.jpg',           date: '2026-05-24', caption: 'Azaleas in the rain' },
+  /* ── col 2: left bed + garden + flowers ── */
+  { file: 'IMG_1235.jpg',         date: '2026-05-28', colStart: true, caption: 'Left Bed — cucumber trellis, tomatoes, peppers, basil, and herbs' },
+  { file: 'rhubarb-harvest.jpg',  date: '2026-05-10', caption: 'First rhubarb harvest of the season' },
+  { file: 'IMG_1273.jpg',         date: '2026-05-28', caption: 'Pergola deck — grow bags, garden beds above' },
+  { file: 'primrose.jpg',         date: '2026-04-29', caption: 'Primroses in the front garden' },
+  { file: 'garden-path.jpg',      date: '2026-05-18', caption: 'Walking through the garden path' },
+  { file: 'front-yard-sunset.jpg',   date: '2026-05-21', caption: 'Front yard at sunset — irises and rhododendrons in bloom' },
+  { file: 'rhododendron-sunset.jpg', date: '2026-05-21', caption: 'Rhododendron at sunset' },
+  /* ── col 3: atmosphere + harvest ── */
+  { file: 'middle-bed-dusk.jpg',  date: '2026-05-26', colStart: true, caption: 'Middle Bed at dusk — rhubarb, cane rows, and flowering black raspberries' },
+  { file: 'IMG_1227.jpg',         date: '2026-05-28', caption: 'Right Bed — looking east toward blueberry hedge, leeks and carrot row' },
+  { file: 'spring-bouquet.jpg',   date: '2026-04-21', caption: 'Spring bouquet — hellebores and daffodils' },
+  { file: 'front-bed.jpg',        date: '2026-05-28', caption: 'Front herb garden' },
+  { file: 'IMG_0376.jpg',         date: '2026-05-28', caption: 'Pergola at night — string lights' },
+  { file: 'candytuft.jpg',        date: '2026-05-13', caption: 'Candytuft in bloom' },
+];
+
+/* ============================================================
+ *   RENDER: PHOTOS VIEW
+ * ============================================================ */
+function renderPhotos(root) {
+  /* update count badge */
+  const badge = document.getElementById('photoCount');
+  if (badge) badge.textContent = PHOTOS.length + ' photos';
+
+  const wrap = el('div', { style: 'max-width:1100px;margin:0 auto;padding:10px 0 60px' });
+
+  const hdr = el('div', { class: 'photos-header' });
+  hdr.appendChild(el('h2', { class: 'serif' }, ['Garden Journal']));
+  hdr.appendChild(el('p', {}, ['Spring 2026 · ' + PHOTOS.length + ' photos · tap to enlarge · click again to zoom']));
+  wrap.appendChild(hdr);
+
+  /* lightbox overlay */
+  const lb = el('div', { class: 'photo-lightbox', id: 'photo-lightbox' });
+  const lbPrev = el('button', { class: 'photo-lb-nav photo-lb-prev', 'aria-label': 'Previous' }, ['‹']);
+  const lbNext = el('button', { class: 'photo-lb-nav photo-lb-next', 'aria-label': 'Next' }, ['›']);
+  const lbInner = el('div', { class: 'photo-lightbox-inner' });
+  const lbImg = el('img', { alt: '' });
+  const lbFoot = el('div', { class: 'photo-lightbox-footer' });
+  const lbLeft = el('div');
+  const lbCaption = el('div', { class: 'photo-lightbox-caption' });
+  const lbDate = el('div', { class: 'photo-lightbox-date' });
+  lbLeft.appendChild(lbCaption);
+  lbLeft.appendChild(lbDate);
+  const lbClose = el('button', { class: 'photo-lightbox-close' }, ['Close']);
+  lbFoot.appendChild(lbLeft);
+  lbFoot.appendChild(lbClose);
+  lbInner.appendChild(lbImg);
+  lbInner.appendChild(lbFoot);
+  lb.appendChild(lbPrev);
+  lb.appendChild(lbInner);
+  lb.appendChild(lbNext);
+  document.body.appendChild(lb);
+
+  let lbIdx = 0;
+  const openLbAt = (idx) => {
+    lbIdx = (idx + PHOTOS.length) % PHOTOS.length;
+    const p = PHOTOS[lbIdx];
+    const num = lrNums[lbIdx];
+    lbImg.src = 'photos/' + p.file;
+    lbCaption.textContent = p.caption;
+    lbDate.textContent = '#' + num + ' · ' + p.date;
+    lbImg.classList.remove('lb-zoomed');
+    lbImg.style.transformOrigin = 'center center';
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeLb = () => {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+    lbImg.classList.remove('lb-zoomed');
+    lbImg.style.transformOrigin = 'center center';
+  };
+  lbPrev.onclick = (e) => { e.stopPropagation(); openLbAt(lbIdx - 1); };
+  lbNext.onclick = (e) => { e.stopPropagation(); openLbAt(lbIdx + 1); };
+  lbClose.onclick = closeLb;
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowRight') openLbAt(lbIdx + 1);
+    if (e.key === 'ArrowLeft') openLbAt(lbIdx - 1);
+  });
+
+  /* lightbox click-to-zoom */
+  lbImg.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const zoomed = lbImg.classList.toggle('lb-zoomed');
+    if (zoomed) {
+      const rect = lbImg.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      lbImg.style.transformOrigin = `${x}% ${y}%`;
+    } else {
+      lbImg.style.transformOrigin = 'center center';
+    }
+  });
+
+  /* collage */
+  const collage = el('div', { class: 'photos-collage' });
+  /* pre-compute L-R badge numbers based on column/row position */
+  const lrNums = (() => {
+    const numCols = 1 + PHOTOS.filter(p => p.colStart).length;
+    let col = 0;
+    const rowInCol = Array(numCols).fill(0);
+    return PHOTOS.map(p => {
+      if (p.colStart) col++;
+      const r = rowInCol[col]++;
+      return r * numCols + col + 1;
+    });
+  })();
+  let photoIdx = 0;
+  PHOTOS.forEach((p, arrIdx) => {
+    if (p.month) {
+      const div = el('div', { class: 'photos-month-divider' });
+      div.appendChild(el('span', { class: 'photos-month-label' }, [p.month]));
+      collage.appendChild(div);
+    }
+    const num = lrNums[photoIdx++];
+    const card = el('div', { class: 'photo-card', style: p.colStart ? 'break-before:column' : '' });
+    card.onclick = () => openLbAt(arrIdx);
+
+    const imgWrap = el('div', { class: 'photo-card-img-wrap' });
+    const img = el('img', { src: 'photos/' + p.file, alt: p.caption, loading: 'lazy' });
+    const numBadge = el('div', { class: 'photo-num-badge' }, [String(num)]);
+    const dateBadge = el('div', { class: 'photo-date-badge' }, [p.date]);
+    imgWrap.appendChild(img);
+    imgWrap.appendChild(numBadge);
+    imgWrap.appendChild(dateBadge);
+    card.appendChild(imgWrap);
+    card.appendChild(el('div', { class: 'photo-caption' }, [p.caption]));
+    collage.appendChild(card);
+  });
+
+  wrap.appendChild(collage);
+  root.appendChild(wrap);
+}
+
+/* ============================================================
  *   INIT
  * ============================================================ */
 renderAll();
@@ -3121,10 +3378,10 @@ renderWeatherWidget();
 /* keyboard nav for top tabs */
 window.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  const order = ['map','plants','calendar','expert','tasks'];
+  const order = ['map','photos','plants','calendar','tasks','expert'];
   const i = order.indexOf(activeView);
-  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%5]; renderAll(); }
-  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+5)%5]; renderAll(); }
+  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%6]; renderAll(); }
+  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+6)%6]; renderAll(); }
 });
 </script>
 </body>
