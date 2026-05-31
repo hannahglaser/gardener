@@ -1091,13 +1091,6 @@
   }
   .plant-card .pc-row .v { color: var(--ink); }
   .water-dots { font-size: 10px; color: #2e7fb8; letter-spacing: 1px; margin-left: 5px; vertical-align: middle; }
-  .thirsty-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; transition: opacity .4s; }
-  .thirsty-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #2e7fb8; }
-  .thirsty-chip { font-size: 11px; color: #2e7fb8; background: rgba(46,127,184,.1); border: 1px solid rgba(46,127,184,.3); border-radius: 20px; padding: 2px 8px; }
-  .thirsty-strip.is-loading { opacity: .45; }
-  .thirsty-strip.is-ok { opacity: .35; }
-  .thirsty-strip.is-ok .thirsty-label::after { content: ' · beds OK'; font-weight: 400; text-transform: none; letter-spacing: 0; }
-  .thirsty-strip.bags-strip.is-ok .thirsty-label::after { content: ' · bags OK'; }
   .plant-card .pc-notes {
     margin-top: 8px; padding-top: 8px;
     border-top: 1px dashed var(--line-soft);
@@ -1381,7 +1374,7 @@
     margin: 0 auto;
   }
   @media (max-width: 900px) { .photos-collage { columns: 2; } }
-  @media (max-width: 560px) { .photos-collage { columns: 1; } }
+  @media (max-width: 560px) { .photos-collage { display:flex; flex-direction:column; columns:unset; column-gap:0; } }
   .photo-card {
     break-inside: avoid;
     margin-bottom: 14px;
@@ -2215,29 +2208,6 @@ function renderMap(root) {
   });
   mainCol.appendChild(totals);
 
-  /* thirsty today strip */
-  const isBags = !!bed.bags;
-  const allPlantNames = isBags
-    ? bed.bags.map(b => b.plant.name)
-    : (bed.plants || []).map(pl => pl.name);
-  const minWater = isBags ? 2 : 3;
-  const thirstyPlants = [...new Set(
-    allPlantNames.filter(n => {
-      const info = PLANT_INFO[n];
-      return info && waterLevel(info.water) >= minWater;
-    })
-  )];
-  if (thirstyPlants.length) {
-    const bagsCls = isBags ? ' bags-strip' : '';
-    const stripClass = (weatherStatus === null ? 'thirsty-strip is-loading'
-                     : weatherStatus === 'ok'  ? 'thirsty-strip is-ok'
-                     : 'thirsty-strip') + bagsCls;
-    const strip = el('div', { class: stripClass });
-    strip.innerHTML =
-      `<span class="thirsty-label">Thirsty today</span>` +
-      thirstyPlants.map(n => `<span class="thirsty-chip">${n}</span>`).join('');
-    mainCol.appendChild(strip);
-  }
 
   /* schematic */
   const card = el('div', { class: 'diagram-card' });
@@ -2973,7 +2943,7 @@ function hideCalTip() { getCalTip().classList.remove('visible'); }
  *   Greenfield MA: 42.587°N 72.601°W
  * ============================================================ */
 let weatherCache = null;
-let weatherStatus = null; /* 'ok' | 'mild' | 'dry' | null (loading) */
+let weatherStatus = null; /* 'ok' | 'mild' | 'dry' */
 
 async function fetchWeather() {
   if (weatherCache) return weatherCache;
@@ -2996,13 +2966,6 @@ async function fetchWeather() {
   const dates    = data.daily.time; /* ISO date strings for all 10 days */
   weatherCache = { rain3, et0_3, forecast, dates };
   return weatherCache;
-}
-
-function updateThirstyStrip() {
-  document.querySelectorAll('.thirsty-strip').forEach(strip => {
-    strip.classList.remove('is-loading');
-    strip.classList.toggle('is-ok', weatherStatus === 'ok');
-  });
 }
 
 function renderWeatherWidget() {
@@ -3051,8 +3014,6 @@ function renderWeatherWidget() {
     }
 
     weatherStatus = statusClass;
-    updateThirstyStrip();
-
     widget.className = 'weather-widget weather-' + statusClass;
     widget.innerHTML = '';
     const s = (k, v) => {
@@ -3072,7 +3033,7 @@ function renderWeatherWidget() {
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
     widget.appendChild(el('span', { class: 'weather-rec' }, [rec]));
     widget.appendChild(el('a', { class: 'weather-src', href: 'https://open-meteo.com', target: '_blank', rel: 'noopener' }, ['Open-Meteo']));
-  }).catch(() => { widget.remove(); weatherStatus = 'dry'; updateThirstyStrip(); });
+  }).catch(() => { widget.remove(); weatherStatus = 'dry'; });
 }
 
 /* ============================================================
@@ -3369,7 +3330,7 @@ function renderPhotos(root) {
       collage.appendChild(div);
     }
     const num = lrNums[photoIdx++];
-    const card = el('div', { class: 'photo-card', style: p.colStart ? 'break-before:column' : '' });
+    const card = el('div', { class: 'photo-card', style: (p.colStart ? 'break-before:column;' : '') + `order:${num}` });
     card.onclick = () => openLbAt(arrIdx);
 
     const imgWrap = el('div', { class: 'photo-card-img-wrap' });
