@@ -304,9 +304,9 @@ function jsxRightSvg() {
 
   s += jpath(148, 470, ys.pFG, 14, '12″ path');
 
-  s += RB(ys.G, ROW_H, '#5f5e5a', `G — leeks x4 (6″) + scallions x4 (3″)`);
-  [180, 226, 272, 318].forEach(cx => s += jp('lk', cx, pc(ys.G), 7, '#888780', 'LK'));
-  [398, 444, 488, 532].forEach(cx => s += jp('sn', cx, pc(ys.G), 7, '#5f5e5a', 'SN'));
+  s += RB(ys.G, ROW_H, '#5f5e5a', `G — leeks x6 (6″) + scallions x6 (3″)`);
+  [172, 206, 240, 274, 308, 342].forEach(cx => s += jp('lk', cx, pc(ys.G), 7, '#888780', 'LK'));
+  [412, 446, 480, 514, 548, 582].forEach(cx => s += jp('sn', cx, pc(ys.G), 7, '#5f5e5a', 'SN'));
 
   s += `<rect x="148" y="${ys.open}" width="470" height="20" rx="4" fill="#fbf6ea" fill-opacity="0.6" stroke="#c9bd9f" stroke-width="0.5" stroke-dasharray="3 3" stroke-opacity="0.4"/>`;
   s += `<text x="383" y="${ys.open + 13}" text-anchor="middle" font-size="9" fill="#94886a" font-style="italic">24″ open — succession / south harvest access</text>`;
@@ -321,7 +321,7 @@ function jsxRightSvg() {
     {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#4a7a28', l:'CM · Chinese mustard (perennial)'},
     {c:'#d85a30', l:'Carrots band'},
     {c:'#7a9e3a', l:'CN · Cilantro (×2 — east of GC/CF)'},
-    {c:'#888780', l:'LK (4 west)'}, {c:'#5f5e5a', l:'SN (4 east)'},
+    {c:'#888780', l:'LK (6 west)'}, {c:'#5f5e5a', l:'SN (6 east)'},
     {c:'#5a9e1e', l:'N · Nasturtium'}, {c:'#27500a', l:'AS · Asparagus (~4)'},
     {c:'#6a7ec2', l:'LB · Lowbush (2 N)'}, {c:'#3c3489', l:'BB · Highbush (4 S)'},
     {c:'#c03a6e', l:'BM · Bee balm (NE corner)'},
