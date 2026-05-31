@@ -10,11 +10,15 @@ A garden planner for Hannah and Dom's 2026 season in Greenfield, Massachusetts (
 
 **I. Garden Map** — Scaled bed diagrams for each space with true-to-measurement SVG layouts, row indexes, harvest paths, and a plant detail panel. Sub-tabs for each bed.
 
-**II. All Plants** — Care card for every variety: sun, water, soil, spacing, days to harvest, care notes, and location across beds. Filterable by plant family. Covers 40+ varieties across tomatoes, peppers, brassicas, roots, alliums, squash, herbs, flowers, berries, brambles, legumes, and perennials.
+**II. Photos** — Garden journal collage. 3-column masonry layout with L-R numbered badges and date stamps. Click any photo to open a full lightbox; click the image to zoom 2.5×; use ← → arrow keys or buttons to browse through all photos.
 
-**III. Planting Calendar** — Zone 5b/6a timeline bar chart showing indoor start, hardening, transplant, direct sow, bloom, and harvest windows for each plant. Frost dates: last frost May 10, first frost Oct 5.
+**III. All Plants** — Care card for every variety: sun, water, soil, spacing, days to harvest, care notes, and location across beds. Filterable by plant family. Covers 55+ varieties across tomatoes, peppers, brassicas, roots, alliums, squash, herbs, flowers, berries, brambles, legumes, and perennials.
 
-**IV. Garden Expert** — Opens Claude with the full garden context (all beds, plants, zone, location) pre-loaded. Also offers a copy button for pasting into any chat.
+**IV. Planting Calendar** — Zone 5b/6a timeline bar chart showing indoor start, hardening, transplant, direct sow, bloom, and harvest windows for each plant. Frost dates: last frost May 10, first frost Oct 5.
+
+**V. Garden Tasks** — Seasonal task list organized by month, May through November.
+
+**VI. Garden Expert** — Opens Claude with the full garden context (all beds, plants, zone, location) pre-loaded. Also offers a copy button for pasting into any chat.
 
 **Weather widget** — Live 7-day rainfall and evapotranspiration for Greenfield MA from [Open-Meteo](https://open-meteo.com/) (no API key). Shows a net watering recommendation that accounts for the 3-day rain forecast.
 
@@ -27,8 +31,8 @@ A garden planner for Hannah and Dom's 2026 season in Greenfield, Massachusetts (
 | Left Bed · 400″ E-W | Sunflowers, tomatoes (Brandywine, San Marzano, Sungold, Juliette, Tomatillo), peppers, squash, cucumbers, herbs, asparagus |
 | Middle Bed · Berry Patch | Red raspberry (36 canes), Black raspberry (10), Blackberry (8) |
 | Right Bed · 368″ E-W | Brassicas (bok choy, kale, cabbage, broccoli, cauliflower, broccolini), beets, carrots, scallions, leeks, blueberry hedge, squash strip |
-| Unfenced | Butternut squash × 5, Delicata squash × 2 |
-| Grow Bags · 11 × 10-gal | Eggplant, spinach, romaine, pole beans, mystery seedlings |
+| Unfenced | Butternut squash × 5, Delicata × 3, Zucchini × 1 |
+| Grow Bags · 7 × 10-gal | Eggplant, spinach, romaine, pole beans |
 
 Spacing confirmed against ISU, Cornell, CSU, and UMass Extension resources.
 
@@ -40,6 +44,7 @@ Single-file static app — no build step, no framework, no dependencies.
 
 - `index.html` — all data, styles, and rendering logic
 - `jsx-bed-diagrams.js` — SVG bed diagram generators for the Map view
+- `photos/` — garden journal photos (GPS-stripped, resized to max 1200px)
 
 Deployed via GitHub Pages directly from the `main` branch root.
 
