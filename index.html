@@ -2947,7 +2947,7 @@ let weatherStatus = null; /* 'ok' | 'mild' | 'dry' */
 
 async function fetchWeather() {
   if (weatherCache) return weatherCache;
-  /* past_days=7 + forecast_days=3 → 10 entries; first 7 are history, last 3 are forecast */
+  /* past_days=7 + forecast_days=3 → 10 entries; indices 0-6 history, 7-9 forecast */
   const url = 'https://api.open-meteo.com/v1/forecast'
     + '?latitude=42.587&longitude=-72.601'
     + '&daily=precipitation_sum,et0_fao_evapotranspiration'
@@ -2960,11 +2960,12 @@ async function fetchWeather() {
   const histP = precip.slice(0, 7);
   const foreP = precip.slice(7);
   const histE = et0.slice(0, 7);
-  const rain3    = histP.slice(-3).reduce((a, b) => a + (b || 0), 0); /* last 3 days */
-  const et0_3    = histE.slice(-3).reduce((a, b) => a + (b || 0), 0);
-  const forecast = foreP.reduce((a, b) => a + (b || 0), 0);
-  const dates    = data.daily.time; /* ISO date strings for all 10 days */
-  weatherCache = { rain3, et0_3, forecast, dates };
+  const rain7        = histP.reduce((a, b) => a + (b || 0), 0);  /* full 7-day total */
+  const et0_7        = histE.reduce((a, b) => a + (b || 0), 0);
+  const forecastTmrw = foreP[0] || 0;                             /* tomorrow only */
+  const forecast     = foreP.reduce((a, b) => a + (b || 0), 0);  /* 3-day display total */
+  const dates        = data.daily.time;
+  weatherCache = { rain7, et0_7, forecastTmrw, forecast, dates };
   return weatherCache;
 }
 
@@ -2976,10 +2977,15 @@ function renderWeatherWidget() {
   widget.appendChild(el('span', { class: 'weather-loading' }, ['Checking weather…']));
   bar.appendChild(widget);
 
-  fetchWeather().then(({ rain3, et0_3, forecast, dates }) => {
-    /* Use 3-day window for bed recommendation — more relevant than 7-day */
-    const rawDeficit = Math.max(0, et0_3 - rain3);
-    const netDeficit = Math.max(0, rawDeficit - forecast);
+  fetchWeather().then(({ rain7, et0_7, forecastTmrw, forecast, dates }) => {
+    /* Seasonal crop coefficient: vegetable ET is higher than grass-reference ET0 */
+    const mo = new Date().getMonth() + 1;
+    const kc = mo <= 5 ? 0.7 : mo === 6 ? 0.85 : mo === 7 ? 1.0 : mo === 8 ? 1.1 : 0.85;
+
+    const cropET         = et0_7 * kc;
+    const rawDeficit     = Math.max(0, cropET - rain7);
+    const forecastCredit = forecastTmrw * 0.7;  /* tomorrow only, 70% reliability */
+    const netDeficit     = Math.max(0, rawDeficit - forecastCredit);
     const mm2in = mm => (mm / 25.4).toFixed(1) + '″';
 
     /* Date range labels for stats */
@@ -2992,19 +2998,19 @@ function renderWeatherWidget() {
       const [, m2, d2] = isos[isos.length - 1].split('-');
       return m1 === m2 ? fmtD(isos[0]) + '–' + +d2 : fmtD(isos[0]) + ' – ' + fmtD(isos[isos.length - 1]);
     };
-    const histRange = fmtRange(dates.slice(4, 7));  /* last 3 of 7 history days */
-    const foreRange = fmtRange(dates.slice(7));      /* 3 forecast days */
+    const histRange = fmtRange(dates.slice(0, 7));  /* full 7-day history */
+    const foreRange = fmtRange(dates.slice(7));      /* 3-day forecast */
 
     let statusClass, rec;
-    if (forecast >= rawDeficit * 0.8 || netDeficit < 6) {
+    if (netDeficit < 12) {
       statusClass = 'ok';
       rec = forecast > 5
-        ? `${mm2in(forecast)} rain coming — beds OK, check bags`
+        ? `${mm2in(forecast)} forecast — beds OK, check bags`
         : 'Beds OK — check grow bags daily';
-    } else if (netDeficit < 18) {
+    } else if (netDeficit < 25) {
       statusClass = 'mild';
       rec = forecast > 5
-        ? `${mm2in(forecast)} forecast; beds need ~${mm2in(netDeficit)} · check bags`
+        ? `${mm2in(forecast)} coming; beds may need ~${mm2in(netDeficit)} · check bags`
         : `Beds need ~${mm2in(netDeficit)} · check bags`;
     } else {
       statusClass = 'dry';
@@ -3021,9 +3027,9 @@ function renderWeatherWidget() {
       sp.innerHTML = `<span class="wk">${k}</span><span class="wv">${v}</span>`;
       return sp;
     };
-    widget.appendChild(s('rain ' + histRange, mm2in(rain3)));
+    widget.appendChild(s('rain ' + histRange, mm2in(rain7)));
     widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
-    widget.appendChild(s('ET₀ ' + histRange, mm2in(et0_3)));
+    widget.appendChild(s('ET×Kc ' + histRange, mm2in(cropET)));
     if (forecast > 1) {
       widget.appendChild(el('span', { class: 'weather-sep' }, ['·']));
       widget.appendChild(s('forecast ' + foreRange, mm2in(forecast)));
