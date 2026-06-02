@@ -90,8 +90,6 @@
   .wc-icon { display: flex; align-items: center; padding-top: 2px; }
   .wc-info { text-align: right; }
   .wc-line1 { font-size: 13px; font-variant-numeric: tabular-nums; }
-  .wc-date { opacity: 0.75; }
-  .wc-date::before { content: ' · '; }
   .wc-hilo { display: block; font-size: 11px; margin-top: 2px; font-variant-numeric: tabular-nums; opacity: 0.8; }
   .seal {
     width: 48px; height: 48px; border-radius: 50%;
@@ -1506,7 +1504,7 @@
   <div class="weather-corner" id="weather-corner">
     <span class="wc-icon"></span>
     <div class="wc-info">
-      <div class="wc-line1"><span class="wc-now">—</span><span class="wc-date"></span></div>
+      <div class="wc-line1"><span class="wc-now">—</span></div>
       <span class="wc-hilo"></span>
     </div>
   </div>
@@ -3433,10 +3431,8 @@ fetchWeather().then(({ rain7, et0_7, forecastTmrw, todayHiF, todayLoF, currentTe
   if (!weatherStatus) weatherStatus = nd < 12 ? 'ok' : nd < 25 ? 'mild' : 'dry';
   const corner = document.getElementById('weather-corner');
   if (corner) {
-    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     if (currentCode !== null) corner.querySelector('.wc-icon').innerHTML = weatherIcon(currentCode);
     if (currentTempF !== null) corner.querySelector('.wc-now').textContent = currentTempF + '°F now';
-    corner.querySelector('.wc-date').textContent = dateStr;
     if (todayHiF !== null && todayLoF !== null)
       corner.querySelector('.wc-hilo').textContent = 'H: ' + todayHiF + '°  L: ' + todayLoF + '°';
   }
