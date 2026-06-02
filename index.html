@@ -86,11 +86,13 @@
     display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
   }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .weather-corner { display: flex; align-items: center; gap: 6px; padding-top: 8px; color: var(--ink-mute); }
-  .wc-icon { display: flex; align-items: center; }
-  .wc-temps { font-size: 13px; font-variant-numeric: tabular-nums; }
-  .wc-date { font-size: 12px; color: var(--ink-mute); opacity: 0.7; }
-  .wc-date::before { content: '·'; margin-right: 6px; }
+  .weather-corner { display: flex; align-items: flex-start; gap: 7px; padding-top: 6px; color: var(--ink-mute); }
+  .wc-icon { display: flex; align-items: center; padding-top: 2px; }
+  .wc-info { text-align: right; }
+  .wc-line1 { font-size: 13px; font-variant-numeric: tabular-nums; }
+  .wc-date { opacity: 0.75; }
+  .wc-date::before { content: ' · '; }
+  .wc-hilo { display: block; font-size: 11px; margin-top: 2px; font-variant-numeric: tabular-nums; opacity: 0.8; }
   .seal {
     width: 48px; height: 48px; border-radius: 50%;
     background: var(--paper); border: 1.5px solid var(--ink);
@@ -147,8 +149,8 @@
     h1.title { font-size: 22px; }
     .kicker { font-size: 10px; }
     .meta { display: none; }
-    .wc-temps { font-size: 11px; }
-    .wc-date { display: none; }
+    .wc-line1 { font-size: 11px; }
+    .wc-hilo { font-size: 10px; }
     main { padding: 16px 16px 60px; }
     .brand { gap: 10px; }
     .seal { width: 38px; height: 38px; flex-shrink: 0; }
@@ -1503,8 +1505,10 @@
 
   <div class="weather-corner" id="weather-corner">
     <span class="wc-icon"></span>
-    <span class="wc-temps">—</span>
-    <span class="wc-date"></span>
+    <div class="wc-info">
+      <div class="wc-line1"><span class="wc-now">—</span><span class="wc-date"></span></div>
+      <span class="wc-hilo"></span>
+    </div>
   </div>
 
   <nav class="toptabs" role="tablist" id="toptabs">
@@ -2978,10 +2982,11 @@ async function fetchWeather() {
   const forecast     = foreP.reduce((a, b) => a + (b || 0), 0);  /* 3-day display total */
   const dates        = data.daily.time;
   const c2f = c => Math.round(c * 9 / 5 + 32);
-  const todayHiF = data.daily.temperature_2m_max ? c2f(data.daily.temperature_2m_max[7]) : null;
-  const todayLoF = data.daily.temperature_2m_min ? c2f(data.daily.temperature_2m_min[7]) : null;
-  const currentCode = data.current ? data.current.weathercode : null;
-  weatherCache = { rain7, et0_7, forecastTmrw, forecast, dates, todayHiF, todayLoF, currentCode };
+  const todayHiF    = data.daily.temperature_2m_max ? c2f(data.daily.temperature_2m_max[7]) : null;
+  const todayLoF    = data.daily.temperature_2m_min ? c2f(data.daily.temperature_2m_min[7]) : null;
+  const currentTempF = data.current ? c2f(data.current.temperature_2m) : null;
+  const currentCode  = data.current ? data.current.weathercode : null;
+  weatherCache = { rain7, et0_7, forecastTmrw, forecast, dates, todayHiF, todayLoF, currentTempF, currentCode };
   return weatherCache;
 }
 
@@ -3421,19 +3426,19 @@ function renderPhotos(root) {
  * ============================================================ */
 renderAll();
 /* Warm weather cache at init so Garden Expert tab has status even without visiting Map */
-fetchWeather().then(({ rain7, et0_7, forecastTmrw, todayHiF, todayLoF, currentCode }) => {
+fetchWeather().then(({ rain7, et0_7, forecastTmrw, todayHiF, todayLoF, currentTempF, currentCode }) => {
   const mo = new Date().getMonth() + 1;
   const kc = mo <= 5 ? 0.7 : mo === 6 ? 0.85 : mo === 7 ? 1.0 : mo === 8 ? 1.1 : 0.85;
   const nd = Math.max(0, Math.max(0, et0_7 * kc - rain7) - forecastTmrw * 0.7);
   if (!weatherStatus) weatherStatus = nd < 12 ? 'ok' : nd < 25 ? 'mild' : 'dry';
   const corner = document.getElementById('weather-corner');
   if (corner) {
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     if (currentCode !== null) corner.querySelector('.wc-icon').innerHTML = weatherIcon(currentCode);
-    if (todayHiF !== null && todayLoF !== null)
-      corner.querySelector('.wc-temps').textContent = todayHiF + '° / ' + todayLoF + '°';
+    if (currentTempF !== null) corner.querySelector('.wc-now').textContent = currentTempF + '°F now';
     corner.querySelector('.wc-date').textContent = dateStr;
+    if (todayHiF !== null && todayLoF !== null)
+      corner.querySelector('.wc-hilo').textContent = 'H: ' + todayHiF + '°  L: ' + todayLoF + '°';
   }
 }).catch(() => { if (!weatherStatus) weatherStatus = 'dry'; });
 
