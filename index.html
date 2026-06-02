@@ -86,10 +86,9 @@
     display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
   }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .weather-corner { display: flex; align-items: flex-start; gap: 7px; padding-top: 6px; color: var(--ink-mute); }
-  .wc-icon { display: flex; align-items: center; padding-top: 2px; }
-  .wc-info { text-align: right; }
-  .wc-line1 { font-size: 13px; font-variant-numeric: tabular-nums; }
+  .weather-corner { padding-top: 6px; color: var(--ink-mute); text-align: right; }
+  .wc-line1 { display: flex; align-items: center; justify-content: flex-end; gap: 5px; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .wc-icon { display: flex; align-items: center; }
   .wc-hilo { display: block; font-size: 11px; margin-top: 2px; font-variant-numeric: tabular-nums; opacity: 0.8; }
   .seal {
     width: 48px; height: 48px; border-radius: 50%;
@@ -1502,11 +1501,8 @@
   </div>
 
   <div class="weather-corner" id="weather-corner">
-    <span class="wc-icon"></span>
-    <div class="wc-info">
-      <div class="wc-line1"><span class="wc-now">—</span></div>
-      <span class="wc-hilo"></span>
-    </div>
+    <div class="wc-line1"><span class="wc-icon"></span><span class="wc-now">—</span></div>
+    <span class="wc-hilo"></span>
   </div>
 
   <nav class="toptabs" role="tablist" id="toptabs">
