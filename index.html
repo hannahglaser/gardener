@@ -2186,6 +2186,14 @@ function renderMap(root) {
   if (activeBed === 'all') {
     const wrap = el('div', { class: 'all-beds-plan' });
     wrap.innerHTML = jsxSitePlanSvg().svg;
+    wrap.querySelectorAll('[data-bed]').forEach(el => {
+      el.addEventListener('click', () => {
+        activeBed = el.getAttribute('data-bed');
+        activePlantId = null;
+        localStorage.setItem('activeBed', activeBed);
+        renderAll();
+      });
+    });
     root.appendChild(wrap);
     return;
   }
