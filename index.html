@@ -218,28 +218,8 @@
   }
   @media (max-width: 900px) { .map-grid { grid-template-columns: 1fr; } }
 
-  .all-beds-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-top: 8px;
-  }
-  @media (max-width: 900px) { .all-beds-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 520px)  { .all-beds-grid { grid-template-columns: 1fr; } }
-  .all-beds-card {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 12px 10px 10px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .all-beds-card:hover { border-color: var(--terra); }
-  .all-beds-card h3 { font-size: 14px; margin: 0 0 2px; }
-  .all-beds-card .dims { font-size: 11px; color: var(--ink-mute); font-family: monospace; display: block; margin-bottom: 8px; }
-  .all-beds-card .jsx-bed-svg-wrap svg { width: 100%; height: auto; display: block; }
-  .all-beds-card .jsx-note { display: none; }
-  .all-beds-card .jsx-bed-legend { display: none; }
+  .all-beds-plan { width: 100%; margin-top: 8px; }
+  .all-beds-plan svg { width: 100%; height: auto; display: block; }
 
   .bed-head {
     margin-bottom: 14px;
@@ -2202,27 +2182,11 @@ function renderMap(root) {
   });
   root.appendChild(sub);
 
-  /* all-beds overview */
+  /* all-beds overview — unified site plan */
   if (activeBed === 'all') {
-    const overviewBeds = [
-      { key: 'left',     draw: jsxLeftSvg,     label: 'Left Bed',   dims: '400″ E-W' },
-      { key: 'middle',   draw: jsxMiddleSvg,   label: 'Middle Bed', dims: 'Berry Patch' },
-      { key: 'right',    draw: jsxRightSvg,    label: 'Right Bed',  dims: '368″ E-W' },
-      { key: 'unfenced', draw: jsxUnfencedSvg, label: 'Unfenced',   dims: '126″ × 264″' },
-    ];
-    const allGrid = el('div', { class: 'all-beds-grid' });
-    overviewBeds.forEach(({ key, draw, label, dims }) => {
-      const card = el('div', { class: 'all-beds-card', onclick: () => {
-        activeBed = key; activePlantId = null; localStorage.setItem('activeBed', key); renderAll();
-      }});
-      card.appendChild(el('h3', { class: 'serif' }, label));
-      card.appendChild(el('span', { class: 'dims' }, dims));
-      const svgWrap = el('div', { class: 'jsx-bed-svg-wrap' });
-      svgWrap.innerHTML = draw().svg;
-      card.appendChild(svgWrap);
-      allGrid.appendChild(card);
-    });
-    root.appendChild(allGrid);
+    const wrap = el('div', { class: 'all-beds-plan' });
+    wrap.innerHTML = jsxSitePlanSvg().svg;
+    root.appendChild(wrap);
     return;
   }
 
