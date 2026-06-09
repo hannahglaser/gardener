@@ -287,12 +287,15 @@ function jsxRightSvg() {
 
   s += jpath(148, 470, ys.D + 50, 10, '10″');
 
-  /* Row E — Chinese mustard perennial (h=26, centered) */
+  /* Row E — Chinese mustard perennial (h=26, centered) + RC ×2 to its left */
   s += `<rect x="148" y="${ys.E}" width="470" height="26" rx="4" fill="#4a7a28" fill-opacity="0.07" stroke="#4a7a28" stroke-width="0.5" stroke-opacity="0.3"/>`;
   s += `<g class="jsx-plant" data-code="cm">` +
     `<ellipse cx="383" cy="${ys.E + 13}" rx="130" ry="8" fill="#4a7a28" fill-opacity="0.22" stroke="#4a7a28" stroke-width="0.8" stroke-dasharray="3 2"/>` +
     `<text x="383" y="${ys.E + 16}" text-anchor="middle" font-size="7.5" fill="#2a4d14" font-weight="600">E — Chinese mustard · spreads ~24″</text>` +
     `</g>`;
+  s += jp('rc', 326, ys.E + 13, 10, '#993556', 'RC');
+  s += jn(340, ys.E + 13);
+  s += jp('rc', 354, ys.E + 13, 10, '#993556', 'RC');
 
   s += jpath(148, 470, ys.E + 26, 40, '40″ harvest path — mid bed');
 
@@ -319,6 +322,7 @@ function jsxRightSvg() {
     {c:'#534ab7', l:'CF (2)'},
     {c:'#1d9e75', l:'BRL · Broccolini (4)'}, {c:'#a32d2d', l:'RB · Red beet (6)'},
     {c:'#ef9f27', l:'YB · Yellow beet (6)'}, {c:'#4a7a28', l:'CM · Chinese mustard (perennial)'},
+    {c:'#993556', l:'RC row E · ×2 west of CM'},
     {c:'#d85a30', l:'Carrots band'},
     {c:'#7a9e3a', l:'CN · Cilantro (×2 — east of GC/CF)'},
     {c:'#888780', l:'LK (6 west)'}, {c:'#5f5e5a', l:'SN (6 east)'},
@@ -735,38 +739,37 @@ function renderJsxBed(schem, bed, bedKey, season) {
 
 /* ── SITE PLAN (all-beds overview) ────────────────────────────────── */
 function jsxSitePlanSvg() {
-  /* Coordinates derived from aerial-photo annotation (scale 0.5 px→SVG unit).
+  /* Coordinates derived from aerial-photo annotation.
      Origin = top-left of photo at pixel (51, 3). N is up. */
-  const X = x => Math.round((x - 51) * 0.5);
-  const Y = y => Math.round((y - 3)  * 0.5);
-  const W = w => Math.round(w * 0.5);
+  const sc = 0.565, PAD = 10;
+  const X = x => Math.round((x - 51) * sc) + PAD;
+  const Y = y => Math.round((y - 3)  * sc) + PAD;
+  const W = w => Math.round(w * sc);
 
-  const VW = 680, VH = 610;
+  const VW = 775, VH = 500;
 
-  const HEM   = { x:X(51),   y:Y(3),    w:W(1327), h:W(105) };
-  const PATH  = { x:X(51),   y:Y(123),  w:W(1327), h:W(62)  };
-  const ZONE  = { x:X(211),  y:Y(190),  w:W(961),  h:W(249) };
-  const FALL  = { x:X(85),   y:Y(479),  w:W(279),  h:W(478) };
-  const PERG  = { x:X(417),  y:Y(565),  w:W(325),  h:W(130) };
-  const GAR   = { x:X(759),  y:Y(637),  w:W(132),  h:W(206) };
-  const WOOD  = { x:X(891),  y:Y(637),  w:W(100),  h:W(206) };
-  const HERB  = { x:X(1001), y:Y(671),  w:W(100),  h:W(141) };
-  const SUM   = { x:X(1113), y:Y(479),  w:W(273),  h:W(664) };
-  const FRONT = { x:X(85),   y:Y(1004), w:W(689),  h:W(194) };
-  const HOUSE = { x:X(367),  y:Y(686),  w:W(456),  h:W(360) };
+  const HEM  = { x:X(51),   y:Y(3),   w:W(1327), h:W(105) };  // 0,0,750,59
+  const PATH = { x:X(51),   y:Y(123), w:W(1327), h:W(62)  };  // 0,68,750,35
+  const ZONE = { x:X(211),  y:Y(190), w:W(961),  h:W(249) };  // 90,106,543,141
+  const PERG = { x:X(417),  y:Y(565), w:W(325),  h:W(130) };  // 207,318,184,73
+  const GAR  = { x:X(759),  y:Y(637), w:W(132),  h:W(206) };  // 400,358,75,116
+  const WOOD = { x:X(891),  y:Y(637), w:36,       h:W(206) };  // narrowed to give B1 room
+  const HERB = { x:X(1001), y:Y(671), w:W(100),  h:W(141) };  // 537,377,57,80
+  const FALL = { x:X(85),   y:Y(479), w:W(279)            };  // 19,269,158
+  const SUM  = { x:X(1113), y:Y(479), w:W(273)            };  // 600,269,154
 
   /* bed subdivisions within ZONE (proportional to actual inch widths) */
-  const totalW = 400 + 400 + 368 + 126;
-  const lW = Math.round(ZONE.w * 400 / totalW);   // 148
-  const mW = Math.round(ZONE.w * 400 / totalW);   // 148
-  const rW = Math.round(ZONE.w * 368 / totalW);   // 136
-  const uW = ZONE.w - lW - mW - rW;               // remainder
+  const totalIn = 400 + 400 + 368 + 126;
+  const lW = Math.round(ZONE.w * 400 / totalIn);  // 168
+  const mW = Math.round(ZONE.w * 400 / totalIn);  // 168
+  const rW = Math.round(ZONE.w * 368 / totalIn);  // 154
+  const uW = ZONE.w - lW - mW - rW;               // 53
 
-  const zBot = ZONE.y + ZONE.h;
-  const lH = ZONE.h;                              // 350" → full height
+  const zBot = ZONE.y + ZONE.h;  // 247
+  const lH = ZONE.h;
   const mH = ZONE.h;
-  const rH = Math.round(ZONE.h * 300 / 350);      // 106
-  const uH = Math.round(ZONE.h * 264 / 350);      // 93
+  const rH = Math.round(ZONE.h * 300 / 350);  // 121
+  const uH = Math.round(ZONE.h * 264 / 350);  // 106
 
   const lX = ZONE.x, mX = lX + lW, rX = mX + mW, uX = rX + rW;
   const lY = ZONE.y, mY = ZONE.y, rY = zBot - rH, uY = zBot - uH;
@@ -778,47 +781,51 @@ function jsxSitePlanSvg() {
     { id:'unfenced', x:uX, y:uY, w:uW, h:uH, color:'#8a6e3e' },
   ];
 
+  const shrubY = PERG.y - 14;  // 304 — shrub row just above pergola
   const WOOD_C = '#a07840', GREEN = '#4a8a2c', HERB_C = '#5a8a3c';
 
   let s = `<svg class="jsx-bed-svg" viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
   s += `<rect width="${VW}" height="${VH}" fill="#faf7f2"/>`;
 
-  /* house (faint context) */
-  s += `<rect x="${HOUSE.x}" y="${HOUSE.y}" width="${HOUSE.w}" height="${HOUSE.h}" rx="4" fill="#e8e0d8" fill-opacity="0.35" stroke="#c8bfb0" stroke-opacity="0.25" stroke-width="0.5"/>`;
-
   /* hemlock row */
   s += `<rect x="${HEM.x}" y="${HEM.y}" width="${HEM.w}" height="${HEM.h}" fill="#2a4a2a" fill-opacity="0.14" stroke="#2a4a2a" stroke-opacity="0.25" stroke-width="0.5"/>`;
-  s += `<text x="${HEM.x+HEM.w/2}" y="${HEM.y+HEM.h/2+3}" text-anchor="middle" font-size="9" fill="#2a4a2a" fill-opacity="0.65" font-style="italic">hemlock row</text>`;
+  s += `<text x="${HEM.w/2}" y="${HEM.h/2+4}" text-anchor="middle" font-size="10" fill="#2a4a2a" fill-opacity="0.65" font-style="italic">hemlock row</text>`;
 
   /* garden path */
   s += `<rect x="${PATH.x}" y="${PATH.y}" width="${PATH.w}" height="${PATH.h}" fill="${GREEN}" fill-opacity="0.08" stroke="${GREEN}" stroke-opacity="0.18" stroke-width="0.5"/>`;
-  s += `<text x="${PATH.x+PATH.w/2}" y="${PATH.y+PATH.h/2+3}" text-anchor="middle" font-size="8" fill="${GREEN}" fill-opacity="0.6" font-style="italic">garden path</text>`;
+  s += `<text x="${PATH.w/2}" y="${PATH.y+PATH.h/2+3}" text-anchor="middle" font-size="9" fill="${GREEN}" fill-opacity="0.6" font-style="italic">garden path</text>`;
 
-  /* fall garden (west) */
-  s += `<rect x="${FALL.x}" y="${FALL.y}" width="${FALL.w}" height="${FALL.h}" rx="10" fill="${HERB_C}" fill-opacity="0.07" stroke="${HERB_C}" stroke-opacity="0.38" stroke-width="0.8" stroke-dasharray="5 3"/>`;
-  s += `<text x="${FALL.x+FALL.w/2}" y="${FALL.y+FALL.h/2-4}" text-anchor="middle" font-size="8" fill="${HERB_C}" fill-opacity="0.75" font-weight="600">Fall</text>`;
-  s += `<text x="${FALL.x+FALL.w/2}" y="${FALL.y+FALL.h/2+7}" text-anchor="middle" font-size="8" fill="${HERB_C}" fill-opacity="0.75" font-weight="600">garden</text>`;
+  /* lawn strip — between bed zone bottom and shrub row */
+  s += `<rect x="0" y="${zBot}" width="${VW}" height="${shrubY-zBot}" fill="#7a9a3c" fill-opacity="0.06"/>`;
+  s += `<text x="${VW/2}" y="${zBot+(shrubY-zBot)/2+3}" text-anchor="middle" font-size="9" fill="#5a7a2c" fill-opacity="0.5" font-style="italic">lawn</text>`;
 
-  /* summer garden (east) */
-  s += `<rect x="${SUM.x}" y="${SUM.y}" width="${SUM.w}" height="${SUM.h}" rx="10" fill="${HERB_C}" fill-opacity="0.07" stroke="${HERB_C}" stroke-opacity="0.38" stroke-width="0.8" stroke-dasharray="5 3"/>`;
-  s += `<text x="${SUM.x+SUM.w/2}" y="${SUM.y+SUM.h/2-4}" text-anchor="middle" font-size="8" fill="${HERB_C}" fill-opacity="0.75" font-weight="600">Summer</text>`;
-  s += `<text x="${SUM.x+SUM.w/2}" y="${SUM.y+SUM.h/2+7}" text-anchor="middle" font-size="8" fill="${HERB_C}" fill-opacity="0.75" font-weight="600">garden</text>`;
+  /* shrub row — at pergola x/width, just above pergola */
+  s += `<rect x="${PERG.x}" y="${shrubY}" width="${PERG.w}" height="14" rx="3" fill="#3a5e2a" fill-opacity="0.13" stroke="#3a5e2a" stroke-opacity="0.32" stroke-width="0.6"/>`;
+  s += `<text x="${PERG.x+PERG.w/2}" y="${shrubY+10}" text-anchor="middle" font-size="6.5" fill="#3a5e2a" fill-opacity="0.7" font-style="italic">shrubs</text>`;
 
-  /* front garden */
-  s += `<rect x="${FRONT.x}" y="${FRONT.y}" width="${FRONT.w}" height="${FRONT.h}" rx="10" fill="${WOOD_C}" fill-opacity="0.07" stroke="${WOOD_C}" stroke-opacity="0.32" stroke-width="0.7" stroke-dasharray="4 3"/>`;
-  s += `<text x="${FRONT.x+FRONT.w/2}" y="${FRONT.y+FRONT.h/2+3}" text-anchor="middle" font-size="8" fill="#8a6030" fill-opacity="0.75">front garden (rosemary)</text>`;
+  /* fall garden (west, clipped at bottom of viewBox) */
+  const fallH = VH - FALL.y;
+  s += `<rect x="${FALL.x}" y="${FALL.y}" width="${FALL.w}" height="${fallH}" rx="8" fill="${HERB_C}" fill-opacity="0.07" stroke="${HERB_C}" stroke-opacity="0.35" stroke-width="0.8" stroke-dasharray="5 3"/>`;
+  s += `<text x="${FALL.x+FALL.w/2}" y="${FALL.y+fallH/2-5}" text-anchor="middle" font-size="9" fill="${HERB_C}" fill-opacity="0.7" font-weight="600">Fall</text>`;
+  s += `<text x="${FALL.x+FALL.w/2}" y="${FALL.y+fallH/2+7}" text-anchor="middle" font-size="9" fill="${HERB_C}" fill-opacity="0.7" font-weight="600">garden</text>`;
+
+  /* summer garden (east, clipped at bottom) */
+  const sumH = VH - SUM.y;
+  s += `<rect x="${SUM.x}" y="${SUM.y}" width="${SUM.w}" height="${sumH}" rx="8" fill="${HERB_C}" fill-opacity="0.07" stroke="${HERB_C}" stroke-opacity="0.35" stroke-width="0.8" stroke-dasharray="5 3"/>`;
+  s += `<text x="${SUM.x+SUM.w/2}" y="${SUM.y+sumH/2-5}" text-anchor="middle" font-size="9" fill="${HERB_C}" fill-opacity="0.7" font-weight="600">Summer</text>`;
+  s += `<text x="${SUM.x+SUM.w/2}" y="${SUM.y+sumH/2+7}" text-anchor="middle" font-size="9" fill="${HERB_C}" fill-opacity="0.7" font-weight="600">garden</text>`;
 
   /* pergola */
   s += `<rect x="${PERG.x}" y="${PERG.y}" width="${PERG.w}" height="${PERG.h}" rx="3" fill="${WOOD_C}" fill-opacity="0.07" stroke="${WOOD_C}" stroke-opacity="0.55" stroke-width="1"/>`;
   for (let i = 1; i < 7; i++) {
-    const rx = PERG.x + i * PERG.w / 7;
+    const rx = Math.round(PERG.x + i * PERG.w / 7);
     s += `<line x1="${rx}" y1="${PERG.y}" x2="${rx}" y2="${PERG.y+PERG.h}" stroke="${WOOD_C}" stroke-opacity="0.18" stroke-width="0.5"/>`;
   }
   s += `<line x1="${PERG.x}" y1="${PERG.y+14}" x2="${PERG.x+PERG.w}" y2="${PERG.y+14}" stroke="${WOOD_C}" stroke-opacity="0.25" stroke-width="0.6"/>`;
-  s += `<text x="${PERG.x+PERG.w/2}" y="${PERG.y+10}" text-anchor="middle" font-size="7" fill="${WOOD_C}" fill-opacity="0.9" font-weight="600" letter-spacing="1">PERGOLA</text>`;
+  s += `<text x="${PERG.x+PERG.w/2}" y="${PERG.y+10}" text-anchor="middle" font-size="8" fill="${WOOD_C}" fill-opacity="0.9" font-weight="600" letter-spacing="1">PERGOLA</text>`;
 
   /* grow bags — right end of pergola (B2 spinach, B3 spinach, B4 romaine, B5 romaine, B7) */
-  const bSz = 8, bGap = 4;
+  const bSz = 9, bGap = 4;
   const pBags = ['B2','B3','B4','B5','B7'];
   const pFill = ['#5a8a5e','#5a8a5e','#c47c3e','#c47c3e','#5a8a5e'];
   const bRowW = pBags.length * bSz + (pBags.length-1) * bGap;
@@ -826,134 +833,138 @@ function jsxSitePlanSvg() {
   const bY0 = PERG.y + 22;
   pBags.forEach((lbl, i) => {
     const bx = bX0 + i*(bSz+bGap);
-    s += `<rect x="${bx}" y="${bY0}" width="${bSz}" height="${bSz}" rx="2" fill="${pFill[i]}" fill-opacity="0.5" stroke="${pFill[i]}" stroke-opacity="0.85" stroke-width="0.6"/>`;
-    s += `<text x="${bx+bSz/2}" y="${bY0+bSz+6}" text-anchor="middle" font-size="4.5" fill="#7a6a58">${lbl}</text>`;
+    s += `<rect x="${bx}" y="${bY0}" width="${bSz}" height="${bSz}" rx="2" fill="${pFill[i]}" fill-opacity="0.5" stroke="${pFill[i]}" stroke-opacity="0.85" stroke-width="0.7"/>`;
+    s += `<text x="${bx+bSz/2}" y="${bY0+bSz+6}" text-anchor="middle" font-size="5" fill="#7a6a58">${lbl}</text>`;
   });
 
   /* garage */
   s += `<rect x="${GAR.x}" y="${GAR.y}" width="${GAR.w}" height="${GAR.h}" fill="#c8bfb0" fill-opacity="0.3" stroke="#a09080" stroke-opacity="0.45" stroke-width="0.7"/>`;
-  s += `<text x="${GAR.x+GAR.w/2}" y="${GAR.y+GAR.h/2+3}" text-anchor="middle" font-size="7" fill="#7a6a58">garage</text>`;
+  s += `<text x="${GAR.x+GAR.w/2}" y="${GAR.y+GAR.h/2+3}" text-anchor="middle" font-size="8" fill="#7a6a58">garage</text>`;
 
   /* wood pile */
   s += `<rect x="${WOOD.x}" y="${WOOD.y}" width="${WOOD.w}" height="${WOOD.h}" fill="#c4a060" fill-opacity="0.2" stroke="#a07840" stroke-opacity="0.45" stroke-width="0.7"/>`;
-  s += `<text x="${WOOD.x+WOOD.w/2}" y="${WOOD.y+WOOD.h/2-2}" text-anchor="middle" font-size="6" fill="#7a5030">wood</text>`;
-  s += `<text x="${WOOD.x+WOOD.w/2}" y="${WOOD.y+WOOD.h/2+7}" text-anchor="middle" font-size="6" fill="#7a5030">pile</text>`;
+  s += `<text x="${WOOD.x+WOOD.w/2}" y="${WOOD.y+WOOD.h/2-2}" text-anchor="middle" font-size="6.5" fill="#7a5030">wood</text>`;
+  s += `<text x="${WOOD.x+WOOD.w/2}" y="${WOOD.y+WOOD.h/2+8}" text-anchor="middle" font-size="6.5" fill="#7a5030">pile</text>`;
 
-  /* herb garden (SE of pergola) — B1 eggplant bag inside */
+  /* herb garden (SE) */
   s += `<rect x="${HERB.x}" y="${HERB.y}" width="${HERB.w}" height="${HERB.h}" rx="4" fill="${HERB_C}" fill-opacity="0.08" stroke="${HERB_C}" stroke-opacity="0.5" stroke-width="0.8" stroke-dasharray="4 2"/>`;
-  s += `<text x="${HERB.x+HERB.w/2}" y="${HERB.y+10}" text-anchor="middle" font-size="6.5" fill="${HERB_C}" font-weight="600">HERB</text>`;
-  s += `<text x="${HERB.x+HERB.w/2}" y="${HERB.y+19}" text-anchor="middle" font-size="6.5" fill="${HERB_C}" font-weight="600">GARDEN</text>`;
-  const b1x = HERB.x + (HERB.w-bSz)/2, b1y = HERB.y + 26;
-  s += `<rect x="${b1x}" y="${b1y}" width="${bSz}" height="${bSz}" rx="2" fill="#7a3e8e" fill-opacity="0.5" stroke="#7a3e8e" stroke-opacity="0.85" stroke-width="0.6"/>`;
-  s += `<text x="${b1x+bSz/2}" y="${b1y+bSz+6}" text-anchor="middle" font-size="4.5" fill="#7a6a58">B1</text>`;
+  s += `<text x="${HERB.x+HERB.w/2}" y="${HERB.y+11}" text-anchor="middle" font-size="7" fill="${HERB_C}" font-weight="600">HERB</text>`;
+  s += `<text x="${HERB.x+HERB.w/2}" y="${HERB.y+21}" text-anchor="middle" font-size="7" fill="${HERB_C}" font-weight="600">GARDEN</text>`;
+
+  /* B1 eggplant bag — on asphalt between wood pile and herb garden */
+  const b1x = Math.round((WOOD.x + WOOD.w + HERB.x) / 2 - bSz / 2);
+  const b1y = HERB.y + 5;
+  s += `<rect x="${b1x}" y="${b1y}" width="${bSz}" height="${bSz}" rx="2" fill="#7a3e8e" fill-opacity="0.5" stroke="#7a3e8e" stroke-opacity="0.85" stroke-width="0.7"/>`;
+  s += `<text x="${b1x+bSz/2}" y="${b1y+bSz+6}" text-anchor="middle" font-size="5" fill="#7a6a58">B1</text>`;
 
   /* bed outlines + labels */
   const bedLabels = { left:'LEFT BED', middle:'MIDDLE BED', right:'RIGHT BED', unfenced:'UNFENCED' };
   beds.forEach(b => {
-    s += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="3" fill="${b.color}" fill-opacity="0.08" stroke="${b.color}" stroke-opacity="0.65" stroke-width="0.8"/>`;
-    s += `<text x="${b.x+b.w/2}" y="${b.y+9}" text-anchor="middle" font-size="6.5" font-weight="700" fill="${b.color}" fill-opacity="0.9">${bedLabels[b.id]}</text>`;
+    s += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="3" fill="${b.color}" fill-opacity="0.08" stroke="${b.color}" stroke-opacity="0.65" stroke-width="1"/>`;
+    s += `<text x="${b.x+b.w/2}" y="${b.y+10}" text-anchor="middle" font-size="7.5" font-weight="700" fill="${b.color}" fill-opacity="0.9">${bedLabels[b.id]}</text>`;
   });
 
-  /* left bed rows (N→S): A sunflowers, B tomatoes, C squash+pep, D herbs, E cucumbers */
+  /* left bed rows (N→S): sunflowers, tomatoes, squash+peppers, herbs, cucumbers */
   {
     const b = beds[0];
     [
-      { h:11, c:'#c4a03e', t:'sunflowers' },
+      { h:13, c:'#c4a03e', t:'sunflowers'       },
       { h: 3, c:null },
-      { h:17, c:'#c44d3b', t:'tomatoes'   },
+      { h:20, c:'#c44d3b', t:'tomatoes'         },
       { h: 3, c:null },
-      { h:14, c:'#c47c2e', t:'squash · peppers' },
+      { h:16, c:'#c47c2e', t:'squash · peppers' },
       { h: 3, c:null },
-      { h: 9, c:'#5a8a3c', t:'herbs'      },
+      { h:11, c:'#5a8a3c', t:'herbs'            },
       { h: 3, c:null },
-      { h:11, c:'#3a6e3e', t:'cucumbers'  },
+      { h:13, c:'#3a6e3e', t:'cucumbers'        },
     ].reduce((y, {h, c, t}) => {
       if (c) {
-        s += `<rect x="${b.x+3}" y="${y}" width="${b.w-6}" height="${h}" rx="1.5" fill="${c}" fill-opacity="0.15" stroke="${c}" stroke-opacity="0.25" stroke-width="0.4"/>`;
-        if (t) s += `<text x="${b.x+b.w/2}" y="${y+h/2+2}" text-anchor="middle" font-size="4.5" fill="${c}" fill-opacity="0.9">${t}</text>`;
+        s += `<rect x="${b.x+3}" y="${y}" width="${b.w-6}" height="${h}" rx="1.5" fill="${c}" fill-opacity="0.15" stroke="${c}" stroke-opacity="0.22" stroke-width="0.4"/>`;
+        if (t) s += `<text x="${b.x+b.w/2}" y="${y+h/2+2}" text-anchor="middle" font-size="5" fill="${c}" fill-opacity="0.9">${t}</text>`;
       }
       return y + h;
-    }, b.y + 12);
+    }, b.y + 13);
   }
 
-  /* middle bed columns (W→E): RR×3, rhubarb, black rasp, blackberry */
+  /* middle bed vertical columns (W→E): RR×3, rhubarb, black rasp, blackberry */
   {
     const b = beds[1];
-    const sw = 19, sg = 4;
+    const sw = 22, sg = 4;
     const sx0 = b.x + (b.w - (6*sw+5*sg)) / 2;
-    const sy = b.y + 12, sh = b.h - 18;
+    const sy = b.y + 13, sh = b.h - 20;
     [
       {c:'#a13e6e',t:'RR'},{c:'#a13e6e',t:'RR'},{c:'#a13e6e',t:'RR'},
       {c:'#c23a30',t:'RH'},{c:'#6a2e8e',t:'BR'},{c:'#312080',t:'BK'},
     ].forEach(({c,t}, i) => {
-      const sx = sx0 + i*(sw+sg);
+      const sx = Math.round(sx0 + i*(sw+sg));
       s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" rx="2.5" fill="${c}" fill-opacity="0.13" stroke="${c}" stroke-opacity="0.35" stroke-width="0.4"/>`;
-      s += `<text x="${sx+sw/2}" y="${sy+sh+6}" text-anchor="middle" font-size="4.5" fill="${c}" fill-opacity="0.8">${t}</text>`;
+      s += `<text x="${sx+sw/2}" y="${sy+sh+7}" text-anchor="middle" font-size="5" fill="${c}" fill-opacity="0.8">${t}</text>`;
     });
   }
 
-  /* right bed: asparagus (west strip) + rows A/B-D/F/G + blueberry + squash strip */
+  /* right bed: asparagus (west strip) + veg rows + blueberry hedge + squash strip */
   {
     const b = beds[2];
-    const asW = Math.round(b.w * 13/147);
-    const bbW = Math.round(b.w * 19/147);
-    const sqW = Math.round(b.w * 10/147);
+    // actual widths: asp ~18", veg ~278", blueberry 48", squash 24" of 368" total
+    const asW = Math.round(b.w * 18/368);
+    const bbW = Math.round(b.w * 48/368);
+    const sqW = Math.round(b.w * 24/368);
     const vegW = b.w - asW - bbW - sqW;
     const rowX = b.x + asW + 2, rowW = vegW - 4;
 
-    /* asparagus strip */
+    /* asparagus strip (west) */
     const asCx = b.x + asW/2, asCy = b.y + b.h/2;
     s += `<rect x="${b.x}" y="${b.y+3}" width="${asW}" height="${b.h-6}" rx="2" fill="#5a8a3c" fill-opacity="0.13" stroke="#5a8a3c" stroke-opacity="0.4" stroke-width="0.4"/>`;
     s += `<text x="${asCx}" y="${asCy+2}" text-anchor="middle" font-size="4.5" fill="#5a8a3c" fill-opacity="0.85" transform="rotate(-90,${asCx},${asCy})">asp.</text>`;
 
-    /* veg rows */
+    /* veg rows A, B-D, F, G */
     [
-      { h:10, c:'#5a7a9e', t:'bok choy · chard'     },
+      { h:12, c:'#5a7a9e', t:'bok choy · chard'       },
       { h: 3, c:null },
-      { h:18, c:'#5a7a9e', t:'brassicas · beets · CM'},
+      { h:21, c:'#5a7a9e', t:'brassicas · beets · CM'  },
       { h: 5, c:null },
-      { h: 9, c:'#c4864c', t:'carrots'               },
+      { h:11, c:'#c4864c', t:'carrots'                  },
       { h: 3, c:null },
-      { h: 9, c:'#7a6a9e', t:'leeks · scallions'     },
+      { h:11, c:'#7a6a9e', t:'leeks · scallions'        },
     ].reduce((y, {h, c, t}) => {
       if (c) {
-        s += `<rect x="${rowX}" y="${y}" width="${rowW}" height="${h}" rx="1.5" fill="${c}" fill-opacity="0.14" stroke="${c}" stroke-opacity="0.25" stroke-width="0.4"/>`;
-        if (t) s += `<text x="${rowX+rowW/2}" y="${y+h/2+2}" text-anchor="middle" font-size="4" fill="${c}" fill-opacity="0.9">${t}</text>`;
+        s += `<rect x="${rowX}" y="${y}" width="${rowW}" height="${h}" rx="1.5" fill="${c}" fill-opacity="0.14" stroke="${c}" stroke-opacity="0.22" stroke-width="0.4"/>`;
+        if (t) s += `<text x="${rowX+rowW/2}" y="${y+h/2+2}" text-anchor="middle" font-size="4.5" fill="${c}" fill-opacity="0.9">${t}</text>`;
       }
       return y + h;
-    }, b.y + 12);
+    }, b.y + 13);
 
-    /* blueberry hedge */
+    /* blueberry hedge (east) */
     const bbX = b.x + asW + vegW;
     const bbCx = bbX + bbW/2, bbCy = b.y + b.h/2;
     s += `<rect x="${bbX}" y="${b.y+3}" width="${bbW}" height="${b.h-6}" rx="2" fill="#8a3e6e" fill-opacity="0.10" stroke="#8a3e6e" stroke-opacity="0.35" stroke-width="0.4"/>`;
     s += `<text x="${bbCx}" y="${bbCy+2}" text-anchor="middle" font-size="4" fill="#8a3e6e" fill-opacity="0.85" transform="rotate(-90,${bbCx},${bbCy})">blub.</text>`;
 
-    /* squash strip */
+    /* squash strip (far east) */
     const sqX = bbX + bbW;
     if (sqW > 2) s += `<rect x="${sqX}" y="${b.y+3}" width="${sqW}" height="${b.h-6}" rx="1.5" fill="#c4a03e" fill-opacity="0.10" stroke="#c4a03e" stroke-opacity="0.3" stroke-width="0.4"/>`;
   }
 
-  /* unfenced: peach tree (NE corner) + squash */
+  /* unfenced: peach tree (NE corner) + winter squash */
   {
     const b = beds[3];
-    const tR = 6, tx = b.x + b.w - tR - 2, ty = b.y + tR + 2;
+    const tR = 7, tx = b.x + b.w - tR - 2, ty = b.y + tR + 3;
     s += `<circle cx="${tx}" cy="${ty}" r="${tR}" fill="#e8763e" fill-opacity="0.2" stroke="#e8763e" stroke-opacity="0.6" stroke-width="0.6"/>`;
-    s += `<text x="${tx}" y="${ty+2.5}" text-anchor="middle" font-size="4" fill="#c05a2a">P</text>`;
-    const mY = b.y+15, mH = b.h-18;
+    s += `<text x="${tx}" y="${ty+2.5}" text-anchor="middle" font-size="5" fill="#c05a2a">P</text>`;
+    const mY = b.y+17, mH = b.h-21;
     s += `<rect x="${b.x+2}" y="${mY}" width="${b.w-4}" height="${mH}" rx="2" fill="#c4a03e" fill-opacity="0.10" stroke="#c4a03e" stroke-opacity="0.3" stroke-width="0.4"/>`;
-    s += `<text x="${b.x+b.w/2}" y="${mY+mH/2+2}" text-anchor="middle" font-size="4" fill="#8a6e3e">sqsh</text>`;
+    s += `<text x="${b.x+b.w/2}" y="${mY+mH/2+2}" text-anchor="middle" font-size="5" fill="#8a6e3e">sqsh</text>`;
   }
 
-  /* transparent click overlays (must be last) */
+  /* transparent click overlays (must be last so they receive pointer events) */
   beds.forEach(b => {
     s += `<rect data-bed="${b.id}" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="3" fill="transparent" stroke="none" style="cursor:pointer"/>`;
   });
 
-  /* compass */
-  const compX = VW - 18, compY = 15;
-  s += `<text x="${compX}" y="${compY}" text-anchor="middle" font-size="9" fill="#b96b3e" font-weight="700">N</text>`;
-  s += `<polygon points="${compX},${compY+3} ${compX-3},${compY+12} ${compX},${compY+10} ${compX+3},${compY+12}" fill="#b96b3e" fill-opacity="0.55"/>`;
+  /* compass (top-right) */
+  const compX = VW - 20, compY = 16;
+  s += `<text x="${compX}" y="${compY}" text-anchor="middle" font-size="10" fill="#b96b3e" font-weight="700">N</text>`;
+  s += `<polygon points="${compX},${compY+3} ${compX-4},${compY+14} ${compX},${compY+11} ${compX+4},${compY+14}" fill="#b96b3e" fill-opacity="0.55"/>`;
 
   s += `</svg>`;
   return { svg: s };
