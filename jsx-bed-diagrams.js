@@ -293,9 +293,9 @@ function jsxRightSvg() {
     `<ellipse cx="383" cy="${ys.E + 13}" rx="130" ry="8" fill="#4a7a28" fill-opacity="0.22" stroke="#4a7a28" stroke-width="0.8" stroke-dasharray="3 2"/>` +
     `<text x="383" y="${ys.E + 16}" text-anchor="middle" font-size="7.5" fill="#2a4d14" font-weight="600">E — Chinese mustard · spreads ~24″</text>` +
     `</g>`;
-  s += jp('rc', 163, ys.E + 13, 10, '#993556', 'RC');
-  s += jn(199, ys.E + 13);
-  s += jp('rc', 235, ys.E + 13, 10, '#993556', 'RC');
+  s += jp('rc', 175, ys.E + 13, 10, '#993556', 'RC');
+  s += jn(197, ys.E + 13);
+  s += jp('rc', 219, ys.E + 13, 10, '#993556', 'RC');
 
   s += jpath(148, 470, ys.E + 26, 40, '40″ harvest path — mid bed');
 
