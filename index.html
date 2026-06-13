@@ -1400,9 +1400,9 @@
     box-shadow: 0 4px 18px -6px rgba(80,55,15,.32);
     transform: translateY(-2px);
   }
-  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; transform: translateZ(0); }
-  .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; }
-  .photo-card:hover img { transform: scale(1.06); }
+  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; }
+  .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; transform: translateZ(0); }
+  .photo-card:hover img { transform: scale(1.06) translateZ(0); }
   .photo-num-badge {
     position: absolute; top: 8px; left: 9px;
     background: rgba(42,36,24,.72); backdrop-filter: blur(4px);
@@ -3293,28 +3293,39 @@ function renderTasks(root) {
  *   PHOTOS DATA
  * ============================================================ */
 const PHOTOS = [
-  /* ── col 1: veggie beds ── */
-  { file: 'right-bed-sunset.jpg',         date: '2026-05-30', month: 'Spring 2026', caption: 'Right Bed — looking north, brassicas, beets, bok choy, swiss chard, cilantro' },
-  { file: 'unfenced-squash.jpg',         date: '2026-05-30', caption: 'Unfenced Bed — winter squash just in the ground' },
-  { file: 'pergola-dusk.jpg',     date: '2026-05-26', caption: 'Pergola at dusk' },
-  { file: 'middle-bed-summer.jpg',         date: '2026-05-28', caption: 'Middle Bed — between the red raspberry rows' },
-  { file: 'asparagus-harvest.jpg',         date: '2026-05-28', caption: 'First harvest — purple asparagus spears' },
-  { file: 'azalea.jpg',           date: '2026-05-24', caption: 'Azaleas in the rain' },
-  /* ── col 2: left bed + garden + flowers ── */
-  { file: 'left-bed-spring.jpg',         date: '2026-05-28', colStart: true, caption: 'Left Bed — cucumber trellis, tomatoes, peppers, basil, and herbs' },
-  { file: 'rhubarb-harvest.jpg',  date: '2026-05-10', caption: 'First rhubarb harvest of the season' },
-  { file: 'pergola-grow-bags.jpg',         date: '2026-05-28', caption: 'Pergola deck — grow bags, garden beds above' },
-  { file: 'primrose.jpg',         date: '2026-04-29', caption: 'Primroses in the front garden' },
-  { file: 'garden-path.jpg',      date: '2026-05-18', caption: 'Garden path' },
-  { file: 'front-yard-sunset.jpg',   date: '2026-05-21', caption: 'Front yard at sunset — irises and rhododendrons in bloom' },
-  { file: 'rhododendron-sunset.jpg', date: '2026-05-21', caption: 'Rhododendron at sunset' },
-  /* ── col 3: atmosphere + harvest ── */
-  { file: 'middle-bed-dusk.jpg',  date: '2026-05-26', colStart: true, caption: 'Middle Bed at dusk — rhubarb, cane rows, and flowering black raspberries' },
-  { file: 'right-bed-leeks.jpg',         date: '2026-05-28', caption: 'Right Bed — looking east toward blueberry hedge, leeks and carrot row' },
-  { file: 'spring-bouquet.jpg',   date: '2026-04-21', caption: 'Lenten rose and daffodils' },
-  { file: 'pergola-night-overhead.jpg',         date: '2026-05-28', caption: 'Pergola at night' },
-  { file: 'front-bed.jpg',        date: '2026-05-28', caption: 'Front herb garden' },
-  { file: 'candytuft.jpg',        date: '2026-05-13', caption: 'Candytuft in bloom' },
+  /* ── Summer 2026 ── */
+  { file: 'tomato-in-bloom.jpg',        date: '2026-06-13', month: 'Summer 2026', caption: 'Tomato in bloom — first flowers of the season' },
+  { file: 'blueberry-hedge-summer.jpg', date: '2026-06-13', caption: 'Blueberry hedge — green berries forming' },
+  { file: 'blueberry-berries.jpg',      date: '2026-06-13', caption: 'Blueberry berries — close up' },
+  { file: 'right-bed-aerial.jpg',       date: '2026-06-13', caption: 'Right Bed — overhead, brassicas and roots in rows' },
+  { file: 'peach-tree.jpg',             date: '2026-06-13', colStart: true, caption: 'Peach — fruit setting' },
+  { file: 'squash-seedling.jpg',        date: '2026-06-13', caption: 'Squash — first flower bud' },
+  { file: 'garden-sunset.jpg',          date: '2026-06-12', caption: 'Garden at sunset' },
+  { file: 'left-bed-june.jpg',          date: '2026-06-10', caption: 'Left Bed — cucumber trellis and transplants' },
+  { file: 'unfenced-aerial.jpg',        date: '2026-06-10', colStart: true, caption: 'Unfenced Bed — squash seedlings emerging' },
+  { file: 'poppies.jpg',                date: '2026-06-03', caption: 'Poppies in bloom' },
+  { file: 'garden-cat.jpg',             date: '2026-06-02', caption: 'Garden cat' },
+  { file: 'azalea-gate.jpg',            date: '2026-06-01', caption: 'Azaleas and the garden gate' },
+  /* ── Spring 2026 ── */
+  { file: 'right-bed-sunset.jpg',       date: '2026-05-30', month: 'Spring 2026', caption: 'Right Bed — looking north, brassicas, beets, bok choy, swiss chard, cilantro' },
+  { file: 'unfenced-squash.jpg',        date: '2026-05-30', caption: 'Unfenced Bed — winter squash just in the ground' },
+  { file: 'middle-bed-summer.jpg',      date: '2026-05-28', caption: 'Middle Bed — between the red raspberry rows' },
+  { file: 'asparagus-harvest.jpg',      date: '2026-05-28', caption: 'First harvest — purple asparagus spears' },
+  { file: 'left-bed-spring.jpg',        date: '2026-05-28', caption: 'Left Bed — cucumber trellis, tomatoes, peppers, basil, and herbs' },
+  { file: 'pergola-grow-bags.jpg',      date: '2026-05-28', caption: 'Pergola deck — grow bags, garden beds above' },
+  { file: 'right-bed-leeks.jpg',        date: '2026-05-28', colStart: true, caption: 'Right Bed — looking east toward blueberry hedge, leeks and carrot row' },
+  { file: 'pergola-night-overhead.jpg', date: '2026-05-28', caption: 'Pergola at night' },
+  { file: 'front-bed.jpg',              date: '2026-05-28', caption: 'Front herb garden' },
+  { file: 'pergola-dusk.jpg',           date: '2026-05-26', caption: 'Pergola at dusk' },
+  { file: 'middle-bed-dusk.jpg',        date: '2026-05-26', caption: 'Middle Bed at dusk — rhubarb, cane rows, and flowering black raspberries' },
+  { file: 'azalea.jpg',                 date: '2026-05-24', caption: 'Azaleas in the rain' },
+  { file: 'front-yard-sunset.jpg',      date: '2026-05-21', colStart: true, caption: 'Front yard at sunset — irises and rhododendrons in bloom' },
+  { file: 'rhododendron-sunset.jpg',    date: '2026-05-21', caption: 'Rhododendron at sunset' },
+  { file: 'garden-path.jpg',            date: '2026-05-18', caption: 'Garden path' },
+  { file: 'candytuft.jpg',              date: '2026-05-13', caption: 'Candytuft in bloom' },
+  { file: 'rhubarb-harvest.jpg',        date: '2026-05-10', caption: 'First rhubarb harvest of the season' },
+  { file: 'primrose.jpg',               date: '2026-04-29', caption: 'Primroses in the front garden' },
+  { file: 'spring-bouquet.jpg',         date: '2026-04-21', caption: 'Lenten rose and daffodils' },
 ];
 
 /* ============================================================
@@ -3329,7 +3340,7 @@ function renderPhotos(root) {
 
   const hdr = el('div', { class: 'photos-header' });
   hdr.appendChild(el('h2', { class: 'serif' }, ['Garden Journal']));
-  hdr.appendChild(el('p', {}, ['Spring 2026 · ' + PHOTOS.length + ' photos · tap to enlarge · click again to zoom']));
+  hdr.appendChild(el('p', {}, [PHOTOS.length + ' photos · tap to enlarge · click again to zoom']));
   wrap.appendChild(hdr);
 
   /* lightbox overlay */

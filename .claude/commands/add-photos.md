@@ -1,66 +1,62 @@
 # Add Photos to Garden Journal
 
-You are helping add one or more photos to the garden journal at `/Users/hannahglaser/dev/gardener/`.
+Add one or more photos to the garden journal at `/Users/hannahglaser/dev/gardener/`.
 
-## Workflow
+## Step 1 — View each photo
 
-### 1. Accept source paths
+Use the Read tool on each source file to see what it shows. Use this to write the caption — do not ask the user to describe the photo.
 
-The user will provide one or more source file paths (HEIC or JPEG from Photos Library or elsewhere). They may also tell you:
-- A caption for each photo
-- Where in the gallery to insert it (by number or description)
-- The date (use EXIF if not provided)
+Caption style: concise and plain, like a field note. Describe what's in the frame without drama or filler.
+- Good: `'Right Bed — looking north, brassicas and roots in rows'`
+- Good: `'Peach — fruit setting'`
+- Bad: `'A beautiful view of the thriving garden in full summer glory'`
 
-### 2. Process each photo
-
-For each source file, run:
+## Step 2 — Get the date
 
 ```bash
-# If HEIC: convert to JPEG first
-sips -s format jpeg "/path/to/source.HEIC" --out "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
-
-# If already JPEG: copy directly
-cp "/path/to/source.jpg" "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
-
-# Resize to max 1200px on longest side
-sips -Z 1200 "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
-
-# Strip GPS metadata, keep DateTimeOriginal
-exiftool -gps:all= -overwrite_original "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
-
-# Read the date for the PHOTOS array entry
-exiftool -DateTimeOriginal "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
+sips -g creation "/path/to/source.HEIC"
 ```
 
-Choose a descriptive kebab-case filename (e.g. `rhubarb-harvest.jpg`, `front-bed-may.jpg`).
+Format as `YYYY-MM-DD` for the PHOTOS entry.
 
-### 3. Add to PHOTOS array
+## Step 3 — Convert, resize, strip GPS
 
-Open `index.html` and find `const PHOTOS = [`. Add a new entry at the correct position:
+```bash
+# HEIC → JPEG (use --setProperty formatOptions 85 for quality)
+sips -s format jpeg --setProperty formatOptions 85 "/path/to/source.HEIC" --out "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
 
+# Strip GPS (always — never leave location metadata in)
+exiftool -gps:all= -overwrite_original "/Users/hannahglaser/dev/gardener/photos/FILENAME.jpg"
+```
+
+Choose a descriptive kebab-case filename (e.g. `tomato-in-bloom.jpg`, `left-bed-june.jpg`).
+
+## Step 4 — Add to PHOTOS array in `index.html`
+
+Photos are **reverse chronological** — newest first. Within each season, newest date at top.
+
+Seasons are separate groups using the `month` field as a divider label. The `month` field goes only on the **first photo of each season group**:
+- `month: 'Summer 2026'` — June, July, August
+- `month: 'Spring 2026'` — March, April, May
+- etc.
+
+Insert the new photo at the correct date position within the right season group. If the season doesn't exist yet, create a new group above the previous one with a `month` label.
+
+Entry format:
 ```javascript
 { file: 'FILENAME.jpg', date: 'YYYY-MM-DD', caption: 'Caption here' },
 ```
 
-- Use the EXIF date (format: `YYYY-MM-DD`)
-- If inserting in the middle, adjust `colStart: true` on surrounding entries if needed to keep columns balanced (~5-6 photos per column)
-- The `month` field (e.g. `month: 'Spring 2026'`) only goes on the FIRST photo in a new month section to show a divider
+## Step 5 — Column balance
 
-### 4. Column balance check
+Each season section has its own 3-column layout (season dividers use `column-span: all`). Aim for roughly equal thirds within each season group using `colStart: true`:
 
-After adding, count photos before each `colStart: true`. Aim for roughly equal thirds:
-- Col 1: ~5-6 photos before the first `colStart`
-- Col 2: ~5-6 photos before the second `colStart`
-- Col 3: remaining photos
+```javascript
+{ file: '...', date: '...', colStart: true, caption: '...' },  // starts col 2
+// ~same count later...
+{ file: '...', date: '...', colStart: true, caption: '...' },  // starts col 3
+```
 
-Adjust `colStart` positions if the distribution is lopsided.
-
-### 5. Confirm
-
-Tell the user:
-- The filename chosen
-- The date read from EXIF
-- The position in the array (photo #N)
-- Ask them to confirm or correct the caption
+After adding, count photos in each column per season. Adjust `colStart` positions if lopsided.
 
 $ARGUMENTS
