@@ -1393,14 +1393,11 @@
     border-radius: 10px;
     box-shadow: var(--shadow-sm);
     cursor: pointer;
-    transition: box-shadow .2s, top .15s;
+    transition: box-shadow .2s;
     display: block;
-    position: relative;
-    top: 0;
   }
   .photo-card:hover {
     box-shadow: 0 4px 18px -6px rgba(80,55,15,.32);
-    top: -2px;
   }
   .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; -webkit-transform: translateZ(0); transform: translateZ(0); }
   .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; }
@@ -3303,7 +3300,7 @@ const PHOTOS = [
   { file: 'peach-tree.jpg',             date: '2026-06-13', colStart: true, caption: 'Peach — fruit setting' },
   { file: 'squash-seedling.jpg',        date: '2026-06-13', caption: 'Zucchini — first flower bud' },
   { file: 'garden-sunset.jpg',          date: '2026-06-12', caption: 'Garden at sunset' },
-  { file: 'left-bed-june.jpg',          date: '2026-06-10', caption: 'Left Bed — cucumber trellis and transplants' },
+  { file: 'left-bed-june.jpg',          date: '2026-06-10', caption: 'Left Bed — tomato stakes and transplants' },
   { file: 'unfenced-aerial.jpg',        date: '2026-06-10', colStart: true, caption: 'Unfenced Bed — squash seedlings emerging' },
   { file: 'poppies.jpg',                date: '2026-06-03', caption: 'Poppies in bloom' },
   { file: 'garden-cat.jpg',             date: '2026-06-02', caption: 'Rocco, garden pest manager' },
@@ -3414,17 +3411,8 @@ function renderPhotos(root) {
 
   /* collage */
   const collage = el('div', { class: 'photos-collage' });
-  /* pre-compute L-R badge numbers based on column/row position */
-  const lrNums = (() => {
-    const numCols = 1 + PHOTOS.filter(p => p.colStart).length;
-    let col = 0;
-    const rowInCol = Array(numCols).fill(0);
-    return PHOTOS.map(p => {
-      if (p.colStart) col++;
-      const r = rowInCol[col]++;
-      return r * numCols + col + 1;
-    });
-  })();
+  /* sequential badge numbers 1…N */
+  const lrNums = PHOTOS.map((_, i) => i + 1);
   let photoIdx = 0;
   PHOTOS.forEach((p, arrIdx) => {
     if (p.month) {
