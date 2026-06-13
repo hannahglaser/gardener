@@ -1399,7 +1399,7 @@
   .photo-card:hover {
     box-shadow: 0 4px 18px -6px rgba(80,55,15,.32);
   }
-  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; -webkit-transform: translateZ(0); transform: translateZ(0); }
+  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; -webkit-transform: translateZ(0); transform: translateZ(0); background: var(--bg-2); min-height: 80px; }
   .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; }
   .photo-card:hover img { transform: scale(1.06); }
   .photo-num-badge {
@@ -3420,7 +3420,7 @@ function renderPhotos(root) {
       collage.appendChild(div);
     }
     const num = lrNums[photoIdx++];
-    const card = el('div', { class: 'photo-card', style: (p.colStart ? 'break-before:column;' : '') + `order:${num}` });
+    const card = el('div', { class: 'photo-card', style: p.colStart ? 'break-before:column;' : '' });
     card.onclick = () => openLbAt(arrIdx);
 
     const imgWrap = el('div', { class: 'photo-card-img-wrap' });
