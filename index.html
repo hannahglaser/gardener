@@ -1393,16 +1393,18 @@
     border-radius: 10px;
     box-shadow: var(--shadow-sm);
     cursor: pointer;
-    transition: box-shadow .2s, transform .15s;
+    transition: box-shadow .2s, top .15s;
     display: block;
+    position: relative;
+    top: 0;
   }
   .photo-card:hover {
     box-shadow: 0 4px 18px -6px rgba(80,55,15,.32);
-    transform: translateY(-2px);
+    top: -2px;
   }
-  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; }
-  .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; transform: translateZ(0); }
-  .photo-card:hover img { transform: scale(1.06) translateZ(0); }
+  .photo-card-img-wrap { position: relative; overflow: hidden; border-radius: 9px 9px 0 0; -webkit-transform: translateZ(0); transform: translateZ(0); }
+  .photo-card img { width: 100%; height: auto; display: block; transition: transform .45s ease; }
+  .photo-card:hover img { transform: scale(1.06); }
   .photo-num-badge {
     position: absolute; top: 8px; left: 9px;
     background: rgba(42,36,24,.72); backdrop-filter: blur(4px);
