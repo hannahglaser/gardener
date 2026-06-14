@@ -1484,30 +1484,85 @@
   .weather-src:hover { text-decoration:underline; }
 
   /* ── Home tab ────────────────────────────────────────── */
-  .home-wrap { max-width: 900px; margin: 0 auto; padding: 10px 0 60px; }
-  .home-hero { position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 18px; box-shadow: 0 2px 18px -4px rgba(40,28,10,.22); }
-  .home-hero img { width: 100%; height: 280px; object-fit: cover; display: block; }
-  @media (max-width: 560px) { .home-hero img { height: 210px; } }
-  .home-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 35%, rgba(18,12,4,.62) 100%); }
-  .home-hero-text { position: absolute; bottom: 18px; left: 22px; right: 22px; color: #f5efe1; }
-  .home-hero-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 30px; font-style: italic; font-weight: 600; line-height: 1.1; margin: 0 0 5px; }
-  @media (max-width: 560px) { .home-hero-title { font-size: 24px; } }
-  .home-hero-sub { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; opacity: .78; font-weight: 500; }
-  .home-pulse { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
-  @media (max-width: 560px) { .home-pulse { gap: 8px; } }
-  .home-pulse-card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px 13px; box-shadow: var(--shadow-sm); transition: box-shadow .2s; }
-  .home-pulse-card[onclick], .home-pulse-card[style*="cursor"] { cursor: pointer; }
-  .home-pulse-card:hover { box-shadow: 0 3px 14px -5px rgba(80,55,15,.28); }
-  .home-pulse-label { font-size: 9px; letter-spacing: .11em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 5px; font-weight: 700; }
-  .home-pulse-value { font-family: "Cormorant Garamond", Georgia, serif; font-size: 19px; font-weight: 600; color: var(--ink); line-height: 1.2; }
-  .home-pulse-detail { font-size: 10.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
-  .home-explore-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; font-style: italic; color: var(--terra-dk); margin: 0 0 11px; letter-spacing: .02em; }
-  .home-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .home-tile { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 15px 16px 16px; cursor: pointer; transition: box-shadow .2s; box-shadow: var(--shadow-sm); }
-  .home-tile:hover { box-shadow: 0 4px 18px -6px rgba(80,55,15,.25); }
-  .home-tile-num { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 5px; font-weight: 700; }
-  .home-tile-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
-  .home-tile-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+  /* ── DASHBOARD ── */
+  .dash { display: flex; flex-direction: column; gap: 16px; }
+
+  /* status strip */
+  .status-strip { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 13px 18px; box-shadow: var(--shadow-sm); }
+  .ss-today { min-width: 0; }
+  .ss-date { font-size: 21px; line-height: 1; }
+  .ss-frost { display: flex; align-items: center; gap: 9px; margin-top: 7px; font-size: 11.5px; color: var(--ink-mute); }
+  .ss-frost-bar { width: 120px; height: 5px; border-radius: 3px; background: var(--bg-2); border: 1px solid var(--line-soft); overflow: hidden; }
+  .ss-frost-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--moss), var(--cal-transplant)); }
+  .ss-stats { display: flex; align-items: stretch; gap: 0; }
+  .ss-stat { padding: 2px 16px; border-left: 1px solid var(--line-soft); text-align: center; cursor: default; }
+  .ss-stat:first-child { border-left: 0; }
+  .ss-stat[data-go] { cursor: pointer; }
+  .ss-stat b { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; font-size: 23px; line-height: 1; color: var(--ink); }
+  .ss-stat span { font-size: 9px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); margin-top: 4px; display: block; }
+  @media (max-width: 600px) { .ss-stat { padding: 2px 11px; } .ss-stat b { font-size: 20px; } .ss-frost-bar { width: 80px; } }
+
+  /* panel primitive (scoped so it doesn't affect map side panel) */
+  .dash .panel { padding: 0; display: flex; flex-direction: column; min-width: 0; box-shadow: var(--shadow-sm); border-radius: 12px; }
+  .dash .p-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px 0; }
+  .dash .p-head h3 { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; color: var(--terra-dk); }
+  .dash .p-head h3::after { display: none; }
+  .dash .p-sub { font-size: 11px; color: var(--ink-mute); }
+  .dash .p-open { margin-left: auto; appearance: none; border: 0; background: transparent; font: inherit; font-size: 11.5px; color: var(--ink-soft); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border-radius: 6px; transition: color .15s, background .15s; white-space: nowrap; }
+  .dash .p-open:hover { color: var(--terra-dk); background: var(--bg-2); }
+  .dash .p-body { padding: 14px 16px 16px; }
+
+  /* bento grid */
+  .dash-main { display: grid; grid-template-columns: 1.75fr 1fr; gap: 16px; align-items: stretch; }
+  .dash-side { display: grid; grid-template-rows: auto 1fr; gap: 16px; min-width: 0; }
+  @media (max-width: 880px) { .dash-main { grid-template-columns: 1fr; } }
+
+  /* feature panel (journal mosaic) */
+  .panel-feature { display: flex; flex-direction: column; }
+  .panel-feature .p-head { flex: none; }
+  .panel-feature .p-body { padding-top: 13px; flex: 1 1 auto; min-height: 0; display: flex; }
+  .jr-feature { flex: 1; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; min-height: 320px; }
+  .jr-th { border-radius: 8px; overflow: hidden; border: 1px solid var(--line); cursor: pointer; position: relative; aspect-ratio: 3/4; background: var(--bg-2); }
+  .jr-th img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+  .jr-th:hover img { transform: scale(1.06); }
+  .jr-th .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 7px 6px; font-family: ui-monospace, monospace; font-size: 8.5px; color: #fbf6ea; letter-spacing: .04em; background: linear-gradient(180deg, transparent, rgba(30,22,8,.72)); }
+  .jr-fth { aspect-ratio: auto; height: 100%; min-height: 0; }
+  .jr-fth.big { grid-row: span 2; }
+  .jr-fth .cap { font-size: 9px; padding: 16px 8px 7px; }
+  .jr-fth.big .cap { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; letter-spacing: 0; padding: 24px 12px 11px; }
+  .jr-fth.big .cap b { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 16px; }
+  @media (max-width: 760px) { .jr-feature { grid-template-columns: 1fr 1fr; grid-auto-rows: 120px; } .jr-fth.big { grid-column: span 2; grid-row: span 1; } .jr-fth:nth-child(n+6) { display: none; } }
+
+  /* harvesting now chips */
+  .hv-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .hv-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink); background: var(--paper-2); border: 1px solid var(--line-soft); border-radius: 999px; padding: 5px 12px 5px 7px; cursor: pointer; transition: border-color .15s; }
+  .hv-chip:hover { border-color: var(--ink-soft); }
+  .hv-chip .dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(0,0,0,.2); }
+  .hv-chip .tag { font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--terra-dk); }
+
+  /* plant families bar */
+  .panel-fam { min-height: 0; }
+  .panel-fam .p-body { flex: 1; }
+  .fam-rows { display: flex; flex-direction: column; gap: 7px; }
+  .panel-fam .fam-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; align-content: space-between; height: 100%; }
+  .fam-r { display: grid; grid-template-columns: 64px 1fr 20px; align-items: center; gap: 8px; cursor: pointer; padding: 2px; border-radius: 6px; transition: background .12s; }
+  .fam-r:hover { background: var(--paper-2); }
+  .fam-r .nm { font-size: 12px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fam-r .track { height: 8px; border-radius: 4px; background: var(--bg-2); overflow: hidden; }
+  .fam-r .track i { display: block; height: 100%; border-radius: 4px; }
+  .fam-r .ct { font-family: ui-monospace, monospace; font-size: 11px; color: var(--ink-mute); text-align: right; }
+
+  /* five bed cards */
+  .panel-beds .p-body { display: flex; flex-direction: column; }
+  .bed-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .bed-card { display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1px solid var(--line-soft); border-radius: 10px; background: var(--paper-2); cursor: pointer; transition: border-color .15s, transform .12s, box-shadow .2s; }
+  .bed-card:hover { border-color: var(--ink-soft); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .bed-card .bed-rom { width: 26px; height: 26px; margin-bottom: 4px; flex: none; border-radius: 50%; background: var(--paper); border: 1px solid var(--line); display: grid; place-items: center; font-family: "Cormorant Garamond", Georgia, serif; font-style: italic; font-weight: 600; font-size: 13px; color: var(--terra-dk); }
+  .bed-card .bn { font-size: 17px; line-height: 1; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; }
+  .bed-card .bd { font-family: ui-monospace, monospace; font-size: 9.5px; color: var(--terra-dk); letter-spacing: .02em; }
+  .bed-card .bm { font-size: 11px; color: var(--ink-soft); line-height: 1.4; margin-top: 2px; }
+  @media (max-width: 880px) { .bed-cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .bed-cards { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1535,7 +1590,7 @@
   </div>
 
   <nav class="toptabs" role="tablist" id="toptabs">
-    <button data-view="home"     role="tab"><span class="tt-num">I.</span><span class="tt-name">Home</span><span class="tt-count">2026 season</span></button>
+    <button data-view="home"     role="tab"><span class="tt-num">I.</span><span class="tt-name">Dashboard</span><span class="tt-count">2026 season</span></button>
     <button data-view="map"      role="tab"><span class="tt-num">II.</span><span class="tt-name">Garden Map</span><span class="tt-count">5 spaces</span></button>
     <button data-view="photos"   role="tab"><span class="tt-num">III.</span><span class="tt-name">Photos</span><span class="tt-count" id="photoCount">—</span></button>
     <button data-view="plants"   role="tab"><span class="tt-num">IV.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
@@ -1577,6 +1632,35 @@ const FAM = {
 };
 
 /* PLANT_INFO — defined in plants.js */
+
+/* ── HTML escape helper (used in dashboard innerHTML templates) ── */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ── Dashboard data ── */
+const FAMS_DASH = [
+  { fn: 'Brassica',   key: 'brassica',  color: 'var(--c-bras)' },
+  { fn: 'Tomato',     key: 'tomato',    color: 'var(--c-tom)' },
+  { fn: 'Pepper',     key: 'pepper',    color: 'var(--c-pep)' },
+  { fn: 'Herb',       key: 'herb',      color: 'var(--c-herb)' },
+  { fn: 'Allium',     key: 'allium',    color: 'var(--c-alli)' },
+  { fn: 'Squash',     key: 'squash',    color: 'var(--c-squash)' },
+  { fn: 'Flower',     key: 'flower',    color: 'var(--c-flw)' },
+  { fn: 'Perennial',  key: 'perennial', color: 'var(--c-peren)' },
+  { fn: 'Root',       key: 'root',      color: 'var(--c-root)' },
+  { fn: 'Cane',       key: 'cane',      color: 'var(--c-cane)' },
+  { fn: 'Cucumber',   key: 'cucumber',  color: 'var(--c-cuke)' },
+  { fn: 'Berry',      key: 'berry',     color: 'var(--c-berry)' },
+  { fn: 'Legume',     key: 'legume',    color: 'var(--c-legume)' },
+  { fn: 'Cover crop', key: 'cover',     color: 'var(--c-cover)' },
+];
+
+const BEDS_DASH = [
+  { rom: 'I',   name: 'Left Bed',   dim: '400″ E–W · rows A–E',      meta: 'Tomatoes, peppers, cukes, herbs, asparagus' },
+  { rom: 'II',  name: 'Middle Bed', dim: 'Berry patch · 54 canes',    meta: 'Red & black raspberry, blackberry, rhubarb' },
+  { rom: 'III', name: 'Right Bed',  dim: '368″ E–W · rows A–G',      meta: 'Brassicas, roots, alliums, blueberry hedge' },
+  { rom: 'IV',  name: 'Unfenced',   dim: '264″ × 126″ · 9 mounds',   meta: 'Butternut ×5, Delicata ×3, Zucchini' },
+  { rom: 'V',   name: 'Grow Bags',  dim: '7 × 10-gal',               meta: 'Eggplant, spinach, romaine, pole beans' },
+];
 
 
 /* ============================================================
@@ -2183,75 +2267,153 @@ function renderTopTabs() {
  *   RENDER: HOME VIEW
  * ============================================================ */
 function renderHome(root) {
-  const wrap = el('div', { class: 'home-wrap' });
+  /* ── today / season context ── */
+  const now = new Date();
+  const todayMd = now.getMonth() + 1 + now.getDate() / 30;
+  const LAST_FROST = 5.33, FIRST_FROST = 10.17;
+  const seasonDays = Math.round((FIRST_FROST - LAST_FROST) * 30);
+  const elapsedDays = Math.max(0, Math.round((todayMd - LAST_FROST) * 30));
+  const pctElapsed = Math.min(100, Math.round(elapsedDays / seasonDays * 100));
+  const daysToFirstFrost = Math.max(0, Math.round((FIRST_FROST - todayMd) * 30));
+  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MON_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dateLabel = DAY_NAMES[now.getDay()] + ', ' + MON_NAMES[now.getMonth()] + ' ' + now.getDate();
 
-  /* hero */
-  const hero = el('div', { class: 'home-hero' });
-  hero.appendChild(el('img', { src: 'photos/garden-sunset.jpg', alt: 'Garden at sunset' }));
-  hero.appendChild(el('div', { class: 'home-hero-overlay' }));
-  const heroText = el('div', { class: 'home-hero-text' });
-  heroText.appendChild(el('div', { class: 'home-hero-title' }, ['Hannah + Dom\'s Garden']));
-  heroText.appendChild(el('div', { class: 'home-hero-sub' }, ['Summer 2026 · Greenfield, Mass. · Zone 5b/6a']));
-  hero.appendChild(heroText);
-  wrap.appendChild(hero);
+  /* ── harvesting now ── */
+  const FALL_ONLY = new Set(['Garlic', 'Shallots', 'Overwint. onions']);
+  const hvNow = Object.entries(PLANT_INFO)
+    .filter(([name, p]) => p.cal && p.cal.harvest && !FALL_ONLY.has(name)
+      && todayMd >= p.cal.harvest[0] && todayMd <= p.cal.harvest[1])
+    .map(([name, p]) => ({ name, fam: p.fam, ending: p.cal.harvest[1] - todayMd <= 0.3 }));
 
-  /* pulse cards */
-  const pulse = el('div', { class: 'home-pulse' });
+  const hv = hvNow.length
+    ? hvNow.map(h => `<span class="hv-chip" data-plant="${esc(h.name)}">
+        <span class="dot" style="background:${FAM[h.fam]?.color || 'var(--ink)'}"></span>
+        ${esc(h.name)}${h.ending ? '<span class="tag">ending</span>' : ''}
+      </span>`).join('')
+    : '<span style="color:var(--ink-mute);font-size:13px;font-style:italic">Nothing yet</span>';
 
-  /* weather */
-  const wc = weatherCache;
-  const wValue = wc && wc.currentTempF != null ? wc.currentTempF + '°F' : (document.querySelector('.wc-now')?.textContent?.trim() || '—');
-  const wDetail = wc && wc.todayHiF != null ? `H: ${wc.todayHiF}°  L: ${wc.todayLoF}°` : (document.querySelector('.wc-hilo')?.textContent?.trim() || 'Greenfield, MA');
-  const wCard = homeCard('Today', wValue, wDetail);
-  wCard.onclick = () => { activeView = 'expert'; localStorage.setItem('activeView', 'expert'); renderAll(); };
-  pulse.appendChild(wCard);
+  /* ── plant families bar chart ── */
+  const famCounts = {};
+  Object.values(PLANT_INFO).forEach(p => { famCounts[p.fam] = (famCounts[p.fam] || 0) + 1; });
+  const famsWithCounts = FAMS_DASH.map(f => ({ ...f, n: famCounts[f.key] || 0 })).filter(f => f.n > 0);
+  const maxN = Math.max(...famsWithCounts.map(f => f.n));
+  const famRows = famsWithCounts.map(f =>
+    `<div class="fam-r" data-fam="${f.key}">
+      <span class="nm">${esc(f.fn)}</span>
+      <span class="track"><i style="width:${Math.round(f.n / maxN * 100)}%;background:${f.color}"></i></span>
+      <span class="ct">${f.n}</span>
+    </div>`).join('');
 
-  /* in season */
-  const mo = new Date().getMonth() + 1;
-  const inSeason = Object.entries(PLANT_INFO)
-    .filter(([, p]) => p.cal && p.cal.harvest && p.cal.harvest[0] <= mo && p.cal.harvest[1] >= mo)
-    .map(([name]) => name);
-  const seasonCard = homeCard('In season', inSeason.length ? inSeason.slice(0, 2).join(', ') : '—', `${inSeason.length} crops in harvest window`);
-  seasonCard.onclick = () => { activeView = 'calendar'; localStorage.setItem('activeView', 'calendar'); renderAll(); };
-  pulse.appendChild(seasonCard);
+  /* ── bed cards ── */
+  const bedCards = BEDS_DASH.map(b =>
+    `<div class="bed-card" data-go="map">
+      <span class="bed-rom">${esc(b.rom)}</span>
+      <span class="bn">${esc(b.name)}</span>
+      <span class="bd">${esc(b.dim)}</span>
+      <span class="bm">${esc(b.meta)}</span>
+    </div>`).join('');
 
-  /* next task */
-  const catShort = { plant: 'Plant', maintain: 'Maintain', watch: 'Watch for', build: 'Build', harvest: 'Harvest' };
-  const nextTask = GARDEN_TASKS.find(t => t.month >= mo);
-  const taskValue = nextTask ? (catShort[nextTask.cat] || nextTask.cat) : 'All clear';
-  const taskDetail = nextTask ? nextTask.text.slice(0, 52) + (nextTask.text.length > 52 ? '…' : '') : '';
-  const taskCard = homeCard('Next up', taskValue, taskDetail);
-  taskCard.onclick = () => { activeView = 'tasks'; localStorage.setItem('activeView', 'tasks'); renderAll(); };
-  pulse.appendChild(taskCard);
+  /* ── featured journal photos ── */
+  const FEAT_KEYS = ['left-bed-june', 'blueberry-hedge-summer', 'poppies', 'tomato-in-bloom', 'right-bed-sunset', 'middle-bed-summer', 'garden-sunset'];
+  const byKey = Object.fromEntries(PHOTOS.map(p => [p.file.replace('.jpg', ''), p]));
+  const feat = FEAT_KEYS.map(k => byKey[k]).filter(Boolean);
+  const thumbs = feat.map((p, i) =>
+    `<div class="jr-th jr-fth ${i === 0 ? 'big' : ''}" data-go="photos">
+      <img src="photos/${esc(p.file)}" alt="${esc(p.caption)}" loading="lazy">
+      <span class="cap">${i === 0 ? '<b>' + esc(p.caption) + '</b><br>' : ''}${esc(p.date)}</span>
+    </div>`).join('');
 
-  wrap.appendChild(pulse);
+  /* ── counts ── */
+  const plantCount = Object.keys(PLANT_INFO).length;
+  const famCount = new Set(Object.values(PLANT_INFO).map(p => p.fam)).size;
 
-  /* nav tiles */
-  wrap.appendChild(el('div', { class: 'home-explore-title' }, ['Explore']));
-  const tiles = el('div', { class: 'home-tiles' });
-  [
-    { view: 'photos',   num: 'II.',  title: 'Photos',           desc: `${PHOTOS.length} photos · Summer & Spring 2026` },
-    { view: 'map',      num: 'III.', title: 'Garden Map',        desc: 'Left bed · Right bed · Middle · Unfenced · Grow Bags' },
-    { view: 'calendar', num: 'V.',   title: 'Planting Calendar', desc: 'Zone 5b/6a · May – November' },
-    { view: 'expert',   num: 'VII.', title: 'Garden Expert',     desc: 'Ask Claude about your garden' },
-  ].forEach(({ view, num, title, desc }) => {
-    const tile = el('div', { class: 'home-tile' });
-    tile.onclick = () => { activeView = view; localStorage.setItem('activeView', view); renderAll(); };
-    tile.appendChild(el('div', { class: 'home-tile-num' }, [num]));
-    tile.appendChild(el('div', { class: 'home-tile-title' }, [title]));
-    tile.appendChild(el('div', { class: 'home-tile-desc' }, [desc]));
-    tiles.appendChild(tile);
+  root.innerHTML = `
+  <div class="dash">
+    <div class="status-strip">
+      <div class="ss-cell ss-today">
+        <div class="ss-date serif">${esc(dateLabel)}</div>
+        <div class="ss-frost">
+          <div class="ss-frost-bar"><i style="width:${pctElapsed}%"></i></div>
+          <span>${daysToFirstFrost} days to first frost</span>
+        </div>
+      </div>
+      <div class="ss-stats">
+        <div class="ss-stat" data-go="map"><b>5</b><span>beds</span></div>
+        <div class="ss-stat" data-go="plants"><b>${plantCount}</b><span>varieties</span></div>
+        <div class="ss-stat" data-go="plants"><b>${famCount}</b><span>families</span></div>
+        <div class="ss-stat" data-go="map"><b>54</b><span>berry canes</span></div>
+      </div>
+    </div>
+
+    <div class="dash-main">
+      <div class="panel panel-feature">
+        <div class="p-head">
+          <h3>Garden journal</h3>
+          <span class="p-sub">the season so far</span>
+          <button class="p-open" data-go="photos">Open journal →</button>
+        </div>
+        <div class="p-body"><div class="jr-feature">${thumbs}</div></div>
+      </div>
+      <div class="dash-side">
+        <div class="panel">
+          <div class="p-head">
+            <h3>Harvesting now</h3>
+            <button class="p-open" data-go="plants">All →</button>
+          </div>
+          <div class="p-body"><div class="hv-chips">${hv}</div></div>
+        </div>
+        <div class="panel panel-fam">
+          <div class="p-head">
+            <h3>Plant families</h3>
+            <button class="p-open" data-go="plants">Browse →</button>
+          </div>
+          <div class="p-body"><div class="fam-rows">${famRows}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-beds">
+      <div class="p-head">
+        <h3>The five growing spaces</h3>
+        <button class="p-open" data-go="map">Open map →</button>
+      </div>
+      <div class="p-body"><div class="bed-cards">${bedCards}</div></div>
+    </div>
+  </div>`;
+
+  /* ── wire interactions ── */
+  root.querySelectorAll('[data-go]').forEach(node => {
+    node.addEventListener('click', () => {
+      activeView = node.dataset.go;
+      activePlantId = null;
+      localStorage.setItem('activeView', activeView);
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   });
-  wrap.appendChild(tiles);
-  root.appendChild(wrap);
-}
-
-function homeCard(label, value, detail) {
-  const card = el('div', { class: 'home-pulse-card' });
-  card.appendChild(el('div', { class: 'home-pulse-label' }, [label]));
-  card.appendChild(el('div', { class: 'home-pulse-value' }, [value]));
-  if (detail) card.appendChild(el('div', { class: 'home-pulse-detail' }, [detail]));
-  return card;
+  root.querySelectorAll('.hv-chip').forEach(node => {
+    node.addEventListener('click', e => {
+      e.stopPropagation();
+      plantSearchQ = node.dataset.plant.toLowerCase();
+      activeView = 'plants';
+      activePlantId = null;
+      localStorage.setItem('activeView', activeView);
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+  root.querySelectorAll('.fam-r').forEach(node => {
+    node.addEventListener('click', e => {
+      e.stopPropagation();
+      activeFamilyFilter = node.dataset.fam;
+      activeView = 'plants';
+      activePlantId = null;
+      localStorage.setItem('activeView', activeView);
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
 }
 
 function renderAll() {
