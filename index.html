@@ -1482,6 +1482,32 @@
   .weather-dry  .weather-rec { color:#7a1a1a; }
   .weather-src { margin-left:auto; font-size:11px; color:var(--ink-mute); font-style:italic; text-decoration:none; }
   .weather-src:hover { text-decoration:underline; }
+
+  /* ── Home tab ────────────────────────────────────────── */
+  .home-wrap { max-width: 900px; margin: 0 auto; padding: 10px 0 60px; }
+  .home-hero { position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 18px; box-shadow: 0 2px 18px -4px rgba(40,28,10,.22); }
+  .home-hero img { width: 100%; height: 280px; object-fit: cover; display: block; }
+  @media (max-width: 560px) { .home-hero img { height: 210px; } }
+  .home-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 35%, rgba(18,12,4,.62) 100%); }
+  .home-hero-text { position: absolute; bottom: 18px; left: 22px; right: 22px; color: #f5efe1; }
+  .home-hero-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 30px; font-style: italic; font-weight: 600; line-height: 1.1; margin: 0 0 5px; }
+  @media (max-width: 560px) { .home-hero-title { font-size: 24px; } }
+  .home-hero-sub { font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; opacity: .78; font-weight: 500; }
+  .home-pulse { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
+  @media (max-width: 560px) { .home-pulse { gap: 8px; } }
+  .home-pulse-card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px 13px; box-shadow: var(--shadow-sm); transition: box-shadow .2s; }
+  .home-pulse-card[onclick], .home-pulse-card[style*="cursor"] { cursor: pointer; }
+  .home-pulse-card:hover { box-shadow: 0 3px 14px -5px rgba(80,55,15,.28); }
+  .home-pulse-label { font-size: 9px; letter-spacing: .11em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 5px; font-weight: 700; }
+  .home-pulse-value { font-family: "Cormorant Garamond", Georgia, serif; font-size: 19px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+  .home-pulse-detail { font-size: 10.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
+  .home-explore-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; font-style: italic; color: var(--terra-dk); margin: 0 0 11px; letter-spacing: .02em; }
+  .home-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .home-tile { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 15px 16px 16px; cursor: pointer; transition: box-shadow .2s; box-shadow: var(--shadow-sm); }
+  .home-tile:hover { box-shadow: 0 4px 18px -6px rgba(80,55,15,.25); }
+  .home-tile-num { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 5px; font-weight: 700; }
+  .home-tile-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .home-tile-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -1509,12 +1535,13 @@
   </div>
 
   <nav class="toptabs" role="tablist" id="toptabs">
-    <button data-view="map"      role="tab"><span class="tt-num">I.</span><span class="tt-name">Garden Map</span><span class="tt-count">5 spaces</span></button>
-    <button data-view="photos"   role="tab"><span class="tt-num">II.</span><span class="tt-name">Photos</span><span class="tt-count" id="photoCount">—</span></button>
-    <button data-view="plants"   role="tab"><span class="tt-num">III.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
-    <button data-view="calendar" role="tab"><span class="tt-num">IV.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
-    <button data-view="tasks"    role="tab"><span class="tt-num">V.</span><span class="tt-name">Garden Tasks</span><span class="tt-count">May–Nov</span></button>
-    <button data-view="expert"   role="tab"><span class="tt-num">VI.</span><span class="tt-name">Garden Expert</span><span class="tt-count">Ask Claude</span></button>
+    <button data-view="home"     role="tab"><span class="tt-num">I.</span><span class="tt-name">Home</span><span class="tt-count">2026 season</span></button>
+    <button data-view="map"      role="tab"><span class="tt-num">II.</span><span class="tt-name">Garden Map</span><span class="tt-count">5 spaces</span></button>
+    <button data-view="photos"   role="tab"><span class="tt-num">III.</span><span class="tt-name">Photos</span><span class="tt-count" id="photoCount">—</span></button>
+    <button data-view="plants"   role="tab"><span class="tt-num">IV.</span><span class="tt-name">All Plants</span><span class="tt-count" id="plantCount">—</span></button>
+    <button data-view="calendar" role="tab"><span class="tt-num">V.</span><span class="tt-name">Planting Calendar</span><span class="tt-count">Zone 5b</span></button>
+    <button data-view="tasks"    role="tab"><span class="tt-num">VI.</span><span class="tt-name">Garden Tasks</span><span class="tt-count">May–Nov</span></button>
+    <button data-view="expert"   role="tab"><span class="tt-num">VII.</span><span class="tt-name">Garden Expert</span><span class="tt-count">Ask Claude</span></button>
   </nav>
 </header>
 
@@ -2056,10 +2083,10 @@ const GARDEN_TASKS = [
 /* ============================================================
  *   STATE
  * ============================================================ */
-const VALID_VIEWS = ['map','photos','plants','calendar','tasks','expert'];
+const VALID_VIEWS = ['home','map','photos','plants','calendar','tasks','expert'];
 const VALID_BEDS  = ['all','left','middle','right','unfenced','bags'];
 let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1)
-               : (localStorage.getItem('activeView') || 'map');
+               : (localStorage.getItem('activeView') || 'home');
 let activeBed  = VALID_BEDS.includes(localStorage.getItem('activeBed'))
                ? localStorage.getItem('activeBed') : 'left';
 let activePlantId = null;
@@ -2152,13 +2179,89 @@ function renderTopTabs() {
   $('#plantCount').textContent = Object.keys(PLANT_INFO).length + ' kinds';
 }
 
+/* ============================================================
+ *   RENDER: HOME VIEW
+ * ============================================================ */
+function renderHome(root) {
+  const wrap = el('div', { class: 'home-wrap' });
+
+  /* hero */
+  const hero = el('div', { class: 'home-hero' });
+  hero.appendChild(el('img', { src: 'photos/garden-sunset.jpg', alt: 'Garden at sunset' }));
+  hero.appendChild(el('div', { class: 'home-hero-overlay' }));
+  const heroText = el('div', { class: 'home-hero-text' });
+  heroText.appendChild(el('div', { class: 'home-hero-title' }, ['Hannah + Dom\'s Garden']));
+  heroText.appendChild(el('div', { class: 'home-hero-sub' }, ['Summer 2026 · Greenfield, Mass. · Zone 5b/6a']));
+  hero.appendChild(heroText);
+  wrap.appendChild(hero);
+
+  /* pulse cards */
+  const pulse = el('div', { class: 'home-pulse' });
+
+  /* weather */
+  const wc = weatherCache;
+  const wValue = wc && wc.currentTempF != null ? wc.currentTempF + '°F' : (document.querySelector('.wc-now')?.textContent?.trim() || '—');
+  const wDetail = wc && wc.todayHiF != null ? `H: ${wc.todayHiF}°  L: ${wc.todayLoF}°` : (document.querySelector('.wc-hilo')?.textContent?.trim() || 'Greenfield, MA');
+  const wCard = homeCard('Today', wValue, wDetail);
+  wCard.onclick = () => { activeView = 'expert'; localStorage.setItem('activeView', 'expert'); renderAll(); };
+  pulse.appendChild(wCard);
+
+  /* in season */
+  const mo = new Date().getMonth() + 1;
+  const inSeason = Object.entries(PLANT_INFO)
+    .filter(([, p]) => p.cal && p.cal.harvest && p.cal.harvest[0] <= mo && p.cal.harvest[1] >= mo)
+    .map(([name]) => name);
+  const seasonCard = homeCard('In season', inSeason.length ? inSeason.slice(0, 2).join(', ') : '—', `${inSeason.length} crops in harvest window`);
+  seasonCard.onclick = () => { activeView = 'calendar'; localStorage.setItem('activeView', 'calendar'); renderAll(); };
+  pulse.appendChild(seasonCard);
+
+  /* next task */
+  const catShort = { plant: 'Plant', maintain: 'Maintain', watch: 'Watch for', build: 'Build', harvest: 'Harvest' };
+  const nextTask = GARDEN_TASKS.find(t => t.month >= mo);
+  const taskValue = nextTask ? (catShort[nextTask.cat] || nextTask.cat) : 'All clear';
+  const taskDetail = nextTask ? nextTask.text.slice(0, 52) + (nextTask.text.length > 52 ? '…' : '') : '';
+  const taskCard = homeCard('Next up', taskValue, taskDetail);
+  taskCard.onclick = () => { activeView = 'tasks'; localStorage.setItem('activeView', 'tasks'); renderAll(); };
+  pulse.appendChild(taskCard);
+
+  wrap.appendChild(pulse);
+
+  /* nav tiles */
+  wrap.appendChild(el('div', { class: 'home-explore-title' }, ['Explore']));
+  const tiles = el('div', { class: 'home-tiles' });
+  [
+    { view: 'photos',   num: 'II.',  title: 'Photos',           desc: `${PHOTOS.length} photos · Summer & Spring 2026` },
+    { view: 'map',      num: 'III.', title: 'Garden Map',        desc: 'Left bed · Right bed · Middle · Unfenced · Grow Bags' },
+    { view: 'calendar', num: 'V.',   title: 'Planting Calendar', desc: 'Zone 5b/6a · May – November' },
+    { view: 'expert',   num: 'VII.', title: 'Garden Expert',     desc: 'Ask Claude about your garden' },
+  ].forEach(({ view, num, title, desc }) => {
+    const tile = el('div', { class: 'home-tile' });
+    tile.onclick = () => { activeView = view; localStorage.setItem('activeView', view); renderAll(); };
+    tile.appendChild(el('div', { class: 'home-tile-num' }, [num]));
+    tile.appendChild(el('div', { class: 'home-tile-title' }, [title]));
+    tile.appendChild(el('div', { class: 'home-tile-desc' }, [desc]));
+    tiles.appendChild(tile);
+  });
+  wrap.appendChild(tiles);
+  root.appendChild(wrap);
+}
+
+function homeCard(label, value, detail) {
+  const card = el('div', { class: 'home-pulse-card' });
+  card.appendChild(el('div', { class: 'home-pulse-label' }, [label]));
+  card.appendChild(el('div', { class: 'home-pulse-value' }, [value]));
+  if (detail) card.appendChild(el('div', { class: 'home-pulse-detail' }, [detail]));
+  return card;
+}
+
 function renderAll() {
   renderTopTabs();
   const main = $('#app');
   main.innerHTML = '';
   const view = el('div', { class: 'view' });
   main.appendChild(view);
-  if (activeView === 'map') renderMap(view);
+  if (activeView === 'home') renderHome(view);
+  else if (activeView === 'map') renderMap(view);
   else if (activeView === 'plants') renderPlants(view);
   else if (activeView === 'calendar') renderCalendar(view);
   else if (activeView === 'expert') renderExpert(view);
@@ -3461,10 +3564,10 @@ fetchWeather().then(({ rain7, et0_7, forecastTmrw, todayHiF, todayLoF, currentTe
 /* keyboard nav for top tabs */
 window.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  const order = ['map','photos','plants','calendar','tasks','expert'];
+  const order = ['home','map','photos','plants','calendar','tasks','expert'];
   const i = order.indexOf(activeView);
-  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%6]; renderAll(); }
-  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+6)%6]; renderAll(); }
+  if (e.key === 'ArrowRight' && e.altKey) { activeView = order[(i+1)%7]; renderAll(); }
+  if (e.key === 'ArrowLeft' && e.altKey)  { activeView = order[(i-1+7)%7]; renderAll(); }
 });
 </script>
 </body>
