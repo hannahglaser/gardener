@@ -2169,8 +2169,7 @@ const GARDEN_TASKS = [
  * ============================================================ */
 const VALID_VIEWS = ['home','map','photos','plants','calendar','tasks','expert'];
 const VALID_BEDS  = ['all','left','middle','right','unfenced','bags'];
-let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1)
-               : (localStorage.getItem('activeView') || 'home');
+let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
 let activeBed  = VALID_BEDS.includes(localStorage.getItem('activeBed'))
                ? localStorage.getItem('activeBed') : 'left';
 let activePlantId = null;
