@@ -1655,11 +1655,11 @@ const FAMS_DASH = [
 ];
 
 const BEDS_DASH = [
-  { rom: 'I',   name: 'Left Bed',   dim: '400″ E–W · rows A–E',      meta: 'Tomatoes, peppers, cukes, herbs, asparagus' },
-  { rom: 'II',  name: 'Middle Bed', dim: 'Berry patch · 54 canes',    meta: 'Red & black raspberry, blackberry, rhubarb' },
-  { rom: 'III', name: 'Right Bed',  dim: '368″ E–W · rows A–G',      meta: 'Brassicas, roots, alliums, blueberry hedge' },
-  { rom: 'IV',  name: 'Unfenced',   dim: '264″ × 126″ · 9 mounds',   meta: 'Butternut ×5, Delicata ×3, Zucchini' },
-  { rom: 'V',   name: 'Grow Bags',  dim: '7 × 10-gal',               meta: 'Eggplant, spinach, romaine, pole beans' },
+  { rom: 'I',   key: 'left',     name: 'Left Bed',   dim: '400″ E–W · rows A–E',      meta: 'Tomatoes, peppers, cukes, herbs, asparagus' },
+  { rom: 'II',  key: 'middle',   name: 'Middle Bed', dim: 'Berry patch · 54 canes',    meta: 'Red & black raspberry, blackberry, rhubarb' },
+  { rom: 'III', key: 'right',    name: 'Right Bed',  dim: '368″ E–W · rows A–G',      meta: 'Brassicas, roots, alliums, blueberry hedge' },
+  { rom: 'IV',  key: 'unfenced', name: 'Unfenced',   dim: '264″ × 126″ · 9 mounds',   meta: 'Butternut ×5, Delicata ×3, Zucchini' },
+  { rom: 'V',   key: 'bags',     name: 'Grow Bags',  dim: '7 × 10-gal',               meta: 'Eggplant, spinach, romaine, pole beans' },
 ];
 
 
@@ -2308,7 +2308,7 @@ function renderHome(root) {
 
   /* ── bed cards ── */
   const bedCards = BEDS_DASH.map(b =>
-    `<div class="bed-card" data-go="map">
+    `<div class="bed-card" data-go="map" data-bed="${b.key}">
       <span class="bed-rom">${esc(b.rom)}</span>
       <span class="bn">${esc(b.name)}</span>
       <span class="bd">${esc(b.dim)}</span>
@@ -2388,6 +2388,7 @@ function renderHome(root) {
     node.addEventListener('click', () => {
       activeView = node.dataset.go;
       activePlantId = null;
+      if (node.dataset.bed) { activeBed = node.dataset.bed; localStorage.setItem('activeBed', activeBed); }
       localStorage.setItem('activeView', activeView);
       renderAll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
