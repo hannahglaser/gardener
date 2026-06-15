@@ -2279,9 +2279,9 @@ function renderHome(root) {
   const dateLabel = DAY_NAMES[now.getDay()] + ', ' + MON_NAMES[now.getMonth()] + ' ' + now.getDate();
 
   /* ── harvesting now ── */
-  const FALL_ONLY = new Set(['Garlic', 'Shallots', 'Overwint. onions']);
+  const NOT_IN_GROUND = new Set(['Garlic', 'Shallots', 'Overwintering onions']); // fall-planted, not in ground this season
   const hvNow = Object.entries(PLANT_INFO)
-    .filter(([name, p]) => p.cal && p.cal.harvest && !FALL_ONLY.has(name)
+    .filter(([name, p]) => p.cal && p.cal.harvest && !NOT_IN_GROUND.has(name)
       && todayMd >= p.cal.harvest[0] && todayMd <= p.cal.harvest[1])
     .map(([name, p]) => ({ name, fam: p.fam, ending: p.cal.harvest[1] - todayMd <= 0.3 }));
 
@@ -2294,7 +2294,9 @@ function renderHome(root) {
 
   /* ── plant families bar chart ── */
   const famCounts = {};
-  Object.values(PLANT_INFO).forEach(p => { famCounts[p.fam] = (famCounts[p.fam] || 0) + 1; });
+  Object.entries(PLANT_INFO).forEach(([name, p]) => {
+    if (!NOT_IN_GROUND.has(name)) famCounts[p.fam] = (famCounts[p.fam] || 0) + 1;
+  });
   const famsWithCounts = FAMS_DASH.map(f => ({ ...f, n: famCounts[f.key] || 0 })).filter(f => f.n > 0);
   const maxN = Math.max(...famsWithCounts.map(f => f.n));
   const famRows = famsWithCounts.map(f =>
@@ -2323,9 +2325,9 @@ function renderHome(root) {
       <span class="cap">${i === 0 ? '<b>' + esc(p.caption) + '</b><br>' : ''}${esc(p.date)}</span>
     </div>`).join('');
 
-  /* ── counts ── */
-  const plantCount = Object.keys(PLANT_INFO).length;
-  const famCount = new Set(Object.values(PLANT_INFO).map(p => p.fam)).size;
+  /* ── counts (exclude not-yet-planted) ── */
+  const plantCount = Object.keys(PLANT_INFO).filter(n => !NOT_IN_GROUND.has(n)).length;
+  const famCount = new Set(Object.entries(PLANT_INFO).filter(([n]) => !NOT_IN_GROUND.has(n)).map(([,p]) => p.fam)).size;
 
   root.innerHTML = `
   <div class="dash">
