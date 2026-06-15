@@ -2168,7 +2168,7 @@ const GARDEN_TASKS = [
  *   STATE
  * ============================================================ */
 const VALID_VIEWS = ['home','map','photos','plants','calendar','tasks','expert'];
-const VALID_BEDS  = ['all','left','middle','right','unfenced','bags'];
+const VALID_BEDS  = ['left','middle','right','unfenced','bags','all'];
 let activeView = VALID_VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
 let activeBed  = VALID_BEDS.includes(localStorage.getItem('activeBed'))
                ? localStorage.getItem('activeBed') : 'left';
@@ -2436,9 +2436,9 @@ function renderAll() {
 function renderMap(root) {
   /* sub-tabs */
   const sub = el('div', { class: 'subtabs' });
-  const bedOrder = ['all','left','middle','right','unfenced','bags'];
-  const subNames = { all:'All Beds', left:'Left Bed', middle:'Middle Bed', right:'Right Bed', unfenced:'Unfenced', bags:'Grow Bags' };
-  const subRoman = { all:'i.', left:'ii.', middle:'iii.', right:'iv.', unfenced:'v.', bags:'vi.' };
+  const bedOrder = ['left','middle','right','unfenced','bags','all'];
+  const subNames = { left:'Left Bed', middle:'Middle Bed', right:'Right Bed', unfenced:'Unfenced', bags:'Grow Bags', all:'All Beds' };
+  const subRoman = { left:'i.', middle:'ii.', right:'iii.', unfenced:'iv.', bags:'v.', all:'vi.' };
   bedOrder.forEach(k => {
     const b = el('button', {
       class: k === activeBed ? 'is-active' : '',
