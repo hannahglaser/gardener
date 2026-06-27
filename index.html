@@ -2316,7 +2316,7 @@ function renderHome(root) {
     </div>`).join('');
 
   /* ── featured journal photos ── */
-  const FEAT_KEYS = ['left-bed-june', 'blueberry-hedge-summer', 'peach-tree', 'tomato-in-bloom', 'right-bed-sunset', 'middle-bed-summer', 'garden-sunset'];
+  const FEAT_KEYS = ['left-bed-brassicas-june', 'beet-crowns-june', 'broccoli-head-june', 'zucchini-grow-bag', 'tomato-cherry-fruit', 'blueberry-hedge-summer', 'garden-sunset'];
   const byKey = Object.fromEntries(PHOTOS.map(p => [p.file.replace('.jpg', ''), p]));
   const feat = FEAT_KEYS.map(k => byKey[k]).filter(Boolean);
   const thumbs = feat.map((p, i) =>
